@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050505">
   <title>IronPulse | Premium Sports Nutrition</title>
   <link rel="icon" href="logo.png" type="image/x-icon">
 
@@ -116,17 +117,19 @@
     .filters { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 24px; }
     .filter-btn {
       padding: 10px 24px; background: var(--surface); color: var(--text);
-      border: 2px solid var(--primary); border-radius: 30px; font-weight: 600;
+      border: 2px solid var(--border); border-radius: 30px; font-weight: 600;
       text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;
+      position: relative;
     }
     .filter-btn:hover, .filter-btn.active {
       background: var(--primary); border-color: var(--primary); color: #000;
     }
     .filter-btn .category-count {
-      margin-left: 6px; background: var(--primary-dark); color: #000;
+      margin-left: 6px; background: #000; color: var(--primary);
       padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: 700;
       min-width: 20px; text-align: center; display: inline-block;
     }
+    .filter-btn.active .category-count { background: #000; color: var(--primary); }
     
     .search-container { position: relative; max-width: 500px; margin: 0 auto; }
     .search-container i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-light); }
@@ -394,3 +397,262 @@
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   </style>
 </head>
+
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="logo">
+        <img src="logo.png" alt="IronPulse Logo" onerror="this.src='https://via.placeholder.com/50x50/ffcc00/000000?text=IP'">
+        <div class="logo-text">
+          <div class="brand-name">IronPulse</div>
+          <div class="brand-tagline">Fuel Your Potential</div>
+        </div>
+      </a>
+      <div class="header-actions">
+        <a href="tracking.html" class="header-btn"><i class="fa-solid fa-truck-fast"></i> Suivi</a>
+        <button class="header-btn cart-btn" id="cartBtn">
+          <i class="fa-solid fa-cart-shopping"></i> Panier
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <a href="#coverage" class="header-btn"><i class="fa-solid fa-map-location-dot"></i> Livraison</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>UNLEASH YOUR <span>INNER BEAST</span></h1>
+    <p>Premium supplements engineered for performance. Delivering strength across Algeria.</p>
+  </section>
+
+  <!-- Shop Controls -->
+  <div class="shop-controls">
+    <div class="filters">
+      <button class="filter-btn active" data-category="all">Tous <span class="category-count">0</span></button>
+      <button class="filter-btn" data-category="Whey">Whey <span class="category-count">0</span></button>
+      <button class="filter-btn" data-category="Gainer">Gainer <span class="category-count">0</span></button>
+      <button class="filter-btn" data-category="BCAA">BCAA <span class="category-count">0</span></button>
+      <button class="filter-btn" data-category="PreWorkout">Pre-Workout <span class="category-count">0</span></button>
+      <button class="filter-btn" data-category="FatBurner">Fat Burner <span class="category-count">0</span></button>
+    </div>
+    <div class="search-container">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" placeholder="Search your supplement...">
+    </div>
+  </div>
+
+  <!-- Products Grid -->
+  <div class="products-grid" id="productsGrid">
+    <div style="text-align:center; padding:100px 20px; color:var(--primary); grid-column:1/-1;">
+      <i class="fa-solid fa-dumbbell fa-spin" style="font-size:3rem; margin-bottom:20px;"></i>
+      <p style="font-size:1.2rem; font-family:'Montserrat', sans-serif;">LOADING PRODUCTS...</p>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div id="paginationContainer" style="text-align:center; padding:40px 0; display:none;">
+    <button id="showMoreBtn" class="btn btn-primary" style="min-width: 250px;">
+      LOAD MORE <i class="fa-solid fa-plus-circle"></i>
+    </button>
+  </div>
+
+  <!-- Cart Modal -->
+  <div class="modal-overlay" id="cartModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fa-solid fa-cart-shopping"></i> VOTRE PANIER</h3>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="cart-items" id="cartItems"></div>
+      </div>
+      <div class="modal-footer">
+        <div class="cart-total">TOTAL: <span id="totalPrice">0</span> DA</div>
+        <button class="btn btn-primary" id="checkoutBtn" disabled>COMMANDER <i class="fa-solid fa-bolt"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Detail Modal (Optional - kept for script compatibility) -->
+  <div class="modal-overlay" id="productDetailModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Product Details</h3>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <img id="detailImage" src="" alt="Product">
+        <h2 id="detailName"></h2>
+        <p class="product-category" id="detailCategory"></p>
+        <div id="detailDescription" style="margin:20px 0; line-height:1.7; color:var(--text-light);"></div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <p style="font-size:2rem; font-family:'Montserrat', sans-serif; font-weight:800;">
+            <span id="detailPrice">0</span> DA
+          </p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline close-modal">Back</button>
+        <button class="btn btn-primary" id="modalAddToCartBtn">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div class="modal-overlay" id="orderFormModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">FINALISER LA COMMANDE</h3>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="orderForm">
+          <div class="form-group">
+            <label class="form-label">MÉTHODE DE LIVRAISON *</label>
+            <select class="form-control" id="orderType" required>
+              <option value="">Sélectionner</option>
+              <option value="domicile">Livraison à domicile</option>
+              <option value="stopdesk">Point relais (Stop Desk)</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">PRÉNOM *</label>
+              <input type="text" class="form-control" id="firstName" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">NOM *</label>
+              <input type="text" class="form-control" id="lastName" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">TÉLÉPHONE 1 *</label>
+              <input type="tel" class="form-control" id="phone1" required placeholder="05/06/07...">
+            </div>
+            <div class="form-group">
+              <label class="form-label">TÉLÉPHONE 2</label>
+              <input type="tel" class="form-control" id="phone2" placeholder="Optionnel">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">WILAYA *</label>
+              <select class="form-control" id="wilaya" required></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">COMMUNE *</label>
+              <select class="form-control" id="commune" required></select>
+            </div>
+          </div>
+          <div class="shipping-info" id="shippingInfo">
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+              <span>Frais de livraison:</span>
+              <span id="shippingPrice">0 DA</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:1.3rem; align-items:center; margin-top:15px; padding-top:15px; border-top:1px solid var(--border);">
+              <span style="font-family:'Montserrat', sans-serif; font-weight:800;">TOTAL:</span>
+              <span id="grandTotal" style="font-size:1.6rem; font-weight:900; color:var(--primary);">0 DA</span>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline close-modal">Annuler</button>
+        <button class="btn btn-primary" type="submit" form="orderForm">Confirmer <i class="fa-solid fa-check-double"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal" style="text-align:center;">
+      <div class="modal-body" style="padding: 50px 30px;">
+        <div style="width:100px; height:100px; background:rgba(0,200,83,0.15); border:2px solid #00c853; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 30px;">
+          <i class="fa-solid fa-trophy" style="font-size:3rem; color:#00c853;"></i>
+        </div>
+        <h3 style="margin-bottom:20px; font-size:2rem; color:#00c853;">COMMANDER CONFIRMÉE! 🎉</h3>
+        <p style="color:var(--text-light); margin-bottom:30px; font-size:1.1rem;">Votre commande a été envoyée à notre entrepôt.</p>
+        <div style="background:var(--surface); border:1px solid var(--primary); padding:25px; border-radius:var(--radius); margin-bottom:30px;">
+          <p style="font-size:0.9rem; color:var(--text-light); margin-bottom:10px; text-transform:uppercase;">NUMÉRO DE COMMANDE</p>
+          <p style="font-size:2.5rem; font-weight:900; color:var(--primary); font-family:'Montserrat', sans-serif; letter-spacing:2px;" id="orderNumber"></p>
+        </div>
+        <p style="font-size:0.9rem; color:var(--text-light); margin-bottom:30px;"><i class="fa-solid fa-camera"></i> Sauvegardez cet écran pour le suivi.</p>
+        <button class="btn btn-primary close-modal" style="width:100%;">Continuer mes achats</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shipping Coverage -->
+  <section class="shipping-coverage" id="coverage">
+    <div class="coverage-container">
+      <div class="coverage-info">
+        <h2>🚚 Delivery Coverage</h2>
+        <p>We deliver premium supplements across all 58 wilayas of Algeria. Fast & reliable shipping guaranteed.</p>
+        <div class="wilaya-search-box">
+          <i class="fa-solid fa-location-dot"></i>
+          <input type="text" id="wilayaSearch" placeholder="Search your wilaya...">
+        </div>
+        <div class="table-container">
+          <table class="coverage-table">
+            <thead><tr><th>Wilaya</th><th>Home</th><th>Pickup</th></tr></thead>
+            <tbody id="coverageTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="map-visual">
+        <div style="background:var(--bg); padding:40px; border-radius:var(--radius-lg); border:2px dashed var(--primary); text-align:center;">
+          <i class="fa-solid fa-map-location-dot" style="font-size:4rem; color:var(--primary); margin-bottom:20px;"></i>
+          <h4 style="margin-bottom:10px; color:var(--text);">Nationwide Delivery</h4>
+          <p style="font-size:0.9rem; color:var(--text-light);">Our logistics network covers 100% of Algeria with real-time tracking.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-section brand-section">
+        <h3><span style="color:var(--primary)">IRON</span>PULSE</h3>
+        <p class="footer-desc">Quality isn't an act, it's a habit. Join the champions circle with IronPulse certified supplements.</p>
+      </div>
+      <div class="footer-section contact-section">
+        <h3>CONTACT</h3>
+        <div class="contact-links">
+          <a href="tel:+213782945288" class="contact-link"><i class="fa-solid fa-phone"></i><span>0782945288</span></a>
+          <a href="mailto:contact@ironpulse.dz" class="contact-link"><i class="fa-solid fa-envelope"></i><span>contact@ironpulse.dz</span></a>
+          <a href="#" class="contact-link"><i class="fa-solid fa-location-crosshairs"></i><span>Algérie - Livraison 58 wilayas</span></a>
+        </div>
+      </div>
+      <div class="footer-section social-section">
+        <h3>SUIVEZ-NOUS</h3>
+        <div class="social-links">
+          <a href="#" target="_blank" class="social-link" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" target="_blank" class="social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" target="_blank" class="social-link" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-section logistics-section">
+        <h3>INFO</h3>
+        <ul class="logistics-list">
+          <li><i class="fa-solid fa-shield-halved"></i> Paiement sécurisé à la livraison</li>
+          <li><i class="fa-solid fa-truck-fast"></i> Livraison rapide - 58 wilayas</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span id="currentYear"></span> IronPulse. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+  </script>
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="script.js"></script>
+</body>
+</html>
