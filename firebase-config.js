@@ -1,21 +1,21 @@
-// Import the functions you need from the SDKs you need
+// firebase-config.js
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getFirestore } from "firebase/firestore";
+// import { getAuth } from "firebase/auth"; // إذا كنت تحتاج المصادقة
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// إعدادات مشروعك من لوحة تحكم فايربيس
 const firebaseConfig = {
-  apiKey: "AIzaSyDBZaA_Ah40Edth8FIfqEeleu8s_aWjyFA",
-  authDomain: "ecomm-gym.firebaseapp.com",
-  projectId: "ecomm-gym",
-  storageBucket: "ecomm-gym.firebasestorage.app",
-  messagingSenderId: "41274656106",
-  appId: "1:41274656106:web:213f714ce5a538c35dd113",
-  measurementId: "G-32QCSS0ZBW"
+  apiKey: "AIzaSyD...", 
+  authDomain: "your-project.firebaseapp.com",
+  projectId: "your-project",
+  storageBucket: "your-project.appspot.com",
+  messagingSenderId: "123456...",
+  appId: "1:123456..."
 };
 
-// Initialize Firebase
+// تهيئة التطبيق
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const db = getFirestore(app);
+
+export { db };
+// export const auth = getAuth(app); 
