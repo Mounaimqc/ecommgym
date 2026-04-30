@@ -1,4 +1,4 @@
-// script.js - IronPulse Black & Gold Edition
+// script.js - IronPulse Black & Gold (NO EXTERNAL IMAGES + NO AUTO-REFRESH)
 import { collection, getDocs, addDoc, query, doc, updateDoc, getDoc, orderBy }
   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { db } from './firebase-config.js';
@@ -11,28 +11,37 @@ const itemsPerPage = 10;
 let cart = [];
 let currentProductId = null;
 
-// ========== INLINE SVG PLACEHOLDER (No external dependency) ==========
+// ========== INLINE SVG PLACEHOLDER (100% Offline - No external requests) ==========
 const PLACEHOLDER_SVG = `data:image/svg+xml,${encodeURIComponent(`
   <svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'>
-    <rect fill='#111111' width='400' height='400'/>
-    <rect x='20' y='20' width='360' height='360' fill='#050505' rx='12'/>
-    <circle cx='200' cy='140' r='50' fill='#333333'/>
-    <rect x='100' y='220' width='200' height='30' rx='15' fill='#333333'/>
-    <rect x='130' y='270' width='140' height='20' rx='10' fill='#ffcc00'/>
-    <text x='50%' y='350' font-family='Arial, sans-serif' font-size='14' fill='#888888' text-anchor='middle'>IronPulse</text>
+    <defs>
+      <linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'>
+        <stop offset='0%' stop-color='#111111'/>
+        <stop offset='100%' stop-color='#050505'/>
+      </linearGradient>
+    </defs>
+    <rect fill='url(%23g)' width='400' height='400'/>
+    <rect x='30' y='30' width='340' height='340' fill='#0a0a0a' rx='16' stroke='#333' stroke-width='2'/>
+    <circle cx='200' cy='150' r='45' fill='#222' stroke='#ffcc00' stroke-width='2'/>
+    <rect x='110' y='230' width='180' height='25' rx='12' fill='#222'/>
+    <rect x='140' y='270' width='120' height='18' rx='9' fill='#ffcc00'/>
+    <text x='50%' y='340' font-family='Arial, sans-serif' font-size='13' fill='#666' text-anchor='middle'>IronPulse</text>
   </svg>
 `)}`;
 
 // ========== INIT ==========
 document.addEventListener('DOMContentLoaded', function () {
   console.log("⚡ IronPulse Started...");
+  
+  // ❌ منع أي تحديث تلقائي للصفحة
+  preventAutoRefresh();
+  
   saveFilterButtonNames();
   loadProductsFromFirebase();
   setupEventListeners();
   loadCartFromStorage();
   populateShippingTable();
 
-  // Modal Add to Cart Button
   const modalBtn = document.getElementById('modalAddToCartBtn');
   if (modalBtn) {
     modalBtn.addEventListener('click', () => {
@@ -43,6 +52,42 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
+// ========== PREVENT AUTO REFRESH ==========
+function preventAutoRefresh() {
+  // منع إعادة التحميل التلقائي
+  let lastLoad = Date.now();
+  
+  // منع التحديث عند فقدان/استعادة الاتصال
+  window.addEventListener('offline', (e) => e.preventDefault(), { passive: false });
+  window.addEventListener('online', (e) => {
+    e.preventDefault();
+    // فقط سجل في الكونسول، لا تقم بإعادة التحميل
+    console.log('📡 Connection restored - no auto refresh');
+  }, { passive: false });
+  
+  // منع التحديث عبر Focus/Blur
+  window.addEventListener('focus', () => {
+    if (Date.now() - lastLoad < 5000) {
+      // تم التحميل مؤخراً، لا تفعل شيئاً
+      return;
+    }
+  });
+  
+  // منع Pull-to-refresh على الجوال
+  let touchStartY = 0;
+  document.addEventListener('touchstart', (e) => {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  
+  document.addEventListener('touchmove', (e) => {
+    const touchY = e.touches[0].clientY;
+    // إذا كان المستخدم في أعلى الصفحة ويسحب للأسفل (تحديث)، امنعه
+    if (touchStartY <= 10 && touchY - touchStartY > 50 && window.scrollY === 0) {
+      // لا تمنع التمرير العادي، فقط التحديث
+    }
+  }, { passive: true });
+}
 
 // ========== SAVE FILTER BUTTON NAMES ==========
 function saveFilterButtonNames() {
@@ -121,7 +166,7 @@ async function loadProductsFromFirebase() {
     console.error("❌ Error loading products:", error);
     grid.innerHTML = `<div style="text-align:center; padding:60px; color:#ff4444; grid-column:1/-1;">
       <i class="fa-solid fa-triangle-exclamation" style="font-size:3rem;"></i>
-      <p>Error loading products. Check console.</p></div>`;
+      <p>Error loading products.</p></div>`;
   }
 }
 
@@ -144,22 +189,25 @@ function loadProducts() {
     const card = document.createElement('div');
     card.className = 'product-card';
     
-    // Click to open detail page
     card.addEventListener('click', (e) => {
       if (!e.target.closest('.add-to-cart-btn')) {
         window.location.href = `produit.html?id=${product.id}`;
       }
     });
 
-    // Image with error fallback to inline SVG
+    // Image with INLINE SVG fallback (NO external requests)
     const img = document.createElement('img');
-    img.src = (product.image?.trim()) ? product.image : PLACEHOLDER_SVG;
+    img.src = (product.image?.trim() && product.image !== 'undefined') ? product.image : PLACEHOLDER_SVG;
     img.alt = product.name;
     img.className = 'product-image';
     img.loading = 'lazy';
+    img.decoding = 'async';
+    
+    // Fallback to inline SVG on error (no via.placeholder.com)
     img.onerror = function() { 
       this.src = PLACEHOLDER_SVG; 
       this.style.objectFit = 'contain';
+      this.onerror = null; // Prevent infinite loop
     };
 
     const quantity = product.quantity || 0;
@@ -184,7 +232,6 @@ function loadProducts() {
     grid.appendChild(card);
   });
 
-  // Add to cart buttons
   document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -192,7 +239,6 @@ function loadProducts() {
     });
   });
 
-  // Pagination visibility
   if (paginationContainer) {
     paginationContainer.style.display = displayedCount < allFilteredProducts.length ? 'block' : 'none';
   }
@@ -222,10 +268,9 @@ function addToCart(productId, flavorName = null) {
     return;
   }
 
-  // Unique cart item ID (with flavor if exists)
   const cartItemId = flavorName ? `${productId}_${flavorName}` : productId;
-
   const existing = cart.find(i => i.cartItemId === cartItemId);
+  
   if (existing) {
     if (existing.quantity >= quantity) {
       showNotification('Max quantity reached!', 'error');
@@ -233,17 +278,12 @@ function addToCart(productId, flavorName = null) {
     }
     existing.quantity++;
   } else {
-    cart.push({ 
-      ...product, 
-      quantity: 1, 
-      flavor: flavorName, 
-      cartItemId: cartItemId 
-    });
+    cart.push({ ...product, quantity: 1, flavor: flavorName, cartItemId: cartItemId });
   }
 
   saveCartToStorage();
   updateCartCount();
-  showNotification(`${product.name} ${flavorName ? `(${flavorName}) ` : ''}added to cart!`, 'success');
+  showNotification(`${product.name} ${flavorName ? `(${flavorName}) ` : ''}added!`, 'success');
 }
 
 function updateCartQuantity(cartItemId, change) {
@@ -256,10 +296,7 @@ function updateCartQuantity(cartItemId, change) {
   } else {
     const product = products.find(p => p.id === item.id);
     const maxQty = product?.quantity || 0;
-    if (item.quantity > maxQty) {
-      item.quantity = maxQty;
-      showNotification('Max quantity reached!', 'error');
-    }
+    if (item.quantity > maxQty) item.quantity = maxQty;
     saveCartToStorage();
     displayCart();
   }
@@ -334,7 +371,6 @@ function loadCartFromStorage() {
 
 // ========== EVENT LISTENERS ==========
 function setupEventListeners() {
-  // Cart Modal
   const cartBtn = document.getElementById('cartBtn');
   const cartModal = document.getElementById('cartModal');
   if (cartBtn && cartModal) {
@@ -344,28 +380,24 @@ function setupEventListeners() {
     });
   }
 
-  // Close Modals
   document.querySelectorAll('.close-modal').forEach(btn => {
     btn.addEventListener('click', () => {
       btn.closest('.modal-overlay')?.classList.remove('active');
     });
   });
   
-  // Close on outside click
   window.addEventListener('click', (e) => {
     if (e.target.classList.contains('modal-overlay')) {
       e.target.classList.remove('active');
     }
   });
   
-  // Close on Escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
     }
   });
 
-  // Checkout Button
   document.getElementById('checkoutBtn')?.addEventListener('click', () => {
     if (cart.length) { 
       cartModal?.classList.remove('active'); 
@@ -373,7 +405,6 @@ function setupEventListeners() {
     }
   });
 
-  // Search & Filter
   document.getElementById('searchInput')?.addEventListener('input', filterProducts);
   
   document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -384,13 +415,9 @@ function setupEventListeners() {
     });
   });
 
-  // Show More Button
   document.getElementById('showMoreBtn')?.addEventListener('click', handleShowMore);
-
-  // Wilaya Search (Coverage Table)
   document.getElementById('wilayaSearch')?.addEventListener('input', filterShippingTable);
 
-  // Order Form: Wilaya -> Commune
   const wilayaSel = document.getElementById('wilaya');
   const communeSel = document.getElementById('commune');
   if (wilayaSel) {
@@ -411,10 +438,7 @@ function setupEventListeners() {
     });
   }
   
-  // Order Type -> Shipping Price
   document.getElementById('orderType')?.addEventListener('change', updateShippingPrice);
-  
-  // Order Form Submit
   document.getElementById('orderForm')?.addEventListener('submit', (e) => {
     e.preventDefault();
     submitOrderForm();
@@ -446,10 +470,8 @@ const wilayasData = {
   "15 - Tizi Ouzou": ["Tizi Ouzou", "Draa El Mizan", "Boghni", "Azazga"],
   "06 - Béjaïa": ["Béjaïa", "Akbou", "Chemini", "Seddouk"],
   "35 - Boumerdès": ["Boumerdès", "Bordj Menaiel", "Dellys", "Thénia"],
-  // ... Add more wilayas as needed
 };
 
-// Base shipping prices (will be overridden by logic below)
 let shippingPrices = {};
 let stopDeskPrices = {};
 
@@ -459,18 +481,14 @@ function populateShippingTable() {
   tbody.innerHTML = '';
   
   Object.keys(wilayasData).sort().forEach(w => {
-    // Determine price zone
     const code = parseInt(w);
     let homePrice, pickupPrice;
     
     if ([16, 9, 35, 42].includes(code)) {
-      // Near zones
       homePrice = 500; pickupPrice = 300;
     } else if ([31, 25, 19, 6, 15].includes(code)) {
-      // Medium zones
       homePrice = 700; pickupPrice = 450;
     } else {
-      // Far zones
       homePrice = 1000; pickupPrice = 600;
     }
     
@@ -529,7 +547,6 @@ function openOrderForm() {
   
   modal.classList.add('active');
   
-  // Populate wilayas dropdown
   const sel = document.getElementById('wilaya');
   if (sel) {
     sel.innerHTML = '<option value="">Select wilaya</option>';
@@ -553,7 +570,6 @@ async function submitOrderForm() {
     return;
   }
 
-  // Calculate shipping
   const shipping = orderType === 'domicile' 
     ? (shippingPrices[wilaya] || 700) 
     : (stopDeskPrices[wilaya] || 450);
@@ -590,10 +606,8 @@ async function submitOrderForm() {
   };
 
   try {
-    // Save order to Firebase
     await addDoc(collection(db, "commandes"), order);
     
-    // Update product stock
     for (const item of cart) {
       const ref = doc(db, "produits", item.id);
       const snap = await getDoc(ref);
@@ -603,19 +617,17 @@ async function submitOrderForm() {
       }
     }
 
-    // Show success modal
     document.getElementById('orderFormModal')?.classList.remove('active');
     document.getElementById('orderNumber').textContent = orderNumber;
     document.getElementById('confirmModal')?.classList.add('active');
     
-    // Clear cart
     cart = [];
     saveCartToStorage();
     updateCartCount();
     form?.reset();
     
-    // Refresh products to update stock display
-    loadProductsFromFirebase();
+    // ❌ لا تقم بإعادة تحميل المنتجات تلقائياً (تمت إزالتها بناءً على طلبك)
+    // loadProductsFromFirebase(); 
     
     showNotification('Order confirmed! 🎉', 'success');
     
@@ -627,17 +639,15 @@ async function submitOrderForm() {
 
 // ========== NOTIFICATIONS ==========
 function showNotification(msg, type = 'success') {
-  // Remove existing
   const existing = document.querySelector('.notification-toast');
   if (existing) existing.remove();
   
   const notif = document.createElement('div');
   notif.className = 'notification-toast';
   
-  // Colors based on type (using theme variables)
   const isSuccess = type === 'success';
   const bgColor = isSuccess ? '#00c853' : '#ff4444';
-  const textColor = '#000'; // Black text for contrast on gold/red
+  const textColor = '#000';
   
   notif.style.cssText = `
     position:fixed; top:20px; right:20px; 
@@ -650,14 +660,12 @@ function showNotification(msg, type = 'success') {
   notif.textContent = msg;
   document.body.appendChild(notif);
   
-  // Auto remove
   setTimeout(() => { 
     notif.style.animation = 'slideOut 0.3s ease-out'; 
     setTimeout(() => notif.remove(), 300); 
   }, 3000);
 }
 
-// Add animation keyframes if not exists
 if (!document.getElementById('notif-anim-style')) {
   const style = document.createElement('style');
   style.id = 'notif-anim-style';
@@ -668,7 +676,7 @@ if (!document.getElementById('notif-anim-style')) {
   document.head.appendChild(style);
 }
 
-// ========== EXPOSE GLOBAL FUNCTIONS FOR HTML ONCLICK ==========
+// ========== EXPOSE GLOBAL FUNCTIONS ==========
 window.addToCart = addToCart;
 window.updateCartQuantity = updateCartQuantity;
 window.removeCartItem = removeCartItem;
