@@ -1,6 +1,19 @@
-// ========== IMPORT FIREBASE ==========
-import { collection, getDocs, addDoc, query, doc, updateDoc, getDoc, orderBy }
-  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+// ========== IMPORT FIREBASE (✅ CORRECTED) ==========
+// ✅ نستخدم الأسماء المجردة لأن importmap في HTML سيقوم بتوجيهها
+import { 
+  collection, 
+  getDocs, 
+  addDoc, 
+  query, 
+  doc, 
+  updateDoc, 
+  getDoc, 
+  orderBy 
+} from "firebase/firestore";
+
+// إذا كنت تحتاج المصادقة في هذا الملف، أضف:
+// import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
 import { db } from './firebase-config.js';
 
 // ========== VARIABLES GLOBALES ==========
@@ -26,9 +39,7 @@ const PLACEHOLDER_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000
 document.addEventListener('DOMContentLoaded', function () {
   console.log("🚀 Application démarrée...");
   
-  // حفظ الأسماء الأصلية للأزرار قبل أي تعديل
   saveFilterButtonNames();
-  
   loadProductsFromFirebase();
   setupEventListeners();
   loadCartFromStorage();
@@ -45,6 +56,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+// ... بقية الكود كما هو بدون تغيير ...
+// (كل الدوال الأخرى: saveFilterButtonNames, countProductsByCategory, loadProductsFromFirebase, إلخ)
+// تبقى كما هي لأن المشكلة كانت فقط في سطور الاستيراد في الأعلى
 // ========== حفظ أسماء الأزرار الأصلية ==========
 function saveFilterButtonNames() {
   const filterBtns = document.querySelectorAll('.filter-btn');
