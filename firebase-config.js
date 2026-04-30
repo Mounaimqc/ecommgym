@@ -5,12 +5,13 @@ import { getFirestore } from "firebase/firestore";
 
 // إعدادات مشروعك من لوحة تحكم فايربيس
 const firebaseConfig = {
-  apiKey: "AIzaSyD...", 
-  authDomain: "your-project.firebaseapp.com",
-  projectId: "your-project",
-  storageBucket: "your-project.appspot.com",
-  messagingSenderId: "123456...",
-  appId: "1:123456..."
+  apiKey: "AIzaSyDBZaA_Ah40Edth8FIfqEeleu8s_aWjyFA",
+  authDomain: "ecomm-gym.firebaseapp.com",
+  projectId: "ecomm-gym",
+  storageBucket: "ecomm-gym.firebasestorage.app",
+  messagingSenderId: "41274656106",
+  appId: "1:41274656106:web:213f714ce5a538c35dd113",
+  measurementId: "G-32QCSS0ZBW"
 };
 
 // تهيئة التطبيق
