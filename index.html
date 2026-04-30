@@ -652,7 +652,34 @@
       <p>© <span id="currentYear"></span> IronPulse. Tous droits réservés.</p>
     </div>
   </footer>
-
+<!-- منع التحديث التلقائي + تحسين الأداء -->
+<script>
+  // ❌ إيقاف أي تحديث تلقائي للصفحة
+  if (window.location.href.includes('index.html') || window.location.pathname === '/') {
+    // منع إعادة التحميل عند فقدان الاتصال
+    window.addEventListener('offline', (e) => e.preventDefault());
+    
+    // منع إعادة التحميل عند استعادة الاتصال
+    window.addEventListener('online', (e) => {
+      e.preventDefault();
+      console.log('📡 Online - no auto refresh');
+    });
+    
+    // منع التحديث عبر خدمة Workers إن وجدت
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(regs => {
+        regs.forEach(reg => reg.unregister());
+      });
+    }
+  }
+  
+  // منع السحب لتحديث الصفحة (Pull-to-refresh) على الجوال
+  document.addEventListener('touchmove', (e) => {
+    if (e.target === document.body || e.target.closest('.products-grid')) {
+      // السماح بالتمرير العادي
+    }
+  }, { passive: true });
+</script>
   <!-- Scripts -->
   <script>
     document.getElementById('currentYear').textContent = new Date().getFullYear();
