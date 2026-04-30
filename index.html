@@ -7,15 +7,26 @@
   <title>Boost Nutrition | Premium Supplements</title>
   <link rel="icon" href="logo.jpeg" type="image/x-icon">
 
-  <!-- Fonts: Montserrat for HEADINGS, Inter for BODY -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap"
     rel="stylesheet">
 
-  <!-- FontAwesome for Icons -->
+  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- ✅ IMPORTMAP: يجب أن يكون قبل أي script type="module" -->
+  <script type="importmap">
+  {
+    "imports": {
+      "firebase/app": "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js",
+      "firebase/auth": "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js",
+      "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
+    }
+  }
+  </script>
 
   <style>
     /* ========== WAHBI ZOGHBI THEME ========== */
@@ -119,7 +130,6 @@
       background: var(--gb-gold); border-color: var(--gb-gold-dark); color: var(--gb-white);
       box-shadow: 0 0 20px rgba(212,175,55,0.4); transform: translateY(-2px);
     }
-    /* ستايل العداد في الأزرار */
     .filter-btn .category-count {
       margin-left: 6px;
       background: var(--gb-gold);
@@ -240,7 +250,7 @@
     .btn-outline { background: transparent; border: 1px solid var(--gb-danger); color: var(--gb-danger); }
     .btn-outline:hover { border-color: var(--gb-danger); color: var(--gb-white); background: var(--gb-danger); }
 
-    /* ========== FOOTER (Optimisé & Responsive) ========== */
+    /* ========== FOOTER ========== */
     .footer {
       background: var(--gb-black); border-top: 3px solid var(--gb-gold);
       padding: 60px 24px 20px; margin-top: 60px; color: var(--gb-light-grey);
@@ -618,7 +628,7 @@
     </div>
   </section>
 
-  <!-- Footer (Optimisé & Responsive) -->
+  <!-- Footer -->
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-section brand-section">
@@ -654,20 +664,12 @@
     </div>
   </footer>
 
-  <!-- Scripts -->
-  <script type="importmap">
-{
-  "imports": {
-    "firebase/app": "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js",
-    "firebase/auth": "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js",
-    "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
-  }
-}
-</script>
+  <!-- ✅ Scripts: الترتيب مهم جداً -->
   <script>
     // Dynamic year in footer
     document.getElementById('currentYear').textContent = new Date().getFullYear();
   </script>
+  <!-- ✅ firebase-config.js يجب أن يُحمّل قبل script.js -->
   <script type="module" src="firebase-config.js"></script>
   <script type="module" src="script.js"></script>
 </body>
