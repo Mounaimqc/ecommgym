@@ -38,7 +38,6 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       background-color: var(--gb-white);
       color: var(--gb-text-dark);
@@ -46,13 +45,11 @@
       line-height: 1.6;
       overflow-x: hidden;
     }
-
     h1, h2, h3, h4, h5, h6 {
       font-family: 'Montserrat', sans-serif;
       text-transform: uppercase;
       color: var(--gb-text-dark);
     }
-
     a { text-decoration: none; color: inherit; transition: var(--transition); }
     button { font-family: 'Inter', sans-serif; cursor: pointer; border: none; outline: none; transition: var(--transition); }
 
@@ -98,10 +95,154 @@
     .hero h1 span { color: var(--gb-gold); }
     .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.95); max-width: 600px; margin: 0 auto; text-shadow: 1px 1px 4px rgba(0,0,0,0.5); }
 
-    /* ========== SHOP CONTROLS - CATEGORIES SCROLL WITH IMAGES ========== */
+    /* ========== 🎬 REELS SECTION ========== */
+    .reels-section {
+      background: var(--gb-off-white);
+      padding: 40px 0;
+      border-top: 2px solid var(--gb-gold);
+      border-bottom: 2px solid var(--gb-gold);
+      margin-bottom: 40px;
+    }
+    .reels-header {
+      max-width: 1400px;
+      margin: 0 auto 24px;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .reels-header h2 {
+      font-size: 1.5rem;
+      color: var(--gb-text-dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .reels-header h2 i { color: var(--gb-gold); }
+    .reels-header a {
+      color: var(--gb-gold);
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .reels-header a:hover { color: var(--gb-gold-dark); }
+
+    .reels-scroll {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 10px 24px 20px;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gb-gold) transparent;
+    }
+    .reels-scroll::-webkit-scrollbar { height: 6px; }
+    .reels-scroll::-webkit-scrollbar-track { background: transparent; }
+    .reels-scroll::-webkit-scrollbar-thumb { background: var(--gb-gold); border-radius: 3px; }
+
+    .reel-card {
+      flex: 0 0 auto;
+      width: 180px;
+      background: var(--gb-white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 2px solid var(--gb-gold);
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+    }
+    .reel-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--gb-gold-dark);
+    }
+
+    .reel-thumbnail {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      display: block;
+      background: var(--gb-grey);
+    }
+
+    .reel-play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 50px;
+      background: rgba(220, 20, 60, 0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      transition: var(--transition);
+      border: 3px solid white;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .reel-card:hover .reel-play-btn {
+      background: var(--gb-gold-dark);
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    .reel-duration {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .reel-info {
+      padding: 12px;
+      text-align: center;
+    }
+    .reel-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--gb-text-dark);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .reel-price {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--gb-gold);
+      font-family: 'Montserrat', sans-serif;
+    }
+    .reel-add-btn {
+      margin-top: 8px;
+      padding: 6px 12px;
+      background: var(--gb-gold);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      width: 100%;
+    }
+    .reel-add-btn:hover {
+      background: var(--gb-gold-dark);
+    }
+
+    /* ========== SHOP CONTROLS - CATEGORIES SCROLL ========== */
     .shop-controls { max-width: 1400px; margin: 0 auto 40px; padding: 0 24px; }
-    
-    /* ✅ Categories Scroll Container */
     .categories-scroll {
       display: flex;
       gap: 14px;
@@ -117,8 +258,6 @@
     .categories-scroll::-webkit-scrollbar { height: 6px; }
     .categories-scroll::-webkit-scrollbar-track { background: transparent; }
     .categories-scroll::-webkit-scrollbar-thumb { background: var(--gb-gold); border-radius: 3px; }
-
-    /* ✅ Category Card with Image */
     .category-card {
       flex: 0 0 auto;
       display: flex;
@@ -150,8 +289,6 @@
     }
     .category-card.active .category-name,
     .category-card.active .category-count { color: var(--gb-white); }
-
-    /* Category Image/Icon */
     .category-img {
       width: 44px;
       height: 44px;
@@ -159,11 +296,7 @@
       transition: var(--transition);
     }
     .category-card:hover .category-img,
-    .category-card.active .category-img {
-      transform: scale(1.1);
-      filter: brightness(1.1);
-    }
-
+    .category-card.active .category-img { transform: scale(1.1); }
     .category-name {
       font-size: 0.8rem;
       font-weight: 700;
@@ -172,7 +305,6 @@
       letter-spacing: 0.5px;
       white-space: nowrap;
     }
-
     .category-count {
       position: absolute;
       top: -6px;
@@ -193,8 +325,6 @@
       background: var(--gb-white);
       color: var(--gb-gold);
     }
-
-    /* Search Bar */
     .search-container { position: relative; max-width: 500px; margin: 0 auto; }
     .search-container i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--gb-light-grey); }
     #searchInput {
@@ -432,6 +562,9 @@
       .hero { padding: 80px 20px 60px; }
       .hero h1 { font-size: 2.2rem; }
       .modal { width: 95%; margin: 10px; }
+      .reels-scroll { padding: 10px 16px 20px; }
+      .reel-card { width: 160px; }
+      .reel-thumbnail { height: 200px; }
     }
     @media (max-width: 480px) {
       .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 10px; }
@@ -447,6 +580,11 @@
       .category-card { min-width: 85px; padding: 12px 14px; }
       .category-img { width: 36px; height: 36px; }
       .category-name { font-size: 0.75rem; }
+      .reel-card { width: 140px; }
+      .reel-thumbnail { height: 180px; }
+      .reel-play-btn { width: 40px; height: 40px; font-size: 1rem; }
+      .reel-title { font-size: 0.8rem; }
+      .reel-price { font-size: 0.9rem; }
     }
     @media (max-width: 360px) {
       .products-grid { grid-template-columns: 1fr; }
@@ -487,55 +625,135 @@
     <p>Nutrition sportive haut de gamme. Dépassez vos limites avec les suppléments les plus puissants du marché Algérien.</p>
   </section>
 
-  <!-- ✅ Shop Controls - Categories Scroll with Images -->
+  <!-- 🎬 REELS SECTION - جديد -->
+  <section class="reels-section">
+    <div class="reels-header">
+      <h2><i class="fa-solid fa-clapperboard"></i> Reels Produits</h2>
+      <a href="#"><i class="fa-solid fa-arrow-right"></i> Voir tout</a>
+    </div>
+    <div class="reels-scroll">
+      
+      <!-- Reel 1: Whey Protein -->
+      <div class="reel-card" onclick="openProductDetail('product1')">
+        <img src="https://images.unsplash.com/photo-1593095948071-474c5cc2989d?q=80&w=400&auto=format&fit=crop" alt="Gold Whey" class="reel-thumbnail">
+        <div class="reel-play-btn"><i class="fa-solid fa-play"></i></div>
+        <span class="reel-duration">0:15</span>
+        <div class="reel-info">
+          <div class="reel-title">Gold Whey Protein</div>
+          <div class="reel-price">8,500 DA</div>
+          <button class="reel-add-btn" onclick="event.stopPropagation(); addToCart('product1')">
+            <i class="fa-solid fa-cart-plus"></i> Ajouter
+          </button>
+        </div>
+      </div>
+
+      <!-- Reel 2: Mass Gainer -->
+      <div class="reel-card" onclick="openProductDetail('product2')">
+        <img src="https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?q=80&w=400&auto=format&fit=crop" alt="Mass Gainer" class="reel-thumbnail">
+        <div class="reel-play-btn"><i class="fa-solid fa-play"></i></div>
+        <span class="reel-duration">0:22</span>
+        <div class="reel-info">
+          <div class="reel-title">Mass Gainer Pro</div>
+          <div class="reel-price">12,000 DA</div>
+          <button class="reel-add-btn" onclick="event.stopPropagation(); addToCart('product2')">
+            <i class="fa-solid fa-cart-plus"></i> Ajouter
+          </button>
+        </div>
+      </div>
+
+      <!-- Reel 3: BCAA -->
+      <div class="reel-card" onclick="openProductDetail('product3')">
+        <img src="https://images.unsplash.com/photo-1594498653385-d517b75e8c76?q=80&w=400&auto=format&fit=crop" alt="BCAA" class="reel-thumbnail">
+        <div class="reel-play-btn"><i class="fa-solid fa-play"></i></div>
+        <span class="reel-duration">0:18</span>
+        <div class="reel-info">
+          <div class="reel-title">BCAA Energy</div>
+          <div class="reel-price">4,500 DA</div>
+          <button class="reel-add-btn" onclick="event.stopPropagation(); addToCart('product3')">
+            <i class="fa-solid fa-cart-plus"></i> Ajouter
+          </button>
+        </div>
+      </div>
+
+      <!-- Reel 4: Pre-Workout -->
+      <div class="reel-card" onclick="openProductDetail('product4')">
+        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=400&auto=format&fit=crop" alt="Pre-Workout" class="reel-thumbnail">
+        <div class="reel-play-btn"><i class="fa-solid fa-play"></i></div>
+        <span class="reel-duration">0:25</span>
+        <div class="reel-info">
+          <div class="reel-title">Pre-Workout Blast</div>
+          <div class="reel-price">6,200 DA</div>
+          <button class="reel-add-btn" onclick="event.stopPropagation(); addToCart('product4')">
+            <i class="fa-solid fa-cart-plus"></i> Ajouter
+          </button>
+        </div>
+      </div>
+
+      <!-- Reel 5: Fat Burner -->
+      <div class="reel-card" onclick="openProductDetail('product5')">
+        <img src="https://images.unsplash.com/photo-1551847856-4f4c5e6c5b5e?q=80&w=400&auto=format&fit=crop" alt="Fat Burner" class="reel-thumbnail">
+        <div class="reel-play-btn"><i class="fa-solid fa-play"></i></div>
+        <span class="reel-duration">0:20</span>
+        <div class="reel-info">
+          <div class="reel-title">Fat Burner Max</div>
+          <div class="reel-price">5,800 DA</div>
+          <button class="reel-add-btn" onclick="event.stopPropagation(); addToCart('product5')">
+            <i class="fa-solid fa-cart-plus"></i> Ajouter
+          </button>
+        </div>
+      </div>
+
+      <!-- Reel 6: Creatine -->
+      <div class="reel-card" onclick="openProductDetail('product6')">
+        <img src="https://images.unsplash.com/photo-1594498653385-d517b75e8c76?q=80&w=400&auto=format&fit=crop" alt="Creatine" class="reel-thumbnail">
+        <div class="reel-play-btn"><i class="fa-solid fa-play"></i></div>
+        <span class="reel-duration">0:16</span>
+        <div class="reel-info">
+          <div class="reel-title">Creatine Monohydrate</div>
+          <div class="reel-price">3,900 DA</div>
+          <button class="reel-add-btn" onclick="event.stopPropagation(); addToCart('product6')">
+            <i class="fa-solid fa-cart-plus"></i> Ajouter
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Shop Controls - Categories Scroll -->
   <div class="shop-controls">
     <div class="categories-scroll" id="categoriesScroll">
-      
-      <!-- All Products -->
       <button class="category-card active" data-category="all">
         <img src="https://cdn-icons-png.flaticon.com/512/3003/3003967.png" alt="Tous" class="category-img" onerror="this.src='https://cdn-icons-png.flaticon.com/32/3003/3003967.png'">
         <span class="category-name">الكل</span>
         <span class="category-count">0</span>
       </button>
-      
-      <!-- Whey Protein -->
       <button class="category-card" data-category="Protéines whey">
         <img src="https://cdn-icons-png.flaticon.com/512/2991/2991159.png" alt="Whey" class="category-img" onerror="this.src='https://cdn-icons-png.flaticon.com/32/2991/2991159.png'">
         <span class="category-name">Whey</span>
         <span class="category-count">0</span>
       </button>
-      
-      <!-- Mass Gainer -->
       <button class="category-card" data-category="Masse / Gainer">
         <img src="https://cdn-icons-png.flaticon.com/512/2991/2991176.png" alt="Gainer" class="category-img" onerror="this.src='https://cdn-icons-png.flaticon.com/32/2991/2991176.png'">
         <span class="category-name">Gainer</span>
         <span class="category-count">0</span>
       </button>
-      
-      <!-- Amino Acids -->
       <button class="category-card" data-category="Acide aminé">
         <img src="https://cdn-icons-png.flaticon.com/512/3082/3082064.png" alt="BCAA" class="category-img" onerror="this.src='https://cdn-icons-png.flaticon.com/32/3082/3082064.png'">
         <span class="category-name">BCAA</span>
         <span class="category-count">0</span>
       </button>
-      
-      <!-- Pre-Workout / Energy -->
       <button class="category-card" data-category="Force / Energie">
         <img src="https://cdn-icons-png.flaticon.com/512/2991/2991180.png" alt="Energy" class="category-img" onerror="this.src='https://cdn-icons-png.flaticon.com/32/2991/2991180.png'">
         <span class="category-name">Energy</span>
         <span class="category-count">0</span>
       </button>
-      
-      <!-- Fat Burner -->
       <button class="category-card" data-category="Brûleur de graisse">
         <img src="https://cdn-icons-png.flaticon.com/512/2991/2991163.png" alt="Fat Burner" class="category-img" onerror="this.src='https://cdn-icons-png.flaticon.com/32/2991/2991163.png'">
         <span class="category-name">Fat Burner</span>
         <span class="category-count">0</span>
       </button>
-      
     </div>
-    
-    <!-- Search Bar -->
     <div class="search-container">
       <i class="fa-solid fa-magnifying-glass"></i>
       <input type="text" id="searchInput" placeholder="Rechercher votre supplément explosif...">
@@ -750,6 +968,11 @@
   <!-- Scripts -->
   <script>
     document.getElementById('currentYear').textContent = new Date().getFullYear();
+    
+    // ✅ دالة لفتح تفاصيل المنتج من الـ Reels
+    function openProductDetail(productId) {
+      window.location.href = `produit.html?id=${productId}`;
+    }
   </script>
   <script type="module" src="firebase-config.js"></script>
   <script type="module" src="script.js"></script>
