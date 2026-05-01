@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,23 +9,10 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <!-- ✅ IMPORTMAP: يجب أن يكون قبل أي script type="module" -->
-  <script type="importmap">
-  {
-    "imports": {
-      "firebase/app": "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js",
-      "firebase/auth": "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js",
-      "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
-    }
-  }
-  </script>
 
   <style>
     /* ========== WAHBI ZOGHBI THEME ========== */
@@ -44,7 +30,6 @@
       --gb-text-muted: #555555;
       --gb-danger: #ff4d4d;
       --gb-success: #1cd072;
-
       --shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
       --shadow-hover: 0 12px 40px rgba(212, 175, 55, 0.25);
       --radius: 8px;
@@ -78,18 +63,15 @@
       position: sticky; top: 0; z-index: 100;
       border-bottom: 1px solid rgba(212, 175, 55, 0.3);
     }
-
     .header-container {
       max-width: 1400px; margin: 0 auto; padding: 16px 24px;
       display: flex; justify-content: space-between; align-items: center;
     }
-
     .logo { display: flex; align-items: center; gap: 12px; font-family: 'Montserrat', sans-serif; }
     .logo img { height: 50px; width: auto; border-radius: var(--radius); border: 1px solid rgba(255, 255, 255, 0.15); }
     .logo-text { display: flex; flex-direction: column; line-height: 1.1; }
     .brand-name { font-size: 1.4rem; font-weight: 800; color: var(--gb-white); text-transform: uppercase; letter-spacing: 1px; }
     .brand-tagline { font-size: 0.9rem; font-weight: 900; color: var(--gb-gold); text-transform: uppercase; letter-spacing: 4px; }
-
     .header-actions { display: flex; align-items: center; gap: 16px; }
     .header-btn {
       display: flex; align-items: center; gap: 8px; padding: 10px 18px;
@@ -116,38 +98,103 @@
     .hero h1 span { color: var(--gb-gold); }
     .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.95); max-width: 600px; margin: 0 auto; text-shadow: 1px 1px 4px rgba(0,0,0,0.5); }
 
-    /* ========== SHOP CONTROLS ========== */
+    /* ========== SHOP CONTROLS - CATEGORIES SCROLL WITH IMAGES ========== */
     .shop-controls { max-width: 1400px; margin: 0 auto 40px; padding: 0 24px; }
-    .filters { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 24px; }
-    .filter-btn {
-      padding: 10px 24px; background: var(--gb-white); color: var(--gb-text-dark);
-      border: 2px solid var(--gb-gold); border-radius: 30px; font-weight: 600;
-      text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    
+    /* ✅ Categories Scroll Container */
+    .categories-scroll {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 10px 4px 20px;
+      margin-bottom: 24px;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gb-gold) transparent;
+    }
+    .categories-scroll::-webkit-scrollbar { height: 6px; }
+    .categories-scroll::-webkit-scrollbar-track { background: transparent; }
+    .categories-scroll::-webkit-scrollbar-thumb { background: var(--gb-gold); border-radius: 3px; }
+
+    /* ✅ Category Card with Image */
+    .category-card {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 18px;
+      min-width: 100px;
+      max-width: 120px;
+      background: var(--gb-white);
+      border: 2px solid var(--gb-gold);
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      transition: var(--transition);
       position: relative;
-    }
-    .filter-btn:hover, .filter-btn.active {
-      background: var(--gb-gold); border-color: var(--gb-gold-dark); color: var(--gb-white);
-      box-shadow: 0 0 20px rgba(212,175,55,0.4); transform: translateY(-2px);
-    }
-    .filter-btn .category-count {
-      margin-left: 6px;
-      background: var(--gb-gold);
-      color: var(--gb-black);
-      padding: 2px 8px;
-      border-radius: 10px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      min-width: 20px;
       text-align: center;
-      display: inline-block;
+    }
+    .category-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--gb-gold-dark);
+      box-shadow: var(--shadow-hover);
+    }
+    .category-card.active {
+      background: var(--gb-gold);
+      border-color: var(--gb-gold-dark);
+      color: var(--gb-white);
+      box-shadow: 0 0 20px rgba(220,20,60,0.4);
+    }
+    .category-card.active .category-name,
+    .category-card.active .category-count { color: var(--gb-white); }
+
+    /* Category Image/Icon */
+    .category-img {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
       transition: var(--transition);
     }
-    .filter-btn.active .category-count {
+    .category-card:hover .category-img,
+    .category-card.active .category-img {
+      transform: scale(1.1);
+      filter: brightness(1.1);
+    }
+
+    .category-name {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--gb-text-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .category-count {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: var(--gb-gold);
+      color: var(--gb-black);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      border: 2px solid var(--gb-white);
+    }
+    .category-card.active .category-count {
       background: var(--gb-white);
       color: var(--gb-gold);
     }
-    
+
+    /* Search Bar */
     .search-container { position: relative; max-width: 500px; margin: 0 auto; }
     .search-container i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--gb-light-grey); }
     #searchInput {
@@ -270,7 +317,6 @@
     }
     .footer-desc { color: var(--gb-light-grey); line-height: 1.7; font-size: 0.95rem; }
     .gold-text { color: var(--gb-gold); }
-
     .contact-links { display: flex; flex-direction: column; gap: 12px; }
     .contact-link {
       display: flex; align-items: center; gap: 12px; color: var(--gb-light-grey);
@@ -278,7 +324,6 @@
     }
     .contact-link i { color: var(--gb-gold); width: 20px; font-size: 1rem; flex-shrink: 0; }
     .contact-link:hover { color: var(--gb-gold); transform: translateX(5px); }
-
     .social-links { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 10px; }
     .social-link {
       display: flex; align-items: center; justify-content: center;
@@ -291,14 +336,12 @@
       transform: translateY(-3px); box-shadow: 0 5px 15px rgba(212,175,55,0.4);
     }
     .social-link:focus { outline: 2px solid var(--gb-gold); outline-offset: 2px; }
-
     .logistics-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
     .logistics-list li {
       display: flex; align-items: flex-start; gap: 10px;
       color: var(--gb-light-grey); font-size: 0.95rem; line-height: 1.5;
     }
     .logistics-list i { color: var(--gb-gold); margin-top: 3px; flex-shrink: 0; }
-
     .footer-bottom {
       max-width: 1400px; margin: 50px auto 0; padding-top: 20px;
       border-top: 1px solid rgba(255,255,255,0.1); text-align: center;
@@ -388,8 +431,6 @@
       .logo img { height: 45px; }
       .hero { padding: 80px 20px 60px; }
       .hero h1 { font-size: 2.2rem; }
-      .filters { gap: 8px; }
-      .filter-btn { padding: 8px 16px; font-size: 0.8rem; }
       .modal { width: 95%; margin: 10px; }
     }
     @media (max-width: 480px) {
@@ -403,6 +444,9 @@
       .product-image { height: 180px; }
       .brand-name { font-size: 1.2rem; }
       .brand-tagline { font-size: 0.7rem; letter-spacing: 2px; }
+      .category-card { min-width: 85px; padding: 12px 14px; }
+      .category-img { width: 36px; height: 36px; }
+      .category-name { font-size: 0.75rem; }
     }
     @media (max-width: 360px) {
       .products-grid { grid-template-columns: 1fr; }
@@ -443,16 +487,55 @@
     <p>Nutrition sportive haut de gamme. Dépassez vos limites avec les suppléments les plus puissants du marché Algérien.</p>
   </section>
 
-  <!-- Shop Controls -->
+  <!-- ✅ Shop Controls - Categories Scroll with Images -->
   <div class="shop-controls">
-    <div class="filters">
-      <button class="filter-btn active" id="categoryFilter" data-category="all">Tous les produits</button>
-      <button class="filter-btn" data-category="Protéines whey">Whey Protein</button>
-      <button class="filter-btn" data-category="Masse / Gainer">Mass Gainer</button>
-      <button class="filter-btn" data-category="Acide aminé">Acides Aminés</button>
-      <button class="filter-btn" data-category="Force / Energie">Force / Energie</button>
-      <button class="filter-btn" data-category="Brûleur de graisse">Brûleur de graisse</button>
+    <div class="categories-scroll" id="categoriesScroll">
+      
+      <!-- All Products -->
+      <button class="category-card active" data-category="all">
+        <img src="https://cdn-icons-png.flaticon.com/512/3003/3003967.png" alt="Tous" class="category-img" onerror="this.src='https://cdn-icons-png.flaticon.com/32/3003/3003967.png'">
+        <span class="category-name">الكل</span>
+        <span class="category-count">0</span>
+      </button>
+      
+      <!-- Whey Protein -->
+      <button class="category-card" data-category="Protéines whey">
+        <img src="https://cdn-icons-png.flaticon.com/512/2991/2991159.png" alt="Whey" class="category-img" onerror="this.src='https://cdn-icons-png.flaticon.com/32/2991/2991159.png'">
+        <span class="category-name">Whey</span>
+        <span class="category-count">0</span>
+      </button>
+      
+      <!-- Mass Gainer -->
+      <button class="category-card" data-category="Masse / Gainer">
+        <img src="https://cdn-icons-png.flaticon.com/512/2991/2991176.png" alt="Gainer" class="category-img" onerror="this.src='https://cdn-icons-png.flaticon.com/32/2991/2991176.png'">
+        <span class="category-name">Gainer</span>
+        <span class="category-count">0</span>
+      </button>
+      
+      <!-- Amino Acids -->
+      <button class="category-card" data-category="Acide aminé">
+        <img src="https://cdn-icons-png.flaticon.com/512/3082/3082064.png" alt="BCAA" class="category-img" onerror="this.src='https://cdn-icons-png.flaticon.com/32/3082/3082064.png'">
+        <span class="category-name">BCAA</span>
+        <span class="category-count">0</span>
+      </button>
+      
+      <!-- Pre-Workout / Energy -->
+      <button class="category-card" data-category="Force / Energie">
+        <img src="https://cdn-icons-png.flaticon.com/512/2991/2991180.png" alt="Energy" class="category-img" onerror="this.src='https://cdn-icons-png.flaticon.com/32/2991/2991180.png'">
+        <span class="category-name">Energy</span>
+        <span class="category-count">0</span>
+      </button>
+      
+      <!-- Fat Burner -->
+      <button class="category-card" data-category="Brûleur de graisse">
+        <img src="https://cdn-icons-png.flaticon.com/512/2991/2991163.png" alt="Fat Burner" class="category-img" onerror="this.src='https://cdn-icons-png.flaticon.com/32/2991/2991163.png'">
+        <span class="category-name">Fat Burner</span>
+        <span class="category-count">0</span>
+      </button>
+      
     </div>
+    
+    <!-- Search Bar -->
     <div class="search-container">
       <i class="fa-solid fa-magnifying-glass"></i>
       <input type="text" id="searchInput" placeholder="Rechercher votre supplément explosif...">
@@ -664,12 +747,10 @@
     </div>
   </footer>
 
-  <!-- ✅ Scripts: الترتيب مهم جداً -->
+  <!-- Scripts -->
   <script>
-    // Dynamic year in footer
     document.getElementById('currentYear').textContent = new Date().getFullYear();
   </script>
-  <!-- ✅ firebase-config.js يجب أن يُحمّل قبل script.js -->
   <script type="module" src="firebase-config.js"></script>
   <script type="module" src="script.js"></script>
 </body>
