@@ -4,19 +4,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Couverture de Livraison | Wahbi Zoghbi</title>
+  <title>Couverture de Livraison | Power Zone</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="icon" href="logo.jpeg" type="image/x-icon">
+  <link rel="icon" href="logo.png" type="image/x-icon">
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    /* ========== WAHBI ZOGHBI THEME ========== */
+    /* ========== POWER ZONE THEME ========== */
     :root {
       --gb-gold: #DC143C;
       /* Crimson Red - couleur principale */
@@ -81,14 +81,15 @@
       transition: var(--transition);
     }
 
-    /* ========== HEADER (SOMBRE) ========== */
+    /* ========== HEADER (THÈME BLANC) ========== */
     .header {
-      background: rgba(17, 17, 17, 0.98);
+      background: rgba(255, 255, 255, 0.98);
       backdrop-filter: blur(10px);
       position: sticky;
       top: 0;
       z-index: 100;
-      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
     }
 
     .header-container {
@@ -111,7 +112,7 @@
       height: 50px;
       width: auto;
       border-radius: var(--radius);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(0, 0, 0, 0.1);
     }
 
     .logo-text {
@@ -123,7 +124,7 @@
     .brand-name {
       font-size: 1.4rem;
       font-weight: 800;
-      color: var(--gb-white);
+      color: var(--gb-text-dark);
       text-transform: uppercase;
       letter-spacing: 1px;
     }
@@ -149,7 +150,7 @@
       padding: 10px 18px;
       border-radius: var(--radius);
       background: transparent;
-      color: var(--gb-white);
+      color: var(--gb-text-dark);
       font-weight: 600;
       font-size: 0.9rem;
       border: 1px solid var(--gb-gold);
@@ -157,17 +158,18 @@
 
     .header-btn:hover {
       background: var(--gb-gold);
-      color: var(--gb-black);
+      color: var(--gb-white);
     }
 
     .cart-btn {
       position: relative;
       background: var(--gb-gold);
-      color: var(--gb-black);
+      color: var(--gb-white);
     }
 
     .cart-btn:hover {
-      background: var(--gb-gold-light);
+      background: var(--gb-gold-dark);
+      color: var(--gb-white);
     }
 
     .cart-count {
@@ -184,7 +186,7 @@
       justify-content: center;
       font-size: 0.75rem;
       font-weight: 700;
-      border: 2px solid var(--gb-dark-grey);
+      border: 2px solid var(--gb-white);
     }
 
     /* ========== COUVERTURE PAGE ========== */
@@ -714,9 +716,9 @@
   <header class="header">
     <div class="header-container">
       <a href="index.html" class="logo">
-        <img src="logo.jpeg" alt="Logo">
+        <img src="logo.png" alt="Logo">
         <div class="logo-text">
-          <div class="brand-name">Wahbi Zoghbi</div>
+          <div class="brand-name">Power Zone</div>
           <div class="brand-tagline">Nutrition</div>
         </div>
       </a>
@@ -839,8 +841,8 @@
         <p style="color: var(--gb-text-muted); margin-bottom: 16px;">
           Notre équipe est disponible pour répondre à vos questions sur la livraison.
         </p>
-        <p><i class="fa-solid fa-phone" style="color:var(--gb-gold)"></i> +213 (0) 669 46 99 56</p>
-        <p><i class="fa-solid fa-envelope" style="color:var(--gb-gold)"></i> contact@wahbizoghbi.dz</p>
+        <p><i class="fa-solid fa-phone" style="color:var(--gb-gold)"></i> +213 (0) 782 94 52 88</p>
+        <p><i class="fa-solid fa-envelope" style="color:var(--gb-gold)"></i> contact@powerzone.dz</p>
         <p><i class="fa-solid fa-clock" style="color:var(--gb-gold)"></i> Lun-Sam: 9h - 18h</p>
       </div>
 
@@ -852,14 +854,14 @@
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-section">
-        <h3><span style="color:var(--gb-gold)">WAHBI</span>ZOGHBI</h3>
+        <h3><span style="color:var(--gb-gold)">POWER</span>ZONE</h3>
         <p>L'excellence n'est pas un acte, mais une habitude. Rejoignez le cercle des champions avec nos suppléments
           certifiés premium.</p>
       </div>
       <div class="footer-section">
         <h3>QG COMMANDEMENT</h3>
         <p><i class="fa-solid fa-phone"></i> +213 (0) 782 94 52 88</p>
-        <p><i class="fa-solid fa-envelope"></i> contact@wahbizoghbi.dz</p>
+        <p><i class="fa-solid fa-envelope"></i> contact@powerzone.dz</p>
         <p><i class="fa-solid fa-location-crosshairs"></i> Algérie</p>
       </div>
       <div class="footer-section">
@@ -886,7 +888,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 Wahbi Zoghbi. Tous droits réservés.</p>
+      <p>© 2026 Power Zone. Tous droits réservés.</p>
     </div>
   </footer>
 
