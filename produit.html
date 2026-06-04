@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#050505">
-    <title>Produit | Wahbi Zoghbi</title>
+    <title>Produit | Power Zone</title>
     <link rel="icon" href="logo.png" type="image/x-icon">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* ========== WAHBI ZOGHBI THEME ========== */
+        /* ========== POWER ZONE THEME ========== */
         :root {
             --gb-gold: #DC143C;
             --gb-gold-light: #FF6B7A;
@@ -25,7 +25,7 @@
             --gb-light-grey: #666666;
             --gb-white: #FFFFFF;
             --gb-off-white: #f8f9fa;
-            --gb-text-dark: #faf7f7;
+            --gb-text-dark: #1a1a1a;
             --gb-text-muted: #555555;
             --gb-danger: #ff4d4d;
             --gb-success: #1cd072;
@@ -75,36 +75,38 @@
         .footer-section a:hover { color: var(--gb-gold); padding-left: 5px; }
         .footer-section i { color: var(--gb-gold); width: 20px; flex-shrink: 0; }
 
-        /* ========== HEADER / NAV ========== */
+        /* ========== HEADER / NAV (THÈME BLANC) ========== */
         .header {
-            background: rgba(17, 17, 17, 0.95); backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
             position: sticky; top: 0; z-index: 100;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
         }
         .header-container {
             max-width: 1400px; margin: 0 auto; padding: 16px 24px;
             display: flex; justify-content: space-between; align-items: center;
         }
         .logo { display: flex; align-items: center; gap: 12px; font-family: 'Montserrat', sans-serif; }
-        .logo img { height: 50px; width: auto; border-radius: var(--radius); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .logo img { height: 50px; width: auto; border-radius: var(--radius); border: 1px solid rgba(0, 0, 0, 0.1); }
         .logo-text { display: flex; flex-direction: column; line-height: 1.1; }
-        .brand-name { font-size: 1.4rem; font-weight: 800; color: var(--gb-white); text-transform: uppercase; letter-spacing: 1px; }
+        .brand-name { font-size: 1.4rem; font-weight: 800; color: var(--gb-text-dark); text-transform: uppercase; letter-spacing: 1px; }
         .brand-tagline { font-size: 0.9rem; font-weight: 900; color: var(--gb-gold); text-transform: uppercase; letter-spacing: 4px; }
         .header-actions { display: flex; align-items: center; gap: 16px; }
         .header-btn {
             display: flex; align-items: center; gap: 8px; padding: 10px 18px;
             border-radius: var(--radius); background: transparent;
-            color: var(--gb-white); font-weight: 600; font-size: 0.9rem;
+            color: var(--gb-text-dark); font-weight: 600; font-size: 0.9rem;
             border: 1px solid var(--gb-gold);
         }
-        .header-btn:hover { background: var(--gb-gold); color: var(--gb-black); }
-        .cart-btn { position: relative; background: var(--gb-gold); color: var(--gb-black); }
-        .cart-btn:hover { background: var(--gb-gold-light); }
+        .header-btn:hover { background: var(--gb-gold); color: var(--gb-white); }
+        .cart-btn { position: relative; background: var(--gb-gold); color: var(--gb-white); }
+        .cart-btn:hover { background: var(--gb-gold-dark); color: var(--gb-white); }
         .cart-count {
             position: absolute; top: -8px; right: -8px; background: var(--gb-danger);
             color: white; width: 22px; height: 22px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 0.75rem; font-weight: 700; border: 2px solid var(--gb-dark-grey);
+            font-size: 0.75rem; font-weight: 700; border: 2px solid var(--gb-white);
         }
 
         /* ========== SINGLE PRODUCT LAYOUT ========== */
@@ -250,9 +252,9 @@
     <header class="header">
         <div class="header-container">
             <a href="index.html" class="logo">
-                <img src="logo.jpeg" alt="Logo">
+                <img src="logo.png" alt="Logo">
                 <div class="logo-text">
-                    <div class="brand-name">Wahbi Zoghbi</div>
+                    <div class="brand-name">Power Zone</div>
                     <div class="brand-tagline">Nutrition</div>
                 </div>
             </a>
@@ -384,7 +386,7 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-section">
-                <h3><span style="color:var(--gb-gold)">WAHBI</span>ZOGHBI</h3>
+                <h3><span style="color:var(--gb-gold)">POWER</span>ZONE</h3>
                 <p>L'excellence n'est pas un acte, mais une habitude. Rejoignez le cercle des champions avec nos suppléments certifiés premium.</p>
             </div>
             <div class="footer-section">
@@ -395,8 +397,8 @@
                     </a>
                 </p>
                 <p>
-                    <a href="mailto:wahbizoghbinutrition@gmail.com" style="display:flex; align-items:center; gap:10px; color:var(--gb-light-grey); transition:var(--transition);">
-                        <i class="fa-solid fa-envelope"></i> wahbizoghbinutrition@gmail.com
+                    <a href="mailto:contact@powerzone.dz" style="display:flex; align-items:center; gap:10px; color:var(--gb-light-grey); transition:var(--transition);">
+                        <i class="fa-solid fa-envelope"></i> contact@powerzone.dz
                     </a>
                 </p>
                 <a href="https://maps.app.goo.gl/Ap2ccMBJmuJY2A7c7" target="_blank" rel="noopener" style="display:flex; align-items:center; gap:10px; color:var(--gb-light-grey); transition:var(--transition);">
@@ -424,7 +426,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2026 Wahbi Zoghbi. Tous droits réservés.</p>
+            <p>© 2026 Power Zone. Tous droits réservés.</p>
         </div>
     </footer>
 
@@ -462,7 +464,7 @@
                     const pDesc = (product.description || '').replace(/\n/g, '<br>');
                     const pQty = parseInt(product.quantity) || 0;
 
-                    document.title = `${pName} | Wahbi Zoghbi`;
+                    document.title = `${pName} | Power Zone`;
 
                     const stockHTML = pQty > 0
                         ? `<div class="status-badge in-stock"><i class="fa-solid fa-check"></i> ${pQty} EN STOCK</div>`
@@ -559,4 +561,3 @@
     </script>
 </body>
 </html>
-
