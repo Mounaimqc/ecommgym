@@ -60,52 +60,42 @@
     a { text-decoration: none; color: inherit; transition: var(--transition); }
     button { font-family: 'Inter', sans-serif; cursor: pointer; border: none; outline: none; transition: var(--transition); }
 
-    /* ========== HEADER ========== */
     /* ========== HEADER (THÈME BLANC) ========== */
-.header {
-  background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(10px);
-  position: sticky; top: 0; z-index: 100;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
-}
+    .header {
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
+    }
 
-.logo img { 
-  border: 1px solid rgba(0, 0, 0, 0.1); 
-}
+    .header-container {
+      max-width: 1400px; margin: 0 auto; padding: 16px 24px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
 
-.brand-name { 
-  color: var(--gb-text-dark); /* بدل الأبيض إلى الأسود */
-}
+    .logo { display: flex; align-items: center; gap: 12px; font-family: 'Montserrat', sans-serif; }
+    .logo img { height: 50px; width: auto; border-radius: var(--radius); border: 1px solid rgba(0, 0, 0, 0.1); }
+    .logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+    .brand-name { font-size: 1.4rem; font-weight: 800; color: var(--gb-text-dark); text-transform: uppercase; letter-spacing: 1px; }
+    .brand-tagline { font-size: 0.9rem; font-weight: 900; color: var(--gb-gold); text-transform: uppercase; letter-spacing: 4px; }
 
-.brand-tagline { 
-  color: var(--gb-gold); 
-}
+    .header-actions { display: flex; align-items: center; gap: 16px; }
+    .header-btn {
+      display: flex; align-items: center; gap: 8px; padding: 10px 18px;
+      border-radius: var(--radius); background: transparent; color: var(--gb-text-dark);
+      font-weight: 600; font-size: 0.9rem; border: 1px solid var(--gb-gold);
+    }
+    .header-btn:hover { background: var(--gb-gold); color: var(--gb-white); }
+    .cart-btn { position: relative; background: var(--gb-gold); color: var(--gb-white); }
+    .cart-btn:hover { background: var(--gb-gold-dark); color: var(--gb-white); }
+    .cart-count {
+      position: absolute; top: -8px; right: -8px; background: var(--gb-danger);
+      color: white; width: 22px; height: 22px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700; border: 2px solid var(--gb-white);
+    }
 
-.header-btn {
-  display: flex; align-items: center; gap: 8px; padding: 10px 18px;
-  border-radius: var(--radius); background: transparent; 
-  color: var(--gb-text-dark); /* نص أسود بدل أبيض */
-  font-weight: 600; font-size: 0.9rem; 
-  border: 1px solid var(--gb-gold);
-}
-.header-btn:hover { 
-  background: var(--gb-gold); 
-  color: var(--gb-white); 
-}
-
-.cart-btn { 
-  background: var(--gb-gold); 
-  color: var(--gb-white); 
-}
-.cart-btn:hover { 
-  background: var(--gb-gold-dark); 
-  color: var(--gb-white); 
-}
-
-.cart-count {
-  border: 2px solid var(--gb-white); /* بدل الأسود إلى الأبيض */
-}
     /* ========== HERO ========== */
     .hero {
       background: linear-gradient(180deg, rgba(17,17,17,0.85), rgba(17,17,17,0.7)),
