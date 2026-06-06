@@ -433,16 +433,18 @@
       transform: translateY(-5px);
     }
 
+    /* 🆕 إصلاح صورة الفئة - تظهر كاملة */
     .category-image {
-      height: 160px;
+      height: 180px; /* 👈 زدنا الارتفاع شوية */
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       overflow: hidden;
-      background-size: cover !important;
+      background-size: contain !important; /* 👈 الأهم: contain بدل cover */
       background-position: center !important;
       background-repeat: no-repeat !important;
+      background-color: var(--pz-cream); /* 👈 خلفية بيضاء */
     }
 
     .category-image i {
@@ -1019,7 +1021,7 @@
       .categories-section { padding: 40px 0 30px; }
       .section-title { font-size: 1.8rem; margin-bottom: 30px; }
       .category-card { flex: 0 0 220px; }
-      .category-image { height: 140px; }
+      .category-image { height: 160px; }
       .category-image i { font-size: 3rem; }
       .category-content h3 { font-size: 1rem; }
       .category-content p { font-size: 0.8rem; }
@@ -1070,7 +1072,7 @@
       .product-price { font-size: 1.1rem; text-align: center; }
       .product-image { height: 180px; }
       .category-card { flex: 0 0 180px; }
-      .category-image { height: 120px; }
+      .category-image { height: 140px; }
       .category-image i { font-size: 2.5rem; }
       .category-content { padding: 15px; }
       .category-content h3 { font-size: 0.9rem; }
@@ -1187,7 +1189,7 @@
           <!-- Whey Protein -->
           <div class="category-card" data-category="Protéines whey">
             <div class="category-card-inner">
-              <div class="category-image" style="background-image: url('https://goldenbody.dz/web/image/product.public.category/54/image_1920'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+              <div class="category-image" style="background-image: url('https://goldenbody.dz/web/image/product.public.category/54/image_1920'); background-size: contain; background-position: center; background-repeat: no-repeat; background-color: var(--pz-cream);">
               </div>
               <div class="category-content">
                 <h3>Whey Protein</h3>
@@ -1199,7 +1201,7 @@
             <!-- Creatine -->
           <div class="category-card" data-category="Creatine">
             <div class="category-card-inner">
-              <div class="category-image" style="background-image: url('https://goldenbody.dz/web/image/product.public.category/39/image_1920'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+              <div class="category-image" style="background-image: url('https://goldenbody.dz/web/image/product.public.category/39/image_1920'); background-size: contain; background-position: center; background-repeat: no-repeat; background-color: var(--pz-cream);">
               </div>
               <div class="category-content">
                 <h3>Creatine</h3>
@@ -1211,7 +1213,7 @@
           <!-- Mass Gainer -->
           <div class="category-card" data-category="Masse / Gainer">
             <div class="category-card-inner">
-              <div class="category-image" style="background-image: url('https://goldenbody.dz/web/image/product.public.category/42/image_1920'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+              <div class="category-image" style="background-image: url('https://goldenbody.dz/web/image/product.public.category/42/image_1920'); background-size: contain; background-position: center; background-repeat: no-repeat; background-color: var(--pz-cream);">
               </div>
               <div class="category-content">
                 <h3>Mass Gainer</h3>
@@ -1224,7 +1226,7 @@
           <!-- Acides Aminés -->
           <div class="category-card" data-category="Acide aminé">
             <div class="category-card-inner">
-              <div class="category-image" style="background-image: url('https://goldenbody.dz/web/image/product.public.category/38/image_1920'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+              <div class="category-image" style="background-image: url('https://goldenbody.dz/web/image/product.public.category/38/image_1920'); background-size: contain; background-position: center; background-repeat: no-repeat; background-color: var(--pz-cream);">
               </div>
               <div class="category-content">
                 <h3>Acides Aminés</h3>
@@ -1237,7 +1239,7 @@
           <!-- Force / Energie -->
           <div class="category-card" data-category="Force / Energie">
             <div class="category-card-inner">
-              <div class="category-image" style="background-image: url('https://goldenbody.dz/web/image/product.public.category/54/image_1920'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+              <div class="category-image" style="background-image: url('https://goldenbody.dz/web/image/product.public.category/54/image_1920'); background-size: contain; background-position: center; background-repeat: no-repeat; background-color: var(--pz-cream);">
               </div>
               <div class="category-content">
                 <h3>Force & Energie</h3>
@@ -1250,7 +1252,7 @@
           <!-- Brûleur de graisse -->
           <div class="category-card" data-category="Brûleur de graisse">
             <div class="category-card-inner">
-              <div class="category-image" style="background-image: url('https://www.nutrition87.com/images/pages/bruleur-2.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+              <div class="category-image" style="background-image: url('https://www.nutrition87.com/images/pages/bruleur-2.jpg'); background-size: contain; background-position: center; background-repeat: no-repeat; background-color: var(--pz-cream);">
               </div>
               <div class="category-content">
                 <h3>Brûleur de graisse</h3>
