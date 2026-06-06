@@ -15,25 +15,21 @@
   <style>
     /* ========== POWER ZONE - PREMIUM ATHLETIC THEME ========== */
     :root {
-      /* Primary Brand Colors */
       --pz-onyx: #0A0A0F;
       --pz-graphite: #1A1D29;
       --pz-charcoal: #252836;
       --pz-slate: #3D4152;
       
-      /* Power Gold System */
       --pz-gold: #FFB800;
       --pz-gold-light: #FFD666;
       --pz-gold-glow: rgba(255, 184, 0, 0.25);
       --pz-gold-dark: #CC9200;
       
-      /* Energy Red System (CTAs) */
       --pz-energy: #FF4D2E;
       --pz-energy-light: #FF6B4D;
       --pz-energy-dark: #E63E1F;
       --pz-energy-glow: rgba(255, 77, 46, 0.3);
       
-      /* Neutrals */
       --pz-white: #FFFFFF;
       --pz-cream: #FAF9F6;
       --pz-light: #F3F4F6;
@@ -41,13 +37,11 @@
       --pz-grey: #4B5563;
       --pz-dark: #1F2937;
       
-      /* Functional */
       --pz-success: #10B981;
       --pz-success-light: rgba(16, 185, 129, 0.15);
       --pz-danger: #EF4444;
       --pz-info: #3B82F6;
       
-      /* Effects */
       --shadow-sm: 0 2px 8px rgba(10, 10, 15, 0.08);
       --shadow: 0 10px 30px rgba(10, 10, 15, 0.12);
       --shadow-lg: 0 20px 50px rgba(10, 10, 15, 0.2);
@@ -59,18 +53,12 @@
       --radius-xl: 24px;
       --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       
-      /* Gradients */
       --gradient-gold: linear-gradient(135deg, #FFB800 0%, #CC9200 100%);
       --gradient-energy: linear-gradient(135deg, #FF4D2E 0%, #E63E1F 100%);
       --gradient-dark: linear-gradient(180deg, #0A0A0F 0%, #1A1D29 100%);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
 
     body {
       background: var(--pz-cream);
@@ -83,92 +71,107 @@
     a { text-decoration: none; color: inherit; transition: var(--transition); }
     button { font-family: inherit; cursor: pointer; border: none; outline: none; transition: var(--transition); }
 
-    /* ========== HEADER - PROFESSIONAL & CLEAN ========== */
+    /* ========== HEADER - موحد مع باقي الصفحات ========== */
     .header {
       background: rgba(255, 255, 255, 0.98);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      box-shadow: var(--shadow-sm);
-      padding: 16px 24px;
+      position: sticky; top: 0; z-index: 100;
       border-bottom: 1px solid rgba(10, 10, 15, 0.06);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      box-shadow: var(--shadow-sm);
     }
 
     .header-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
+      max-width: 1400px; margin: 0 auto; padding: 16px 24px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
     }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    .logo { 
+      display: flex; align-items: center; gap: 12px; 
       font-family: 'Montserrat', sans-serif;
       flex-shrink: 0;
     }
-
-    .logo img {
-      height: 55px;
-      width: auto;
+    .logo img { 
+      height: 55px; width: auto; 
       border-radius: var(--radius);
       object-fit: contain;
       filter: drop-shadow(0 2px 8px rgba(10, 10, 15, 0.15));
       transition: var(--transition);
     }
-
     .logo:hover img {
       transform: scale(1.05);
       filter: drop-shadow(0 4px 12px rgba(255, 184, 0, 0.3));
     }
-
-    .logo-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.1;
+    .logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+    .brand-name { 
+      font-size: 1.5rem; font-weight: 900; color: var(--pz-onyx); 
+      text-transform: uppercase; letter-spacing: 1.5px;
     }
-
-    .brand-name {
-      font-size: 1.5rem;
-      font-weight: 900;
-      color: var(--pz-onyx);
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-    }
-
-    .brand-tagline {
-      font-size: 0.7rem;
-      font-weight: 800;
-      color: var(--pz-gold);
-      text-transform: uppercase;
-      letter-spacing: 4px;
+    .brand-tagline { 
+      font-size: 0.7rem; font-weight: 800; color: var(--pz-gold); 
+      text-transform: uppercase; letter-spacing: 4px;
       margin-top: 3px;
     }
 
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--pz-dark);
-      font-weight: 600;
-      font-size: 0.9rem;
-      padding: 10px 18px;
-      background: var(--pz-white);
-      border: 1.5px solid var(--pz-light);
-      border-radius: var(--radius);
-      transition: var(--transition);
+    .header-actions { 
+      display: flex; align-items: center; gap: 12px;
+      flex-wrap: wrap;
     }
-
-    .back-link:hover {
+    .header-btn {
+      display: flex; align-items: center; gap: 8px; 
+      padding: 10px 18px;
+      border-radius: var(--radius); 
+      background: var(--pz-white);
+      color: var(--pz-dark);
+      font-weight: 600; font-size: 0.9rem; 
+      border: 1.5px solid var(--pz-light);
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    .header-btn:hover { 
       border-color: var(--pz-gold);
       color: var(--pz-gold-dark);
       box-shadow: var(--shadow-sm);
+    }
+    .header-btn i { font-size: 1rem; }
+    
+    /* ✅ زر Suivi نشط (Active) - لأننا في صفحة Suivi */
+    .header-btn.active {
+      background: var(--gradient-gold);
+      color: var(--pz-onyx);
+      border-color: var(--pz-gold);
+      font-weight: 800;
+    }
+    .header-btn.active:hover {
+      background: var(--gradient-gold);
+      color: var(--pz-onyx);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-gold);
+    }
+
+    .cart-btn { 
+      background: var(--gradient-gold); 
+      color: var(--pz-onyx); 
+      border-color: var(--pz-gold);
+      font-weight: 800;
+      position: relative;
+    }
+    .cart-btn:hover { 
+      background: var(--gradient-gold);
+      color: var(--pz-onyx);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-gold);
+    }
+
+    .cart-count {
+      position: absolute; top: -8px; right: -8px; 
+      background: var(--pz-energy);
+      color: white; width: 22px; height: 22px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700; 
+      border: 2px solid var(--pz-white);
+      box-shadow: var(--shadow-energy);
     }
 
     /* ========== CONTAINER ========== */
@@ -583,34 +586,11 @@
       color: var(--pz-gold-dark);
     }
 
-    /* ========== BOTTOM BACK LINK ========== */
-    .bottom-back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--pz-dark);
-      font-weight: 600;
-      font-size: 0.9rem;
-      padding: 12px 20px;
-      background: var(--pz-white);
-      border: 1.5px solid var(--pz-light);
-      border-radius: var(--radius);
-      margin-top: 10px;
-      transition: var(--transition);
-    }
-
-    .bottom-back-link:hover {
-      border-color: var(--pz-gold);
-      color: var(--pz-gold-dark);
-      box-shadow: var(--shadow-sm);
-      transform: translateX(-3px);
-    }
-
     /* ========== FOOTER ========== */
     .footer {
       background: var(--pz-onyx);
-      padding: 40px 24px 20px;
-      margin-top: 60px;
+      padding: 80px 24px 30px;
+      margin-top: 80px;
       color: var(--pz-white);
       position: relative;
     }
@@ -619,22 +599,22 @@
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
-      height: 5px;
+      height: 6px;
       background: var(--gradient-gold);
     }
 
     .footer-container {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px 30px;
     }
 
     .footer-section h3 {
-      font-size: 1.05rem;
+      font-size: 1.2rem;
       color: var(--pz-white);
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       letter-spacing: 1px;
       font-family: 'Montserrat', sans-serif;
       position: relative;
@@ -646,7 +626,7 @@
       content: '';
       position: absolute;
       left: 0; bottom: 0;
-      width: 35px; height: 3px;
+      width: 40px; height: 3px;
       background: var(--gradient-gold);
       border-radius: 2px;
     }
@@ -654,12 +634,11 @@
     .footer-section p,
     .footer-section a {
       color: var(--pz-white);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 0.9rem;
-      transition: var(--transition);
+      font-size: 0.95rem;
     }
 
     .footer-section a:hover {
@@ -669,13 +648,13 @@
 
     .footer-section i {
       color: var(--pz-gold);
-      width: 18px;
+      width: 20px;
       flex-shrink: 0;
     }
 
     .social-links {
       display: flex;
-      gap: 12px;
+      gap: 15px;
       margin-top: 10px;
       flex-wrap: wrap;
     }
@@ -684,12 +663,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 40px;
-      height: 40px;
+      width: 45px;
+      height: 45px;
       background: var(--pz-graphite);
       border-radius: 50%;
       color: var(--pz-white);
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       transition: var(--transition);
       border: 1px solid var(--pz-charcoal);
     }
@@ -697,20 +676,19 @@
     .social-link:hover {
       background: var(--gradient-gold);
       color: var(--pz-onyx);
-      transform: translateY(-3px) rotate(5deg);
+      transform: translateY(-4px) rotate(5deg);
       box-shadow: var(--shadow-gold);
       border-color: var(--pz-gold);
     }
 
     .footer-bottom {
-      max-width: 1200px;
-      margin: 40px auto 0;
+      max-width: 1400px;
+      margin: 50px auto 0;
       padding-top: 20px;
       border-top: 1px solid var(--pz-charcoal);
       text-align: center;
       color: var(--pz-white);
-      font-size: 0.85rem;
-      opacity: 0.85;
+      font-size: 0.9rem;
     }
 
     .gold-text {
@@ -736,7 +714,7 @@
       50% { box-shadow: 0 0 0 10px rgba(255, 77, 46, 0), var(--shadow-energy); }
     }
 
-    /* ========== SCROLLBAR CUSTOM ========== */
+    /* ========== SCROLLBAR ========== */
     ::-webkit-scrollbar { width: 10px; height: 10px; }
     ::-webkit-scrollbar-track { background: var(--pz-cream); }
     ::-webkit-scrollbar-thumb {
@@ -747,14 +725,21 @@
     ::-webkit-scrollbar-thumb:hover { background: var(--pz-gold-dark); }
 
     /* ========== RESPONSIVE ========== */
+    @media (max-width: 1024px) {
+      .header-container { padding: 14px 20px; }
+      .logo img { height: 50px; }
+      .brand-name { font-size: 1.3rem; }
+      .header-btn { padding: 9px 14px; font-size: 0.85rem; }
+    }
+    
     @media (max-width: 768px) {
-      .header-container {
-        flex-direction: column;
-        gap: 14px;
+      .header-container { 
+        flex-direction: column; 
+        gap: 14px; 
         padding: 14px 16px;
       }
-      .logo {
-        width: 100%;
+      .logo { 
+        width: 100%; 
         justify-content: center;
         padding-bottom: 10px;
         border-bottom: 1px solid var(--pz-light);
@@ -762,10 +747,21 @@
       .logo img { height: 48px; }
       .brand-name { font-size: 1.4rem; }
       .brand-tagline { font-size: 0.65rem; }
-      .back-link {
-        width: 100%;
+      
+      .header-actions { 
+        width: 100%; 
         justify-content: center;
+        gap: 8px;
       }
+      .header-btn { 
+        padding: 8px 12px; 
+        font-size: 0.8rem;
+        flex: 1;
+        justify-content: center;
+        min-width: 0;
+      }
+      .header-btn span { display: none; }
+      .cart-btn span:first-of-type { display: inline; }
 
       .tracking-container {
         margin: 25px auto;
@@ -820,25 +816,34 @@
         text-align: left;
         width: 100%;
       }
-
-      .bottom-back-link {
-        width: 100%;
-        justify-content: center;
-      }
     }
 
     @media (max-width: 480px) {
-      .header { padding: 12px; }
+      .header-container { padding: 12px; }
       .logo img { height: 42px; }
       .brand-name { font-size: 1.2rem; letter-spacing: 1px; }
       .brand-tagline { font-size: 0.6rem; letter-spacing: 2px; }
+      
+      .header-actions { gap: 6px; }
+      .header-btn { 
+        padding: 8px 10px; 
+        font-size: 0.75rem;
+        gap: 5px;
+      }
+      .header-btn i { font-size: 0.9rem; }
+      
       .tracking-title h1 { font-size: 1.2rem; }
       .tracking-title p { font-size: 0.85rem; }
       .status-content h3 { font-size: 0.92rem; }
       .status-content p { font-size: 0.8rem; }
     }
 
-    /* Reduced Motion */
+    @media (max-width: 360px) {
+      .header-btn { padding: 7px 8px; font-size: 0.7rem; }
+      .logo img { height: 38px; }
+      .brand-name { font-size: 1.1rem; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       * {
         animation: none !important;
@@ -850,7 +855,7 @@
 
 <body>
   
-  <!-- Header -->
+  <!-- Header موحد مع باقي الصفحات -->
   <header class="header">
     <div class="header-container">
       <a href="index.html" class="logo">
@@ -860,9 +865,21 @@
           <div class="brand-tagline">Nutrition</div>
         </div>
       </a>
-      <a href="index.html" class="back-link">
-        <i class="fa-solid fa-arrow-left"></i> Retour
-      </a>
+      <div class="header-actions">
+        <a href="tracking.html" class="header-btn active">
+          <i class="fa-solid fa-truck-fast"></i> 
+          <span>Suivi</span>
+        </a>
+        <button class="header-btn cart-btn" id="cartBtn">
+          <i class="fa-solid fa-cart-shopping"></i> 
+          <span>Panier</span>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <a href="couverture.html" class="header-btn">
+          <i class="fa-solid fa-map-location-dot"></i> 
+          <span>Couverture</span>
+        </a>
+      </div>
     </div>
   </header>
 
@@ -890,7 +907,7 @@
         <span>Commande introuvable. Veuillez vérifier le numéro et réessayer.</span>
       </div>
 
-      <!-- Tracking Result (Hidden by default) -->
+      <!-- Tracking Result -->
       <div id="trackingResult" style="display:none">
         
         <!-- Status Timeline -->
@@ -979,11 +996,6 @@
           </p>
         </div>
 
-        <!-- Back Link -->
-        <a href="index.html" class="bottom-back-link">
-          <i class="fa-solid fa-arrow-left"></i> Retour à l'accueil
-        </a>
-
       </div>
     </div>
   </div>
@@ -993,15 +1005,18 @@
     <div class="footer-container">
       <div class="footer-section">
         <h3><span class="gold-text">POWER</span>ZONE</h3>
-        <p>L'excellence n'est pas un acte, mais une habitude.</p>
+        <p>L'excellence n'est pas un acte, mais une habitude. Rejoignez le cercle des champions avec nos suppléments certifiés premium.</p>
       </div>
       <div class="footer-section">
-        <h3>CONTACT</h3>
+        <h3>QG COMMANDEMENT</h3>
         <a href="tel:+213782945288">
           <i class="fa-solid fa-phone"></i> 0782945288
         </a>
         <a href="mailto:contact@powerzone.dz">
           <i class="fa-solid fa-envelope"></i> contact@powerzone.dz
+        </a>
+        <a href="https://maps.app.goo.gl/Ap2ccMBJmuJY2A7c7" target="_blank" rel="noopener">
+          <i class="fa-solid fa-location-crosshairs"></i> Voir sur Google Maps
         </a>
       </div>
       <div class="footer-section">
@@ -1018,6 +1033,11 @@
           </a>
         </div>
       </div>
+      <div class="footer-section">
+        <h3>LOGISTIQUE</h3>
+        <p><i class="fa-solid fa-shield-halved"></i> Paiement 100% sécurisé à la livraison</p>
+        <p><i class="fa-solid fa-truck-fast"></i> Déploiement rapide sur les 58 wilayas</p>
+      </div>
     </div>
     <div class="footer-bottom">
       <p>© <span id="currentYear"></span> Power Zone. Tous droits réservés.</p>
@@ -1033,7 +1053,6 @@
     import { db } from './firebase-config.js';
     import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // Handle form submission
     document.getElementById('trackingForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
@@ -1047,7 +1066,6 @@
         return;
       }
 
-      // Show loading state
       searchBtn.disabled = true;
       searchBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Recherche...';
       errorMsg.classList.remove('show');
@@ -1069,7 +1087,6 @@
         console.error("Erreur de suivi:", error);
         showError('Erreur de connexion. Veuillez réessayer ultérieurement.');
       } finally {
-        // Reset button
         searchBtn.disabled = false;
         searchBtn.innerHTML = '<i class="fa-solid fa-search"></i> Rechercher';
       }
@@ -1086,7 +1103,6 @@
       const result = document.getElementById('trackingResult');
       result.style.display = 'block';
 
-      // Fill order info
       document.getElementById('info-orderNumber').textContent = '#' + order.orderNumber;
       document.getElementById('info-date').textContent = new Date(order.date).toLocaleDateString('fr-FR', {
         day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
@@ -1103,15 +1119,11 @@
       
       document.getElementById('info-total').textContent = (order.grandTotal || 0).toFixed(2) + ' DA';
 
-      // Update timeline
       updateTimeline(order.status || 'pending');
-
-      // Show driver info if applicable
       showDriverInfo(order);
     }
 
     function updateTimeline(currentStatus) {
-      // Reset all statuses
       ['pending', 'accepted', 'shipped', 'arrived'].forEach(s => {
         document.getElementById(`status-${s}`).classList.remove('active', 'completed');
       });
@@ -1143,15 +1155,12 @@
         const driverPhoneLink = document.getElementById('driver-phone');
         driverPhoneLink.textContent = order.driverPhone;
         driverPhoneLink.href = `tel:${phone}`;
-        
-        // Store phone for copy function
         driverPhoneLink.dataset.phone = order.driverPhone;
       } else {
         driverSection.classList.remove('show');
       }
     }
 
-    // Copy phone number to clipboard
     window.copyDriverPhone = function(e) {
       e.preventDefault();
       const phone = document.getElementById('driver-phone').dataset.phone;
@@ -1176,7 +1185,6 @@
       });
     };
 
-    // Auto-focus search input on load
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('orderNumber')?.focus();
     });
