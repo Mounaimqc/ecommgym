@@ -16,30 +16,56 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    /* ========== POWER ZONE THEME ========== */
+    /* ========== POWER ZONE THEME (GOLD & ENERGY) ========== */
     :root {
-      --gb-gold: #DC143C;
-      /* Crimson Red - couleur principale */
-      --gb-gold-light: #FF6B7A;
-      /* Light Red - hover */
-      --gb-gold-dark: #8B0000;
-      /* Dark Red - ombres */
-      --gb-black: #050505;
-      --gb-dark-grey: #111111;
-      --gb-grey: #222222;
-      --gb-light-grey: #888888;
-      --gb-white: #FFFFFF;
-      --gb-off-white: #f8f9fa;
-      --gb-text-dark: #1a1a1a;
-      --gb-text-muted: #555555;
-      --gb-danger: #ff4d4d;
-      --gb-success: #1cd072;
-
-      --shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-      --shadow-hover: 0 12px 40px rgba(212, 175, 55, 0.25);
+      /* Primary Brand Colors */
+      --pz-onyx: #0A0A0F;
+      --pz-graphite: #1A1D29;
+      --pz-charcoal: #252836;
+      --pz-slate: #3D4152;
+      
+      /* Power Gold System */
+      --pz-gold: #FFB800;
+      --pz-gold-light: #FFD666;
+      --pz-gold-glow: rgba(255, 184, 0, 0.25);
+      --pz-gold-dark: #CC9200;
+      
+      /* Energy Red System (CTAs) */
+      --pz-energy: #FF4D2E;
+      --pz-energy-light: #FF6B4D;
+      --pz-energy-dark: #E63E1F;
+      --pz-energy-glow: rgba(255, 77, 46, 0.3);
+      
+      /* Neutrals */
+      --pz-white: #FFFFFF;
+      --pz-cream: #FAF9F6;
+      --pz-light: #F3F4F6;
+      --pz-silver: #9CA3AF;
+      --pz-grey: #4B5563;
+      --pz-dark: #1F2937;
+      
+      /* Functional */
+      --pz-success: #10B981;
+      --pz-success-light: rgba(16, 185, 129, 0.15);
+      --pz-danger: #EF4444;
+      --pz-info: #3B82F6;
+      
+      /* Effects */
+      --shadow-sm: 0 2px 8px rgba(10, 10, 15, 0.08);
+      --shadow: 0 10px 30px rgba(10, 10, 15, 0.12);
+      --shadow-lg: 0 20px 50px rgba(10, 10, 15, 0.2);
+      --shadow-gold: 0 15px 40px rgba(255, 184, 0, 0.3);
+      --shadow-energy: 0 10px 30px rgba(255, 77, 46, 0.4);
+      
       --radius: 8px;
       --radius-lg: 16px;
+      --radius-xl: 24px;
       --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      
+      /* Gradients */
+      --gradient-gold: linear-gradient(135deg, #FFB800 0%, #CC9200 100%);
+      --gradient-energy: linear-gradient(135deg, #FF4D2E 0%, #E63E1F 100%);
+      --gradient-dark: linear-gradient(180deg, #0A0A0F 0%, #1A1D29 100%);
     }
 
     * {
@@ -49,22 +75,18 @@
     }
 
     body {
-      background-color: var(--gb-white);
-      color: var(--gb-text-dark);
+      background-color: var(--pz-cream);
+      color: var(--pz-dark);
       font-family: 'Inter', sans-serif;
       line-height: 1.6;
       overflow-x: hidden;
     }
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
+    h1, h2, h3, h4, h5, h6 {
       font-family: 'Montserrat', sans-serif;
       text-transform: uppercase;
-      color: var(--gb-text-dark);
+      color: var(--pz-onyx);
+      letter-spacing: -0.02em;
     }
 
     a {
@@ -81,15 +103,16 @@
       transition: var(--transition);
     }
 
-    /* ========== HEADER (THÈME BLANC) ========== */
+    /* ========== HEADER ========== */
     .header {
       background: rgba(255, 255, 255, 0.98);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       position: sticky;
       top: 0;
       z-index: 100;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
+      border-bottom: 1px solid rgba(10, 10, 15, 0.06);
+      box-shadow: var(--shadow-sm);
     }
 
     .header-container {
@@ -99,6 +122,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
     }
 
     .logo {
@@ -106,13 +131,21 @@
       align-items: center;
       gap: 12px;
       font-family: 'Montserrat', sans-serif;
+      flex-shrink: 0;
     }
 
     .logo img {
-      height: 50px;
+      height: 55px;
       width: auto;
       border-radius: var(--radius);
-      border: 1px solid rgba(0, 0, 0, 0.1);
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(10, 10, 15, 0.15));
+      transition: var(--transition);
+    }
+
+    .logo:hover img {
+      transform: scale(1.05);
+      filter: drop-shadow(0 4px 12px rgba(255, 184, 0, 0.3));
     }
 
     .logo-text {
@@ -122,25 +155,27 @@
     }
 
     .brand-name {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: var(--gb-text-dark);
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--pz-onyx);
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
     }
 
     .brand-tagline {
-      font-size: 0.9rem;
-      font-weight: 900;
-      color: var(--gb-gold);
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--pz-gold);
       text-transform: uppercase;
       letter-spacing: 4px;
+      margin-top: 3px;
     }
 
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     .header-btn {
@@ -149,34 +184,45 @@
       gap: 8px;
       padding: 10px 18px;
       border-radius: var(--radius);
-      background: transparent;
-      color: var(--gb-text-dark);
+      background: var(--pz-white);
+      color: var(--pz-dark);
       font-weight: 600;
       font-size: 0.9rem;
-      border: 1px solid var(--gb-gold);
+      border: 1.5px solid var(--pz-light);
+      transition: var(--transition);
+      white-space: nowrap;
     }
 
     .header-btn:hover {
-      background: var(--gb-gold);
-      color: var(--gb-white);
+      border-color: var(--pz-gold);
+      color: var(--pz-gold-dark);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-btn i {
+      font-size: 1rem;
     }
 
     .cart-btn {
+      background: var(--gradient-gold);
+      color: var(--pz-onyx);
+      border-color: var(--pz-gold);
+      font-weight: 800;
       position: relative;
-      background: var(--gb-gold);
-      color: var(--gb-white);
     }
 
     .cart-btn:hover {
-      background: var(--gb-gold-dark);
-      color: var(--gb-white);
+      background: var(--gradient-gold);
+      color: var(--pz-onyx);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-gold);
     }
 
     .cart-count {
       position: absolute;
       top: -8px;
       right: -8px;
-      background: var(--gb-danger);
+      background: var(--pz-energy);
       color: white;
       width: 22px;
       height: 22px;
@@ -186,75 +232,102 @@
       justify-content: center;
       font-size: 0.75rem;
       font-weight: 700;
-      border: 2px solid var(--gb-white);
+      border: 2px solid var(--pz-white);
+      box-shadow: var(--shadow-energy);
     }
 
-    /* ========== COUVERTURE PAGE ========== */
+    /* ========== COUVERTURE HERO ========== */
     .coverage-hero {
-      background: linear-gradient(135deg, var(--gb-black) 0%, var(--gb-dark-grey) 100%);
-      padding: 80px 24px 60px;
+      background: 
+        linear-gradient(135deg, rgba(10, 10, 15, 0.92) 0%, rgba(26, 29, 41, 0.88) 100%),
+        url('https://minio-prod.ekiclik.dz/chat-boot-images/goldnbody.mp4') center/cover no-repeat;
+      padding: 100px 24px 80px;
       text-align: center;
-      border-bottom: 3px solid var(--gb-gold);
-      margin-bottom: 40px;
+      position: relative;
+      border-bottom: 6px solid var(--pz-gold);
+      margin-bottom: 60px;
+    }
+
+    .coverage-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: var(--gradient-gold);
+      box-shadow: 0 0 30px var(--pz-gold-glow);
     }
 
     .coverage-hero h1 {
-      font-size: 2.8rem;
-      color: var(--gb-white);
-      margin-bottom: 16px;
+      font-size: 3.5rem;
+      color: var(--pz-white);
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+      font-weight: 900;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.5);
     }
 
     .coverage-hero h1 span {
-      color: var(--gb-gold);
+      background: var(--gradient-gold);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 20px var(--pz-gold-glow));
     }
 
     .coverage-hero p {
       font-size: 1.2rem;
       color: rgba(255, 255, 255, 0.9);
-      max-width: 700px;
+      max-width: 750px;
       margin: 0 auto;
+      line-height: 1.7;
     }
 
+    /* ========== COUVERTURE CONTAINER ========== */
     .coverage-container {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 0 24px 60px;
+      padding: 0 24px 80px;
       display: grid;
       grid-template-columns: 1fr 380px;
       gap: 40px;
       align-items: start;
     }
 
-    /* Carte SVG */
+    /* Map Container */
     .map-container {
-      background: var(--gb-white);
+      background: var(--pz-white);
       border-radius: var(--radius-lg);
-      padding: 24px;
+      padding: 30px;
       box-shadow: var(--shadow);
-      border: 1px solid #e8e8e8;
+      border: 1px solid var(--pz-light);
     }
 
     .map-title {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 20px;
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 24px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      color: var(--gb-text-dark);
+      gap: 12px;
+      color: var(--pz-onyx);
+      font-family: 'Montserrat', sans-serif;
     }
 
     .map-title i {
-      color: var(--gb-gold);
+      color: var(--pz-gold);
+      font-size: 1.4rem;
     }
 
     .algeria-map {
       width: 100%;
       height: auto;
       min-height: 500px;
-      background: var(--gb-off-white);
+      background: var(--pz-cream);
       border-radius: var(--radius);
-      padding: 10px;
+      padding: 15px;
+      border: 1px solid var(--pz-light);
     }
 
     .algeria-map svg {
@@ -264,34 +337,34 @@
     }
 
     .wilaya-path {
-      fill: var(--gb-grey);
-      stroke: var(--gb-white);
+      fill: var(--pz-charcoal);
+      stroke: var(--pz-white);
       stroke-width: 0.5;
       transition: var(--transition);
       cursor: pointer;
     }
 
     .wilaya-path:hover {
-      fill: var(--gb-gold);
-      stroke: var(--gb-gold-dark);
+      fill: var(--pz-gold);
+      stroke: var(--pz-gold-dark);
       stroke-width: 1;
-      filter: drop-shadow(0 4px 8px rgba(212, 175, 55, 0.4));
+      filter: drop-shadow(0 4px 12px var(--pz-gold-glow));
     }
 
     .wilaya-path.covered {
-      fill: rgb(40, 9, 5);
+      fill: var(--pz-gold-dark);
     }
 
     .wilaya-path.limited {
-      fill: rgb(116, 10, 3);
+      fill: var(--pz-energy-dark);
     }
 
     .wilaya-path.coming-soon {
-      fill: var(--gb-light-grey);
+      fill: var(--pz-silver);
       cursor: not-allowed;
     }
 
-    /* Sidebar Infos */
+    /* Sidebar */
     .coverage-sidebar {
       display: flex;
       flex-direction: column;
@@ -299,24 +372,31 @@
     }
 
     .info-card {
-      background: var(--gb-white);
+      background: var(--pz-white);
       border-radius: var(--radius-lg);
-      padding: 24px;
+      padding: 28px;
       box-shadow: var(--shadow);
-      border: 1px solid #e8e8e8;
+      border: 1px solid var(--pz-light);
+      transition: var(--transition);
+    }
+
+    .info-card:hover {
+      box-shadow: var(--shadow-lg);
     }
 
     .info-card h3 {
-      font-size: 1.2rem;
-      margin-bottom: 16px;
+      font-size: 1.25rem;
+      margin-bottom: 18px;
       display: flex;
       align-items: center;
       gap: 10px;
-      color: var(--gb-text-dark);
+      color: var(--pz-onyx);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
     }
 
     .info-card h3 i {
-      color: var(--gb-gold);
+      color: var(--pz-gold);
     }
 
     .wilaya-detail {
@@ -325,118 +405,134 @@
 
     .wilaya-detail.active {
       display: block;
-      animation: fadeIn 0.3s;
+      animation: slideUp 0.3s ease-out;
     }
 
     .wilaya-name {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--gb-gold);
-      margin-bottom: 8px;
+      font-size: 1.8rem;
+      font-weight: 900;
+      background: var(--gradient-gold);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
       font-family: 'Montserrat', sans-serif;
     }
 
     .wilaya-code {
       display: inline-block;
-      background: var(--gb-grey);
-      color: var(--gb-white);
-      padding: 4px 12px;
+      background: var(--pz-onyx);
+      color: var(--pz-gold);
+      padding: 5px 14px;
       border-radius: 20px;
       font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 16px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      letter-spacing: 0.5px;
     }
 
     .delivery-status {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 12px 16px;
-      background: rgba(28, 208, 114, 0.12);
-      border: 1px solid var(--gb-success);
+      padding: 14px 18px;
+      background: var(--pz-success-light);
+      border: 1.5px solid var(--pz-success);
       border-radius: var(--radius);
-      margin-bottom: 16px;
+      margin-bottom: 18px;
+      color: var(--pz-success);
+      font-weight: 600;
     }
 
     .delivery-status.limited {
-      background: rgba(243, 156, 18, 0.12);
-      border-color: #f39c12;
-      color: #d35400;
+      background: rgba(255, 77, 46, 0.1);
+      border-color: var(--pz-energy);
+      color: var(--pz-energy-dark);
     }
 
     .delivery-status.coming {
-      background: rgba(136, 136, 136, 0.12);
-      border-color: var(--gb-light-grey);
-      color: var(--gb-text-muted);
+      background: rgba(156, 163, 175, 0.12);
+      border-color: var(--pz-silver);
+      color: var(--pz-grey);
     }
 
     .delivery-status i {
-      font-size: 1.3rem;
-      width: 24px;
+      font-size: 1.4rem;
+      width: 26px;
       text-align: center;
     }
 
     .delivery-time {
-      font-size: 0.95rem;
-      color: var(--gb-text-muted);
-      margin-bottom: 20px;
+      font-size: 1rem;
+      color: var(--pz-grey);
+      margin-bottom: 22px;
+      padding: 12px 16px;
+      background: var(--pz-cream);
+      border-radius: var(--radius);
+      border-left: 4px solid var(--pz-gold);
     }
 
     .delivery-time strong {
-      color: var(--gb-text-dark);
-      font-weight: 600;
+      color: var(--pz-onyx);
+      font-weight: 700;
     }
 
     .shipping-cost {
       display: flex;
       justify-content: space-between;
-      padding: 12px 0;
-      border-top: 1px dashed #e0e0e0;
-      font-size: 0.95rem;
+      padding: 14px 0;
+      border-top: 1px dashed var(--pz-light);
+      font-size: 1rem;
+      color: var(--pz-dark);
     }
 
     .shipping-cost.total {
-      border-top: 2px solid var(--gb-gold);
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: var(--gb-text-dark);
-      margin-top: 8px;
-      padding-top: 16px;
+      border-top: 2px solid var(--pz-gold);
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--pz-onyx);
+      margin-top: 10px;
+      padding-top: 18px;
     }
 
     .shipping-cost span:last-child {
-      color: var(--gb-gold);
-      font-weight: 800;
+      background: var(--gradient-gold);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 900;
       font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem;
     }
 
     .cta-btn {
       width: 100%;
-      padding: 14px;
-      background: var(--gb-gold);
-      color: var(--gb-white);
-      font-weight: 700;
+      padding: 16px;
+      background: var(--gradient-energy);
+      color: var(--pz-white);
+      font-weight: 800;
       border-radius: var(--radius);
       font-size: 1rem;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-top: 16px;
+      letter-spacing: 1px;
+      margin-top: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);
+      box-shadow: var(--shadow-energy);
+      transition: var(--transition);
     }
 
-    .cta-btn:hover {
-      background: var(--gb-gold-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 25px rgba(139, 0, 0, 0.45);
+    .cta-btn:hover:not(:disabled) {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(255, 77, 46, 0.5);
+      filter: brightness(1.1);
     }
 
     .cta-btn:disabled {
-      background: var(--gb-grey);
-      color: var(--gb-light-grey);
+      background: var(--pz-light);
+      color: var(--pz-silver);
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
@@ -446,35 +542,41 @@
     .legend {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 16px;
+      gap: 16px;
+      margin-top: 20px;
+      padding: 16px;
+      background: var(--pz-cream);
+      border-radius: var(--radius);
+      border: 1px solid var(--pz-light);
     }
 
     .legend-item {
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.85rem;
-      color: var(--gb-text-muted);
+      font-size: 0.9rem;
+      color: var(--pz-grey);
+      font-weight: 500;
     }
 
     .legend-color {
-      width: 20px;
-      height: 20px;
-      border-radius: 4px;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
       border: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: var(--shadow-sm);
     }
 
     .legend-color.covered {
-      background: rgb(40, 9, 5);
+      background: var(--pz-gold-dark);
     }
 
     .legend-color.limited {
-      background: rgb(116, 10, 3);
+      background: var(--pz-energy-dark);
     }
 
     .legend-color.coming {
-      background: var(--gb-light-grey);
+      background: var(--pz-silver);
     }
 
     /* Stats */
@@ -482,115 +584,164 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 16px;
-      margin-top: 16px;
+      margin-top: 20px;
     }
 
     .stat-item {
       text-align: center;
-      padding: 16px;
-      background: var(--gb-off-white);
+      padding: 20px 16px;
+      background: var(--pz-cream);
       border-radius: var(--radius);
-      border: 1px solid #e8e8e8;
+      border: 1px solid var(--pz-light);
+      transition: var(--transition);
+    }
+
+    .stat-item:hover {
+      border-color: var(--pz-gold);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-sm);
     }
 
     .stat-value {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: var(--gb-gold);
+      font-size: 2rem;
+      font-weight: 900;
+      background: var(--gradient-gold);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       font-family: 'Montserrat', sans-serif;
       line-height: 1;
     }
 
     .stat-label {
-      font-size: 0.85rem;
-      color: var(--gb-text-muted);
-      margin-top: 6px;
+      font-size: 0.8rem;
+      color: var(--pz-grey);
+      margin-top: 8px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      font-weight: 600;
     }
 
     /* Search */
     .search-box {
       position: relative;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
 
     .search-box i {
       position: absolute;
-      left: 16px;
+      left: 18px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--gb-light-grey);
+      color: var(--pz-gold);
+      font-size: 1.1rem;
     }
 
     .search-box input {
       width: 100%;
-      padding: 14px 16px 14px 44px;
-      background: var(--gb-off-white);
-      border: 2px solid #e0e0e0;
-      border-radius: var(--radius);
-      color: var(--gb-text-dark);
+      padding: 16px 18px 16px 50px;
+      background: var(--pz-white);
+      border: 2px solid var(--pz-light);
+      border-radius: var(--radius-lg);
+      color: var(--pz-dark);
       font-size: 1rem;
       transition: var(--transition);
+      box-shadow: var(--shadow-sm);
     }
 
     .search-box input:focus {
       outline: none;
-      border-color: var(--gb-gold);
-      box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+      border-color: var(--pz-gold);
+      box-shadow: 0 0 0 4px var(--pz-gold-glow);
     }
 
     .search-box input::placeholder {
-      color: var(--gb-text-muted);
+      color: var(--pz-silver);
     }
 
-    /* Footer */
+    /* ========== FOOTER ========== */
     .footer {
-      background: var(--gb-black);
-      border-top: 3px solid var(--gb-gold);
-      padding: 60px 24px 20px;
-      margin-top: 40px;
-      color: var(--gb-light-grey);
+      background: var(--pz-onyx);
+      padding: 80px 24px 30px;
+      margin-top: 80px;
+      color: var(--pz-white);
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: var(--gradient-gold);
     }
 
     .footer-container {
       max-width: 1400px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 40px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px 30px;
     }
 
     .footer-section h3 {
-      font-size: 1.25rem;
-      color: var(--gb-white);
+      font-size: 1.2rem;
+      color: var(--pz-white);
       margin-bottom: 20px;
       letter-spacing: 1px;
+      font-family: 'Montserrat', sans-serif;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 40px;
+      height: 3px;
+      background: var(--gradient-gold);
+      border-radius: 2px;
     }
 
     .footer-section p,
     .footer-section a {
-      color: var(--gb-light-grey);
+      color: var(--pz-white);
       margin-bottom: 12px;
       display: flex;
       align-items: center;
       gap: 10px;
+      font-size: 0.95rem;
+      line-height: 1.7;
     }
 
     .footer-section i {
-      color: var(--gb-gold);
+      color: var(--pz-gold);
       width: 20px;
+      font-size: 1rem;
+      flex-shrink: 0;
     }
 
     .footer-section a:hover {
-      color: var(--gb-gold);
-      padding-left: 5px;
+      color: var(--pz-gold);
+      transform: translateX(5px);
+    }
+
+    .gold-text {
+      background: var(--gradient-gold);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .social-links {
       display: flex;
       gap: 15px;
       margin-top: 10px;
+      flex-wrap: wrap;
     }
 
     .social-link {
@@ -599,45 +750,61 @@
       justify-content: center;
       width: 45px;
       height: 45px;
-      background: var(--gb-grey);
+      background: var(--pz-graphite);
       border-radius: 50%;
-      color: var(--gb-white);
-      font-size: 1.3rem;
+      color: var(--pz-white);
+      font-size: 1.2rem;
       transition: var(--transition);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid var(--pz-charcoal);
+      flex-shrink: 0;
     }
 
     .social-link:hover {
-      background: var(--gb-gold);
-      color: var(--gb-black);
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+      background: var(--gradient-gold);
+      color: var(--pz-onyx);
+      transform: translateY(-4px) rotate(5deg);
+      box-shadow: var(--shadow-gold);
+      border-color: var(--pz-gold);
     }
 
     .footer-bottom {
       max-width: 1400px;
-      margin: 60px auto 0;
-      padding-top: 24px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 50px auto 0;
+      padding-top: 20px;
+      border-top: 1px solid var(--pz-charcoal);
       text-align: center;
-      color: var(--gb-light-grey);
-      font-size: 0.85rem;
+      color: var(--pz-white);
+      font-size: 0.9rem;
     }
 
+    /* ========== ANIMATIONS ========== */
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
-    /* Responsive */
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ========== SCROLLBAR ========== */
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: var(--pz-cream); }
+    ::-webkit-scrollbar-thumb { 
+      background: var(--gradient-gold); 
+      border-radius: 10px;
+      border: 2px solid var(--pz-cream);
+    }
+    ::-webkit-scrollbar-thumb:hover { background: var(--pz-gold-dark); }
+
+    /* ========== RESPONSIVE ========== */
     @media (max-width: 1024px) {
+      .header-container { padding: 14px 20px; }
+      .logo img { height: 50px; }
+      .brand-name { font-size: 1.3rem; }
+      .header-btn { padding: 9px 14px; font-size: 0.85rem; }
+      
       .coverage-container {
         grid-template-columns: 1fr;
       }
@@ -651,13 +818,43 @@
         flex: 1 1 calc(50% - 12px);
         min-width: 280px;
       }
+      
+      .coverage-hero h1 { font-size: 2.8rem; }
     }
 
     @media (max-width: 768px) {
       .header-container {
         flex-direction: column;
-        gap: 20px;
-        padding: 15px;
+        gap: 14px;
+        padding: 14px 16px;
+      }
+      .logo {
+        width: 100%;
+        justify-content: center;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--pz-light);
+      }
+      .logo img { height: 48px; }
+      .brand-name { font-size: 1.4rem; }
+      .brand-tagline { font-size: 0.65rem; }
+      
+      .header-actions {
+        width: 100%;
+        justify-content: center;
+        gap: 8px;
+      }
+      .header-btn {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+        flex: 1;
+        justify-content: center;
+        min-width: 0;
+      }
+      .header-btn span { display: none; }
+      .cart-btn span:first-of-type { display: inline; }
+
+      .coverage-hero {
+        padding: 70px 20px 60px;
       }
 
       .coverage-hero h1 {
@@ -682,30 +879,48 @@
     }
 
     @media (max-width: 480px) {
+      .header-container { padding: 12px; }
+      .logo img { height: 42px; }
+      .brand-name { font-size: 1.2rem; letter-spacing: 1px; }
+      .brand-tagline { font-size: 0.6rem; letter-spacing: 2px; }
+      
+      .header-actions { gap: 6px; }
+      .header-btn {
+        padding: 8px 10px;
+        font-size: 0.75rem;
+        gap: 5px;
+      }
+      .header-btn i { font-size: 0.9rem; }
+      
       .coverage-hero {
-        padding: 60px 16px 40px;
+        padding: 60px 16px 50px;
       }
 
       .coverage-hero h1 {
         font-size: 1.8rem;
       }
 
+      .coverage-hero p {
+        font-size: 0.95rem;
+      }
+
       .algeria-map {
         min-height: 350px;
+        padding: 10px;
       }
 
       .stats-grid {
         grid-template-columns: 1fr;
       }
+      
+      .map-container { padding: 20px; }
+      .info-card { padding: 20px; }
+    }
 
-      .brand-name {
-        font-size: 1.2rem;
-      }
-
-      .brand-tagline {
-        font-size: 0.7rem;
-        letter-spacing: 2px;
-      }
+    @media (max-width: 360px) {
+      .coverage-hero h1 { font-size: 1.5rem; }
+      .logo img { height: 38px; }
+      .brand-name { font-size: 1.1rem; }
     }
   </style>
 </head>
@@ -723,13 +938,18 @@
         </div>
       </a>
       <div class="header-actions">
-        <a href="tracking.html" class="header-btn"><i class="fa-solid fa-truck-fast"></i> Suivi</a>
+        <a href="tracking.html" class="header-btn">
+          <i class="fa-solid fa-truck-fast"></i> 
+          <span>Suivi</span>
+        </a>
         <button class="header-btn cart-btn" id="cartBtn">
-          <i class="fa-solid fa-cart-shopping"></i> Panier
+          <i class="fa-solid fa-cart-shopping"></i> 
+          <span>Panier</span>
           <span class="cart-count" id="cartCount">0</span>
         </button>
         <a href="couverture.html" class="header-btn">
-          <i class="fa-solid fa-map-location-dot"></i> Zone de Couverture
+          <i class="fa-solid fa-map-location-dot"></i> 
+          <span>Couverture</span>
         </a>
       </div>
     </div>
@@ -738,8 +958,7 @@
   <!-- Hero -->
   <section class="coverage-hero">
     <h1>COUVERTURE <span>DE LIVRAISON</span></h1>
-    <p>Nous livrons dans les 58 wilayas du territoire national algérien. Sélectionnez votre wilaya pour voir les détails
-      de livraison.</p>
+    <p>Nous livrons vos suppléments préférés à travers les 58 wilayas d'Algérie. Sélectionnez votre wilaya pour voir les détails de livraison.</p>
   </section>
 
   <!-- Main Content -->
@@ -752,7 +971,7 @@
       <!-- Search -->
       <div class="search-box">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="wilayaSearch" placeholder="Rechercher une wilaya...">
+        <input type="text" id="wilayaSearch" placeholder="Rechercher votre wilaya...">
       </div>
 
       <!-- SVG Map Container -->
@@ -783,7 +1002,7 @@
       <!-- Default Info -->
       <div class="info-card" id="defaultInfo">
         <h3><i class="fa-solid fa-circle-info"></i> Informations</h3>
-        <p style="color: var(--gb-text-muted); line-height: 1.7;">
+        <p style="color: var(--pz-grey); line-height: 1.7;">
           Cliquez sur une wilaya sur la carte pour voir les détails de livraison, les délais et les frais applicables.
         </p>
         <div class="stats-grid">
@@ -838,45 +1057,40 @@
       <!-- Contact Card -->
       <div class="info-card">
         <h3><i class="fa-solid fa-headset"></i> Besoin d'Aide ?</h3>
-        <p style="color: var(--gb-text-muted); margin-bottom: 16px;">
+        <p style="color: var(--pz-grey); margin-bottom: 16px; line-height: 1.7;">
           Notre équipe est disponible pour répondre à vos questions sur la livraison.
         </p>
-        <p><i class="fa-solid fa-phone" style="color:var(--gb-gold)"></i> +213 (0) 782 94 52 88</p>
-        <p><i class="fa-solid fa-envelope" style="color:var(--gb-gold)"></i> contact@powerzone.dz</p>
-        <p><i class="fa-solid fa-clock" style="color:var(--gb-gold)"></i> Lun-Sam: 9h - 18h</p>
+        <p><i class="fa-solid fa-phone"></i> 0782 94 52 88</p>
+        <p><i class="fa-solid fa-envelope"></i> contact@powerzone.dz</p>
+        <p><i class="fa-solid fa-clock"></i> Lun-Sam: 9h - 18h</p>
       </div>
 
     </aside>
   </main>
 
-  
-  <!-- Footer (RESTE SOMBRE) -->
+  <!-- Footer -->
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-section">
-        <h3><span style="color:var(--gb-gold)">POWER</span>ZONE</h3>
-        <p>L'excellence n'est pas un acte, mais une habitude. Rejoignez le cercle des champions avec nos suppléments
-          certifiés premium.</p>
+        <h3><span class="gold-text">POWER</span>ZONE</h3>
+        <p style="color: var(--pz-white); line-height: 1.7;">L'excellence n'est pas un acte, mais une habitude. Rejoignez le cercle des champions avec nos suppléments certifiés premium.</p>
       </div>
       <div class="footer-section">
         <h3>QG COMMANDEMENT</h3>
-        <p><i class="fa-solid fa-phone"></i> +213 (0) 782 94 52 88</p>
+        <p><i class="fa-solid fa-phone"></i> 0782 94 52 88</p>
         <p><i class="fa-solid fa-envelope"></i> contact@powerzone.dz</p>
         <p><i class="fa-solid fa-location-crosshairs"></i> Algérie</p>
       </div>
       <div class="footer-section">
         <h3>SUIVEZ-NOUS</h3>
         <div class="social-links">
-          <a href="https://www.facebook.com/share/1Dhn4AYi75/" target="_blank" rel="noopener" class="social-link"
-            title="Facebook">
+          <a href="https://www.facebook.com/share/1Dhn4AYi75/" target="_blank" rel="noopener" class="social-link" title="Facebook">
             <i class="fa-brands fa-facebook-f"></i>
           </a>
-          <a href="https://www.instagram.com/wahbi_zoghbi_nutrition?igsh=MW9lZ3huamI5ZnF3NQ==" target="_blank"
-            rel="noopener" class="social-link" title="Instagram">
+          <a href="https://www.instagram.com/wahbi_zoghbi_nutrition?igsh=MW9lZ3huamI5ZnF3NQ==" target="_blank" rel="noopener" class="social-link" title="Instagram">
             <i class="fa-brands fa-instagram"></i>
           </a>
-          <a href="https://www.tiktok.com/@wahbi.zoghbinutrition?_r=1&_t=ZS-94QuUOKJNy9" target="_blank" rel="noopener"
-            class="social-link" title="TikTok">
+          <a href="https://www.tiktok.com/@wahbi.zoghbinutrition?_r=1&_t=ZS-94QuUOKJNy9" target="_blank" rel="noopener" class="social-link" title="TikTok">
             <i class="fa-brands fa-tiktok"></i>
           </a>
         </div>
@@ -888,7 +1102,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 Power Zone. Tous droits réservés.</p>
+      <p>© <span id="currentYear"></span> Power Zone. Tous droits réservés.</p>
     </div>
   </footer>
 
@@ -896,414 +1110,69 @@
   <script src="algeria_paths.js"></script>
 
   <script>
-    // Configuration des wilayas (à compléter avec vos données réelles)
+    // Dynamic year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Configuration des wilayas
     const WILAYA_CONFIG = {
-      "10": {
-        "name": "Bouira",
-        "status": "covered",
-        "time": "24-48h",
-        "home": 700,
-        "desk": 450
-      },
-      "11": {
-        "name": "Tamanrasset",
-        "status": "limited",
-        "time": "72-96h",
-        "home": 2000,
-        "desk": 1500
-      },
-      "12": {
-        "name": "Tébessa",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 850,
-        "desk": 500
-      },
-      "13": {
-        "name": "Tlemcen",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 800,
-        "desk": 500
-      },
-      "14": {
-        "name": "Tiaret",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 800,
-        "desk": 500
-      },
-      "15": {
-        "name": "Tizi Ouzou",
-        "status": "covered",
-        "time": "24-48h",
-        "home": 700,
-        "desk": 450
-      },
-      "16": {
-        "name": "Alger",
-        "status": "covered",
-        "time": "24-48h",
-        "home": 600,
-        "desk": 400
-      },
-      "17": {
-        "name": "Djelfa",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 900,
-        "desk": 600
-      },
-      "18": {
-        "name": "Jijel",
-        "status": "covered",
-        "time": "24-48h",
-        "home": 700,
-        "desk": 450
-      },
-      "19": {
-        "name": "Sétif",
-        "status": "covered",
-        "time": "24-48h",
-        "home": 550,
-        "desk": 300
-      },
-      "20": {
-        "name": "Saïda",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 900,
-        "desk": 500
-      },
-      "21": {
-        "name": "Skikda",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 800,
-        "desk": 500
-      },
-      "22": {
-        "name": "Sidi Bel Abbès",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 800,
-        "desk": 500
-      },
-      "23": {
-        "name": "Annaba",
-        "status": "covered",
-        "time": "24-48h",
-        "home": 700,
-        "desk": 450
-      },
-      "24": {
-        "name": "Guelma",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 850,
-        "desk": 500
-      },
-      "25": {
-        "name": "Constantine",
-        "status": "covered",
-        "time": "24-48h",
-        "home": 650,
-        "desk": 400
-      },
-      "26": {
-        "name": "Médéa",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 800,
-        "desk": 500
-      },
-      "27": {
-        "name": "Mostaganem",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 800,
-        "desk": 500
-      },
-      "28": {
-        "name": "M'Sila",
-        "status": "covered",
-        "time": "24-48h",
-        "home": 700,
-        "desk": 450
-      },
-      "29": {
-        "name": "Mascara",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 800,
-        "desk": 500
-      },
-      "30": {
-        "name": "Ouargla",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 1000,
-        "desk": 600
-      },
-      "31": {
-        "name": "Oran",
-        "status": "covered",
-        "time": "24-48h",
-        "home": 700,
-        "desk": 450
-      },
-      "32": {
-        "name": "El Bayadh",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 1200,
-        "desk": 800
-      },
-      "33": {
-        "name": "Illizi",
-        "status": "limited",
-        "time": "72-96h",
-        "home": 1900,
-        "desk": 1500
-      },
-      "34": {
-        "name": "Bordj Bou Arréridj",
-        "status": "covered",
-        "time": "24-48h",
-        "home": 600,
-        "desk": 400
-      },
-      "35": {
-        "name": "Boumerdès",
-        "status": "covered",
-        "time": "24-48h",
-        "home": 700,
-        "desk": 450
-      },
-      "36": {
-        "name": "El Tarf",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 850,
-        "desk": 500
-      },
-      "37": {
-        "name": "Tindouf",
-        "status": "limited",
-        "time": "72-96h",
-        "home": 1700,
-        "desk": 1000
-      },
-      "38": {
-        "name": "Tissemsilt",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 850,
-        "desk": 500
-      },
-      "39": {
-        "name": "El Oued",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 1000,
-        "desk": 600
-      },
-      "40": {
-        "name": "Khenchela",
-        "status": "covered",
-        "time": "24-48h",
-        "home": 600,
-        "desk": 500
-      },
-      "41": {
-        "name": "Souk Ahras",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 850,
-        "desk": 500
-      },
-      "42": {
-        "name": "Tipaza",
-        "status": "covered",
-        "time": "24-48h",
-        "home": 600,
-        "desk": 450
-      },
-      "43": {
-        "name": "Mila",
-        "status": "covered",
-        "time": "24-48h",
-        "home": 600,
-        "desk": 500
-      },
-      "44": {
-        "name": "Aïn Defla",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 800,
-        "desk": 500
-      },
-      "45": {
-        "name": "Naâma",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 1200,
-        "desk": 800
-      },
-      "46": {
-        "name": "Aïn Témouchent",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 800,
-        "desk": 500
-      },
-      "47": {
-        "name": "Ghardaïa",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 1000,
-        "desk": 600
-      },
-      "48": {
-        "name": "Relizane",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 800,
-        "desk": 500
-      },
-      "49": {
-        "name": "Timimoun",
-        "status": "limited",
-        "time": "72-96h",
-        "home": 1500,
-        "desk": 1000
-      },
-      "50": {
-        "name": "Bordj Badji Mokhtar",
-        "status": "covered",
-        "time": "24-48h",
-        "home": 600,
-        "desk": 1500
-      },
-      "51": {
-        "name": "Ouled Djellal",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 900,
-        "desk": 500
-      },
-      "52": {
-        "name": "Béni Abbès",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 1200,
-        "desk": 800
-      },
-      "53": {
-        "name": "In Salah",
-        "status": "limited",
-        "time": "72-96h",
-        "home": 1800,
-        "desk": 1200
-      },
-      "54": {
-        "name": "In Guezzam",
-        "status": "coming",
-        "time": "Bientôt",
-        "home": 3500,
-        "desk": 3500
-      },
-      "55": {
-        "name": "Touggourt",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 1000,
-        "desk": 600
-      },
-      "56": {
-        "name": "Djanet",
-        "status": "coming",
-        "time": "Bientôt",
-        "home": 3500,
-        "desk": 3500
-      },
-      "57": {
-        "name": "El M'Ghair",
-        "status": "limited",
-        "time": "72-96h",
-        "home": 1800,
-        "desk": 1800
-      },
-      "58": {
-        "name": "El Meniaa",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 1000,
-        "desk": 600
-      },
-      "01": {
-        "name": "Adrar",
-        "status": "limited",
-        "time": "72-96h",
-        "home": 1500,
-        "desk": 1000
-      },
-      "02": {
-        "name": "Chlef",
-        "status": "covered",
-        "time": "24-48h",
-        "home": 700,
-        "desk": 450
-      },
-      "03": {
-        "name": "Laghouat",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 900,
-        "desk": 600
-      },
-      "04": {
-        "name": "Oum El Bouaghi",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 800,
-        "desk": 500
-      },
-      "05": {
-        "name": "Batna",
-        "status": "covered",
-        "time": "24-48h",
-        "home": 700,
-        "desk": 450
-      },
-      "06": {
-        "name": "Béjaïa",
-        "status": "covered",
-        "time": "24-48h",
-        "home": 700,
-        "desk": 450
-      },
-      "07": {
-        "name": "Biskra",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 900,
-        "desk": 500
-      },
-      "08": {
-        "name": "Béchar",
-        "status": "limited",
-        "time": "48-72h",
-        "home": 1200,
-        "desk": 800
-      },
-      "09": {
-        "name": "Blida",
-        "status": "covered",
-        "time": "24-48h",
-        "home": 700,
-        "desk": 450
-      }
+      "10": { "name": "Bouira", "status": "covered", "time": "24-48h", "home": 700, "desk": 450 },
+      "11": { "name": "Tamanrasset", "status": "limited", "time": "72-96h", "home": 2000, "desk": 1500 },
+      "12": { "name": "Tébessa", "status": "limited", "time": "48-72h", "home": 850, "desk": 500 },
+      "13": { "name": "Tlemcen", "status": "limited", "time": "48-72h", "home": 800, "desk": 500 },
+      "14": { "name": "Tiaret", "status": "limited", "time": "48-72h", "home": 800, "desk": 500 },
+      "15": { "name": "Tizi Ouzou", "status": "covered", "time": "24-48h", "home": 700, "desk": 450 },
+      "16": { "name": "Alger", "status": "covered", "time": "24-48h", "home": 600, "desk": 400 },
+      "17": { "name": "Djelfa", "status": "limited", "time": "48-72h", "home": 900, "desk": 600 },
+      "18": { "name": "Jijel", "status": "covered", "time": "24-48h", "home": 700, "desk": 450 },
+      "19": { "name": "Sétif", "status": "covered", "time": "24-48h", "home": 550, "desk": 300 },
+      "20": { "name": "Saïda", "status": "limited", "time": "48-72h", "home": 900, "desk": 500 },
+      "21": { "name": "Skikda", "status": "limited", "time": "48-72h", "home": 800, "desk": 500 },
+      "22": { "name": "Sidi Bel Abbès", "status": "limited", "time": "48-72h", "home": 800, "desk": 500 },
+      "23": { "name": "Annaba", "status": "covered", "time": "24-48h", "home": 700, "desk": 450 },
+      "24": { "name": "Guelma", "status": "limited", "time": "48-72h", "home": 850, "desk": 500 },
+      "25": { "name": "Constantine", "status": "covered", "time": "24-48h", "home": 650, "desk": 400 },
+      "26": { "name": "Médéa", "status": "limited", "time": "48-72h", "home": 800, "desk": 500 },
+      "27": { "name": "Mostaganem", "status": "limited", "time": "48-72h", "home": 800, "desk": 500 },
+      "28": { "name": "M'Sila", "status": "covered", "time": "24-48h", "home": 700, "desk": 450 },
+      "29": { "name": "Mascara", "status": "limited", "time": "48-72h", "home": 800, "desk": 500 },
+      "30": { "name": "Ouargla", "status": "limited", "time": "48-72h", "home": 1000, "desk": 600 },
+      "31": { "name": "Oran", "status": "covered", "time": "24-48h", "home": 700, "desk": 450 },
+      "32": { "name": "El Bayadh", "status": "limited", "time": "48-72h", "home": 1200, "desk": 800 },
+      "33": { "name": "Illizi", "status": "limited", "time": "72-96h", "home": 1900, "desk": 1500 },
+      "34": { "name": "Bordj Bou Arréridj", "status": "covered", "time": "24-48h", "home": 600, "desk": 400 },
+      "35": { "name": "Boumerdès", "status": "covered", "time": "24-48h", "home": 700, "desk": 450 },
+      "36": { "name": "El Tarf", "status": "limited", "time": "48-72h", "home": 850, "desk": 500 },
+      "37": { "name": "Tindouf", "status": "limited", "time": "72-96h", "home": 1700, "desk": 1000 },
+      "38": { "name": "Tissemsilt", "status": "limited", "time": "48-72h", "home": 850, "desk": 500 },
+      "39": { "name": "El Oued", "status": "limited", "time": "48-72h", "home": 1000, "desk": 600 },
+      "40": { "name": "Khenchela", "status": "covered", "time": "24-48h", "home": 600, "desk": 500 },
+      "41": { "name": "Souk Ahras", "status": "limited", "time": "48-72h", "home": 850, "desk": 500 },
+      "42": { "name": "Tipaza", "status": "covered", "time": "24-48h", "home": 600, "desk": 450 },
+      "43": { "name": "Mila", "status": "covered", "time": "24-48h", "home": 600, "desk": 500 },
+      "44": { "name": "Aïn Defla", "status": "limited", "time": "48-72h", "home": 800, "desk": 500 },
+      "45": { "name": "Naâma", "status": "limited", "time": "48-72h", "home": 1200, "desk": 800 },
+      "46": { "name": "Aïn Témouchent", "status": "limited", "time": "48-72h", "home": 800, "desk": 500 },
+      "47": { "name": "Ghardaïa", "status": "limited", "time": "48-72h", "home": 1000, "desk": 600 },
+      "48": { "name": "Relizane", "status": "limited", "time": "48-72h", "home": 800, "desk": 500 },
+      "49": { "name": "Timimoun", "status": "limited", "time": "72-96h", "home": 1500, "desk": 1000 },
+      "50": { "name": "Bordj Badji Mokhtar", "status": "covered", "time": "24-48h", "home": 600, "desk": 1500 },
+      "51": { "name": "Ouled Djellal", "status": "limited", "time": "48-72h", "home": 900, "desk": 500 },
+      "52": { "name": "Béni Abbès", "status": "limited", "time": "48-72h", "home": 1200, "desk": 800 },
+      "53": { "name": "In Salah", "status": "limited", "time": "72-96h", "home": 1800, "desk": 1200 },
+      "54": { "name": "In Guezzam", "status": "coming", "time": "Bientôt", "home": 3500, "desk": 3500 },
+      "55": { "name": "Touggourt", "status": "limited", "time": "48-72h", "home": 1000, "desk": 600 },
+      "56": { "name": "Djanet", "status": "coming", "time": "Bientôt", "home": 3500, "desk": 3500 },
+      "57": { "name": "El M'Ghair", "status": "limited", "time": "72-96h", "home": 1800, "desk": 1800 },
+      "58": { "name": "El Meniaa", "status": "limited", "time": "48-72h", "home": 1000, "desk": 600 },
+      "01": { "name": "Adrar", "status": "limited", "time": "72-96h", "home": 1500, "desk": 1000 },
+      "02": { "name": "Chlef", "status": "covered", "time": "24-48h", "home": 700, "desk": 450 },
+      "03": { "name": "Laghouat", "status": "limited", "time": "48-72h", "home": 900, "desk": 600 },
+      "04": { "name": "Oum El Bouaghi", "status": "limited", "time": "48-72h", "home": 800, "desk": 500 },
+      "05": { "name": "Batna", "status": "covered", "time": "24-48h", "home": 700, "desk": 450 },
+      "06": { "name": "Béjaïa", "status": "covered", "time": "24-48h", "home": 700, "desk": 450 },
+      "07": { "name": "Biskra", "status": "limited", "time": "48-72h", "home": 900, "desk": 500 },
+      "08": { "name": "Béchar", "status": "limited", "time": "48-72h", "home": 1200, "desk": 800 },
+      "09": { "name": "Blida", "status": "covered", "time": "24-48h", "home": 700, "desk": 450 }
     };
 
     // Générer le SVG de la carte
@@ -1396,7 +1265,7 @@
     }
 
     function handleWilayaHover(e) {
-      e.currentTarget.style.filter = 'drop-shadow(0 0 8px rgba(212, 175, 55, 0.6))';
+      e.currentTarget.style.filter = 'drop-shadow(0 0 12px rgba(255, 184, 0, 0.7))';
     }
 
     function handleWilayaLeave(e) {
@@ -1413,7 +1282,7 @@
           const code = path.dataset.code;
           if (name.includes(query) || code.includes(query)) {
             path.style.opacity = '1';
-            path.style.stroke = query ? '#DC143C' : '#FFFFFF';
+            path.style.stroke = query ? '#FFB800' : '#FFFFFF';
             path.style.strokeWidth = query ? '2' : '0.5';
           } else {
             path.style.opacity = '0.3';
@@ -1429,7 +1298,6 @@
       document.getElementById('orderBtn').addEventListener('click', () => {
         const code = document.querySelector('.wilaya-path[data-code]')?.dataset.code;
         if (code) {
-          // Rediriger vers la boutique avec la wilaya pré-sélectionnée
           window.location.href = `index.html?wilaya=${code}`;
         }
       });
