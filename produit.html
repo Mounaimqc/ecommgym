@@ -14,46 +14,38 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* ========== POWER ZONE - PREMIUM ATHLETIC THEME ========== */
         :root {
             --pz-onyx: #0A0A0F;
             --pz-graphite: #1A1D29;
             --pz-charcoal: #252836;
             --pz-slate: #3D4152;
-            
             --pz-gold: #FFB800;
             --pz-gold-light: #FFD666;
             --pz-gold-glow: rgba(255, 184, 0, 0.25);
             --pz-gold-dark: #CC9200;
-            
             --pz-energy: #FF4D2E;
             --pz-energy-light: #FF6B4D;
             --pz-energy-dark: #E63E1F;
             --pz-energy-glow: rgba(255, 77, 46, 0.3);
-            
             --pz-white: #FFFFFF;
             --pz-cream: #FAF9F6;
             --pz-light: #F3F4F6;
             --pz-silver: #9CA3AF;
             --pz-grey: #4B5563;
             --pz-dark: #1F2937;
-            
             --pz-success: #10B981;
             --pz-success-light: rgba(16, 185, 129, 0.15);
             --pz-danger: #EF4444;
             --pz-info: #3B82F6;
-            
             --shadow-sm: 0 2px 8px rgba(10, 10, 15, 0.08);
             --shadow: 0 10px 30px rgba(10, 10, 15, 0.12);
             --shadow-lg: 0 20px 50px rgba(10, 10, 15, 0.2);
             --shadow-gold: 0 15px 40px rgba(255, 184, 0, 0.3);
             --shadow-energy: 0 10px 30px rgba(255, 77, 46, 0.4);
-            
             --radius: 8px;
             --radius-lg: 16px;
             --radius-xl: 24px;
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            
             --gradient-gold: linear-gradient(135deg, #FFB800 0%, #CC9200 100%);
             --gradient-energy: linear-gradient(135deg, #FF4D2E 0%, #E63E1F 100%);
             --gradient-dark: linear-gradient(180deg, #0A0A0F 0%, #1A1D29 100%);
@@ -79,7 +71,6 @@
         a { text-decoration: none; color: inherit; transition: var(--transition); }
         button { font-family: 'Inter', sans-serif; cursor: pointer; border: none; outline: none; transition: var(--transition); }
 
-        /* ========== HEADER ========== */
         .header {
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
@@ -168,7 +159,6 @@
             box-shadow: var(--shadow-energy);
         }
 
-        /* ========== SINGLE PRODUCT LAYOUT ========== */
         .single-product-container {
             max-width: 1200px; margin: 60px auto; padding: 0 24px;
             display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
@@ -293,7 +283,6 @@
             box-shadow: none;
         }
 
-        /* ========== QUICK ORDER FORM ========== */
         .quick-order-section {
             margin-top: 40px;
             padding: 30px;
@@ -452,7 +441,6 @@
             background: var(--pz-light);
         }
 
-        /* Flavor Selector */
         .flavor-selector-btn {
             padding: 12px 20px;
             background: var(--pz-white);
@@ -475,7 +463,6 @@
             box-shadow: var(--shadow-gold);
         }
 
-        /* ========== MODALS ========== */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(10, 10, 15, 0.85); 
@@ -613,7 +600,6 @@
         #shippingPrice, #grandTotal { color: var(--pz-gold-dark); font-weight: 700; }
         #totalPrice { color: var(--pz-gold-dark); font-weight: 900; }
 
-        /* Form elements for modal */
         .form-group { margin-bottom: 20px; }
         .form-label { 
             display: block; margin-bottom: 8px; font-weight: 700; 
@@ -636,7 +622,6 @@
         }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         
-        /* ========== FOOTER ========== */
         .footer { 
             background: var(--pz-onyx); 
             padding: 80px 24px 30px; 
@@ -707,6 +692,106 @@
             font-size: 0.9rem;
         }
 
+        /* 🆕 ========== NUTRITION TABLE STYLES ========== */
+        .nutrition-section {
+            margin-top: 30px;
+            background: var(--pz-white);
+            border-radius: var(--radius-xl);
+            padding: 30px;
+            border: 2px solid var(--pz-light);
+            box-shadow: var(--shadow);
+        }
+
+        .nutrition-title {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--pz-onyx);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+        }
+
+        .nutrition-title i {
+            color: var(--pz-gold);
+        }
+
+        .nutrition-subtitle {
+            color: var(--pz-grey);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--pz-gold);
+        }
+
+        .nutrition-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--pz-cream);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nutrition-table thead {
+            background: var(--gradient-gold);
+        }
+
+        .nutrition-table thead th {
+            padding: 14px 18px;
+            text-align: left;
+            font-weight: 900;
+            color: var(--pz-onyx);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .nutrition-table thead th:last-child {
+            text-align: right;
+        }
+
+        .nutrition-table tbody tr {
+            border-bottom: 1px solid var(--pz-light);
+            transition: var(--transition);
+        }
+
+        .nutrition-table tbody tr:hover {
+            background: var(--pz-gold-glow);
+        }
+
+        .nutrition-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .nutrition-table tbody td {
+            padding: 14px 18px;
+            color: var(--pz-dark);
+            font-size: 0.95rem;
+        }
+
+        .nutrition-table tbody td:first-child {
+            font-weight: 600;
+            color: var(--pz-onyx);
+        }
+
+        .nutrition-table tbody td:last-child {
+            text-align: right;
+            font-weight: 800;
+            color: var(--pz-gold-dark);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.05rem;
+        }
+
+        .nutrition-table tbody td .unit {
+            font-size: 0.8rem;
+            color: var(--pz-silver);
+            margin-left: 4px;
+            font-weight: 600;
+        }
+
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -719,7 +804,6 @@
         }
         ::-webkit-scrollbar-thumb:hover { background: var(--pz-gold-dark); }
 
-        /* ========== RESPONSIVE ========== */
         @media (max-width: 1024px) {
             .header-container { padding: 14px 20px; }
             .logo img { height: 50px; }
@@ -779,6 +863,10 @@
             
             .quick-order-section { padding: 20px; }
             .quick-order-form .form-row { grid-template-columns: 1fr; }
+
+            /* 🆕 Responsive Nutrition Table */
+            .nutrition-section { padding: 20px; }
+            .nutrition-title { font-size: 1.2rem; }
         }
         
         @media (max-width: 480px) {
@@ -806,6 +894,13 @@
             
             .quick-order-section { padding: 16px; }
             .quick-order-title { font-size: 1.2rem; }
+
+            /* 🆕 Mobile Nutrition Table */
+            .nutrition-section { padding: 18px; }
+            .nutrition-title { font-size: 1.1rem; }
+            .nutrition-table thead th,
+            .nutrition-table tbody td { padding: 10px 12px; font-size: 0.85rem; }
+            .nutrition-table tbody td:last-child { font-size: 0.95rem; }
         }
         
         @media (max-width: 360px) {
@@ -847,10 +942,8 @@
         </div>
     </header>
 
-    <!-- Hidden productsGrid for script.js compatibility -->
     <div id="productsGrid" style="display:none;"></div>
 
-    <!-- Single Product Section -->
     <main class="single-product-container" id="single-product-container">
         <div style="grid-column: 1/-1; text-align:center; padding: 100px 0;">
             <i class="fa-solid fa-dumbbell fa-spin" style="font-size:3rem; color:var(--pz-gold); margin-bottom:20px;"></i>
@@ -1110,13 +1203,11 @@
             "55 - Touggourt": 600, "56 - Djanet": 1600, "57 - El M'Ghair": 1800, "58 - El Meniaa": 800
         };
 
-        // Helper: Get wilaya key from code
         function getWilayaKey(code) {
             const paddedCode = code.padStart(2, '0');
             return Object.keys(wilayasData).find(key => key.startsWith(paddedCode + ' -')) || null;
         }
 
-        // Helper: Get shipping price
         function getShippingPrice(wilayaCode, orderType) {
             const key = getWilayaKey(wilayaCode);
             if (!key) return 0;
@@ -1251,6 +1342,33 @@
                         </div>
                     ` : '';
 
+                    // 🆕 Nutrition Table HTML
+                    const nutritionHTML = (product.ingredients && product.ingredients.length > 0) ? `
+                        <div class="nutrition-section">
+                            <h3 class="nutrition-title">
+                                <i class="fa-solid fa-flask"></i>
+                                Ingrédients & Valeurs Nutritionnelles
+                            </h3>
+                            <p class="nutrition-subtitle">Composition détaillée de ce produit</p>
+                            <table class="nutrition-table">
+                                <thead>
+                                    <tr>
+                                        <th><i class="fa-solid fa-vial"></i> Composant</th>
+                                        <th>Quantité</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${product.ingredients.map(ing => `
+                                        <tr>
+                                            <td>${ing.name}</td>
+                                            <td>${ing.value}<span class="unit">${ing.unit || 'g'}</span></td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    ` : '';
+
                     container.innerHTML = `
                         <div class="product-image-container">
                             <img id="main-product-image" src="${pImage}" alt="${pName}" onerror="this.src='https://via.placeholder.com/600x600?text=Produit'">
@@ -1275,6 +1393,8 @@
                                 </div>
                             </div>` : ''}
 
+                            ${nutritionHTML}
+
                             <div style="margin-top: 40px;">
                                 ${cartBtnHTML}
                             </div>
@@ -1283,7 +1403,6 @@
                         </div>
                     `;
 
-                    // Add event listeners for flavor selectors
                     if (product.flavors && product.flavors.length > 0) {
                         const mainImg = document.getElementById('main-product-image');
                         const btns = document.querySelectorAll('.flavor-selector-btn');
@@ -1304,7 +1423,6 @@
                         });
                     }
 
-                    // Initialize quick order form
                     if (pQty > 0) {
                         initQuickOrderForm(pPrice);
                     }
@@ -1330,15 +1448,12 @@
             const commune = document.getElementById('quickCommune');
             const shippingInfo = document.getElementById('quickShippingInfo');
             
-            // Load wilayas and communes
             loadWilayas(wilaya, commune);
             
-            // Calculate shipping on type change
             orderType.addEventListener('change', () => {
                 calculateQuickShipping(productPrice);
             });
             
-            // Calculate shipping on wilaya/commune change
             wilaya.addEventListener('change', () => {
                 loadCommunes(wilaya.value, commune);
                 calculateQuickShipping(productPrice);
@@ -1348,7 +1463,6 @@
                 calculateQuickShipping(productPrice);
             });
             
-            // Handle form submission
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 await submitQuickOrder(productPrice);
@@ -1366,7 +1480,6 @@
                 return;
             }
             
-            // Calculate shipping using real prices
             const shippingPrice = getShippingPrice(wilaya, orderType);
             const grandTotal = productPrice + shippingPrice;
             
@@ -1392,22 +1505,18 @@
                 const wilayaCode = document.getElementById('quickWilaya').value;
                 const commune = document.getElementById('quickCommune').value;
                 
-                // Get wilaya name
                 const wilayaKey = getWilayaKey(wilayaCode);
                 const wilayaName = wilayaKey ? wilayaKey.split(' - ')[1] : wilayaCode;
                 
-                // Calculate shipping using real prices
                 const shippingPrice = getShippingPrice(wilayaCode, orderType);
                 const grandTotal = productPrice + shippingPrice;
                 
-                // Get selected flavor
                 let selectedFlavor = null;
                 const activeBtn = document.querySelector('.flavor-selector-btn.active');
                 if (activeBtn) {
                     selectedFlavor = activeBtn.textContent.trim();
                 }
                 
-                // Create order object
                 const orderData = {
                     orderNumber: generateOrderNumber(),
                     date: new Date().toISOString(),
@@ -1434,11 +1543,9 @@
                     driverPhone: ''
                 };
                 
-                // Save to Firebase
                 const { collection, addDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
                 await addDoc(collection(db, "commandes"), orderData);
                 
-                // Show success modal
                 document.getElementById('orderNumber').textContent = orderData.orderNumber;
                 document.getElementById('confirmModal').classList.add('active');
                 
@@ -1460,7 +1567,6 @@
             return `PZ${year}${month}${day}${random}`;
         }
 
-        // Load wilayas from real data
         function loadWilayas(wilayaSelect, communeSelect) {
             wilayaSelect.innerHTML = '<option value="">Sélectionner une wilaya</option>';
             Object.keys(wilayasData).sort().forEach(key => {
@@ -1470,7 +1576,6 @@
             });
         }
 
-        // Load communes from real data
         function loadCommunes(wilayaCode, communeSelect) {
             const key = getWilayaKey(wilayaCode);
             communeSelect.innerHTML = '<option value="">Sélectionner une commune</option>';
