@@ -13,23 +13,35 @@
   
   <style>
     :root {
-      --primary: #DC143C;
-      --primary-dark: #b30000;
-      --primary-light: #FF6B7A;
+      /* Power Zone Theme Colors */
+      --primary: #FFB800;
+      --primary-dark: #CC9200;
+      --primary-light: #FFD666;
+      --primary-glow: rgba(255, 184, 0, 0.25);
+      
       --success: #10b981;
       --warning: #f59e0b;
       --danger: #ef4444;
-      --bg: #050505;
-      --surface: #111111;
-      --surface-hover: #1a1a1a;
-      --text: #fff;
-      --text-light: #888;
-      --border: #333;
+      --info: #3B82F6;
+      
+      --bg: #0A0A0F;
+      --surface: #1A1D29;
+      --surface-hover: #252836;
+      --text: #FFFFFF;
+      --text-light: #9CA3AF;
+      --border: #3D4152;
+      
       --shadow: 0 8px 30px rgba(0, 0, 0, .5);
       --shadow-lg: 0 20px 60px rgba(0, 0, 0, .7);
+      --shadow-gold: 0 10px 30px rgba(255, 184, 0, 0.3);
+      
       --radius: 8px;
       --radius-lg: 16px;
       --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      
+      --gradient-gold: linear-gradient(135deg, #FFB800 0%, #CC9200 100%);
+      --gradient-dark: linear-gradient(180deg, #0A0A0F 0%, #1A1D29 100%);
+      
       --sidebar-width: 250px;
       --sidebar-collapsed: 70px;
       --header-height: 70px;
@@ -89,7 +101,7 @@
     }
     .nav-link i { width: 20px; text-align: center; font-size: 1rem; }
     .nav-link:hover, .nav-link.active {
-      background: rgba(220, 20, 60, 0.15);
+      background: rgba(255, 184, 0, 0.15);
       color: var(--primary);
     }
     .nav-link.active { font-weight: 600; border-left: 3px solid var(--primary); padding-left: 13px; }
@@ -153,8 +165,8 @@
     }
     .user-avatar {
       width: 36px; height: 36px;
-      background: var(--primary);
-      color: #000;
+      background: var(--gradient-gold);
+      color: var(--bg);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       font-weight: 700; font-size: 0.9rem;
@@ -182,7 +194,7 @@
       border: 1px solid var(--border);
       transition: var(--transition);
     }
-    .stat-card:hover { transform: translateY(-2px); border-color: var(--primary); }
+    .stat-card:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: var(--shadow-gold); }
     
     .stat-info h3 { font-size: 0.8rem; color: var(--text-light); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
     .stat-info p { font-size: 1.5rem; font-weight: 700; margin-top: 6px; font-family: 'Montserrat', sans-serif; }
@@ -194,7 +206,7 @@
       font-size: 1.1rem;
       flex-shrink: 0;
     }
-    .icon-blue { background: rgba(220, 20, 60, 0.15); color: var(--primary); }
+    .icon-blue { background: rgba(255, 184, 0, 0.15); color: var(--primary); }
     .icon-green { background: rgba(16, 185, 129, 0.15); color: var(--success); }
     .icon-orange { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
     .icon-red { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
@@ -241,7 +253,7 @@
     .input-group input:focus,
     .input-group select:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.2);
+      box-shadow: 0 0 0 3px var(--primary-glow);
     }
 
     .btn {
@@ -256,10 +268,10 @@
       white-space: nowrap;
     }
     .btn i { font-size: 0.9rem; }
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .btn-primary { background: var(--gradient-gold); color: var(--bg); box-shadow: var(--shadow-gold); }
+    .btn-primary:hover { transform: translateY(-1px); filter: brightness(1.1); box-shadow: 0 12px 35px rgba(255, 184, 0, 0.5); }
     .btn-outline { background: var(--bg); border: 1px solid var(--border); color: var(--text); }
-    .btn-outline:hover { background: var(--surface-hover); border-color: var(--primary); }
+    .btn-outline:hover { background: var(--surface-hover); border-color: var(--primary); color: var(--primary); }
 
     /* ========== TABLE ========== */
     .table-container {
@@ -300,7 +312,7 @@
       white-space: nowrap;
     }
     
-    tr:hover { background: rgba(220, 20, 60, 0.05); }
+    tr:hover { background: rgba(255, 184, 0, 0.05); }
     
     .order-number { font-weight: 600; color: var(--primary); font-family: 'Montserrat', sans-serif; }
     .client-name { font-weight: 500; }
@@ -316,7 +328,7 @@
       gap: 5px;
     }
     .status-pending { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
-    .status-accepted { background: rgba(220, 20, 60, 0.15); color: var(--primary); }
+    .status-accepted { background: rgba(255, 184, 0, 0.15); color: var(--primary); }
     .status-shipped { background: rgba(16, 185, 129, 0.15); color: var(--success); }
     .status-arrived { background: rgba(255, 255, 255, 0.1); color: var(--text); }
     .status-returned { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
@@ -329,7 +341,7 @@
       display: flex; align-items: center; justify-content: center;
       transition: var(--transition);
     }
-    .icon-btn:hover { background: rgba(220, 20, 60, 0.15); color: var(--primary); }
+    .icon-btn:hover { background: rgba(255, 184, 0, 0.15); color: var(--primary); }
     .icon-btn.delete:hover { color: var(--danger); background: rgba(239, 68, 68, 0.15); }
 
     /* ========== MODALS ========== */
@@ -389,7 +401,7 @@
       font-size: 0.9rem;
       transition: var(--transition);
     }
-    .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.2); }
+    .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
     textarea.form-control { min-height: 80px; resize: vertical; }
     
     .detail-row {
@@ -415,7 +427,7 @@
     .driver-section {
       margin-top: 20px;
       padding: 16px;
-      background: rgba(220, 20, 60, 0.1);
+      background: rgba(255, 184, 0, 0.1);
       border-radius: var(--radius);
       border: 1px solid var(--primary);
       display: none;
@@ -427,6 +439,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      color: var(--primary);
     }
     .driver-section .form-row {
       display: grid;
@@ -498,6 +511,16 @@
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+    /* ========== SCROLLBAR ========== */
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { 
+      background: var(--gradient-gold); 
+      border-radius: 10px;
+      border: 2px solid var(--bg);
+    }
+    ::-webkit-scrollbar-thumb:hover { background: var(--primary-dark); }
 
     /* ========== RESPONSIVE MEDIA QUERIES ========== */
     
@@ -809,7 +832,7 @@
     </div>
   </div>
 
-  <!-- Add Product Modal - MODIFIED FOR CLOUDINARY -->
+  <!-- Add Product Modal -->
   <div class="modal-overlay" id="addProductModal">
     <div class="modal">
       <div class="modal-header">
@@ -823,11 +846,10 @@
             <input type="text" id="productName" class="form-control" required placeholder="Ex: Whey Protein Gold">
           </div>
           
-          <!-- 🔁 Image Upload Section - Modified for Cloudinary -->
+          <!-- Image Upload Section -->
           <div class="form-group">
             <label class="form-label">Image du produit *</label>
             
-            <!-- Mode Toggle Buttons -->
             <div class="image-mode-toggle">
               <button type="button" id="imageModeUrl" class="btn btn-primary">
                 <i class="fa-solid fa-link"></i> URL
@@ -837,23 +859,19 @@
               </button>
             </div>
             
-            <!-- URL Mode (Default - Visible) -->
             <div id="imageModeUrlContainer">
               <input type="url" id="productImage" class="form-control" placeholder="https://example.com/image.jpg">
             </div>
             
-            <!-- Upload Mode (Hidden by Default) -->
             <div id="imageModeUploadContainer" style="display:none;">
               <input type="file" id="productImageFile" class="form-control" accept="image/*" style="padding:8px; cursor:pointer;">
               
-              <!-- Preview Container -->
               <div id="imagePreview" class="image-preview-container">
                 <p>Aperçu:</p>
                 <img id="previewImg" src="" alt="Preview">
               </div>
             </div>
             
-            <!-- Hidden field to store final image URL -->
             <input type="hidden" id="productImageFinal">
             
             <p class="upload-hint">
@@ -967,7 +985,6 @@
     function closeDetail() { closeModal('detailModal'); }
     function closeAddProductModal() { closeModal('addProductModal'); }
     function openAddProductModal() { 
-      // Reset form when opening
       resetProductForm();
       openModal('addProductModal'); 
     }
@@ -1038,11 +1055,9 @@
       const form = document.getElementById('addProductForm');
       if (form) form.reset();
       
-      // Reset flavors list
       const flavorsList = document.getElementById('flavorsList');
       if (flavorsList) flavorsList.innerHTML = '';
       
-      // Reset image preview
       const previewContainer = document.getElementById('imagePreview');
       if (previewContainer) previewContainer.style.display = 'none';
       const previewImg = document.getElementById('previewImg');
@@ -1050,7 +1065,6 @@
       const fileInput = document.getElementById('productImageFile');
       if (fileInput) fileInput.value = '';
       
-      // Reset to URL mode
       const urlContainer = document.getElementById('imageModeUrlContainer');
       const uploadContainer = document.getElementById('imageModeUploadContainer');
       const modeUrlBtn = document.getElementById('imageModeUrl');
@@ -1061,13 +1075,11 @@
       if (modeUrlBtn) modeUrlBtn.className = 'btn btn-primary';
       if (modeUploadBtn) modeUploadBtn.className = 'btn btn-outline';
       
-      // Clear hidden final image field
       const finalImageInput = document.getElementById('productImageFinal');
       if (finalImageInput) finalImageInput.value = '';
     }
   </script>
   
-  <!-- ✅ Order matters: config first, then services, then main logic -->
   <script type="module" src="firebase-config.js"></script>
   <script type="module" src="db-service.js"></script>
   <script type="module" src="admin.js"></script>
