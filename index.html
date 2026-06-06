@@ -137,7 +137,7 @@
       margin-top: 3px;
     }
 
-    /* Header Actions - بدون تأثير hover المعقد */
+    /* Header Actions */
     .header-actions { 
       display: flex; align-items: center; gap: 12px;
       flex-wrap: wrap;
@@ -184,80 +184,128 @@
       box-shadow: var(--shadow-energy);
     }
 
-  /* ========== HERO ========== */
-.hero {
-  position: relative;
-  padding: 140px 24px 100px; 
-  text-align: center; 
-  overflow: hidden;
-  margin-bottom: 0;
-  background: var(--pz-onyx); /* لون احتياطي */
-}
+    /* ========== HERO - BIG & POWERFUL ========== */
+    .hero {
+      position: relative;
+      min-height: 85vh;
+      padding: 180px 24px 140px;
+      text-align: center;
+      overflow: hidden;
+      margin-bottom: 0;
+      background: var(--pz-onyx);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-/* خلفية الفيديو */
-.hero-video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
-}
+    /* فيديو الخلفية */
+    .hero-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      opacity: 1;
+    }
 
-/* طبقة التعتيم فوق الفيديو */
-.hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, rgba(10, 10, 15, 0.85) 0%, rgba(26, 29, 41, 0.75) 100%);
-  z-index: 1;
-}
+    /* طبقة التعتيم فوق الفيديو */
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(10, 10, 15, 0.88) 0%, rgba(26, 29, 41, 0.78) 50%, rgba(10, 10, 15, 0.85) 100%);
+      z-index: 1;
+    }
 
-/* المحتوى فوق الفيديو */
-.hero-content {
-  position: relative;
-  z-index: 2;
-}
+    /* المحتوى */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1000px;
+      margin: 0 auto;
+      animation: slideUp 1s ease-out;
+    }
 
-.hero::after {
-  content: ''; 
-  position: absolute; 
-  bottom: 0; 
-  left: 0; 
-  right: 0;
-  height: 6px; 
-  background: var(--gradient-gold);
-  box-shadow: 0 0 30px var(--pz-gold-glow);
-  z-index: 3;
-}
+    .hero::after {
+      content: ''; 
+      position: absolute; 
+      bottom: 0; 
+      left: 0; 
+      right: 0;
+      height: 6px; 
+      background: var(--gradient-gold);
+      box-shadow: 0 0 30px var(--pz-gold-glow);
+      z-index: 3;
+    }
 
-.hero h1 { 
-  font-size: 3.8rem; 
-  margin-bottom: 16px; 
-  color: var(--pz-white); 
-  letter-spacing: -1px;
-  font-weight: 900;
-  text-shadow: 0 4px 30px rgba(0,0,0,0.5);
-}
+    .hero h1 { 
+      font-size: 5.5rem; 
+      margin-bottom: 24px; 
+      color: var(--pz-white); 
+      letter-spacing: -2px;
+      font-weight: 900;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.7);
+      line-height: 1.05;
+    }
 
-.hero h1 span { 
-  background: var(--gradient-gold);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 20px var(--pz-gold-glow));
-}
+    .hero h1 span { 
+      background: var(--gradient-gold);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 30px var(--pz-gold-glow));
+      display: inline-block;
+    }
 
-.hero p { 
-  font-size: 1.15rem; 
-  color: rgba(255,255,255,0.85); 
-  max-width: 600px; 
-  margin: 20px auto 0;
-  font-weight: 400;
-}
+    .hero p { 
+      font-size: 1.4rem; 
+      color: rgba(255,255,255,0.9); 
+      max-width: 750px; 
+      margin: 30px auto 0;
+      font-weight: 400;
+      line-height: 1.6;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .hero-cta {
+      margin-top: 50px;
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-cta .btn {
+      padding: 18px 40px;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+    }
+
+    .hero-cta .btn-primary {
+      box-shadow: var(--shadow-gold);
+    }
+
+    .hero-cta .btn-primary:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(255, 184, 0, 0.5);
+    }
+
+    .hero-cta .btn-outline {
+      background: transparent;
+      border: 2px solid var(--pz-white);
+      color: var(--pz-white);
+    }
+
+    .hero-cta .btn-outline:hover {
+      background: var(--pz-white);
+      color: var(--pz-onyx);
+      transform: translateY(-4px);
+    }
+
     /* ========== CATEGORIES SLIDER ========== */
     .categories-section {
       padding: 80px 0 60px;
@@ -893,12 +941,20 @@
 
     /* ========== RESPONSIVE ========== */
     
+    /* Large Desktops */
+    @media (min-width: 1600px) {
+      .hero h1 { font-size: 6.5rem; }
+      .hero p { font-size: 1.6rem; }
+    }
+    
     /* Tablets & Small Desktops */
     @media (max-width: 1024px) {
       .header-container { padding: 14px 20px; }
       .logo img { height: 50px; }
       .brand-name { font-size: 1.3rem; }
       .header-btn { padding: 9px 14px; font-size: 0.85rem; }
+      .hero h1 { font-size: 4rem; }
+      .hero p { font-size: 1.2rem; }
     }
     
     /* Tablets */
@@ -906,6 +962,8 @@
       .coverage-container { grid-template-columns: 1fr; gap: 40px; }
       .coverage-info h2 { font-size: 2rem; }
       .category-card { flex: 0 0 250px; }
+      .hero { min-height: 70vh; padding: 140px 24px 100px; }
+      .hero h1 { font-size: 3.5rem; }
     }
     
     /* Mobile Landscape & Large Phones */
@@ -940,8 +998,23 @@
       .header-btn span { display: none; }
       .cart-btn span:first-of-type { display: inline; }
       
-      .hero { padding: 80px 20px 60px; }
-      .hero h1 { font-size: 2.2rem; }
+      .hero { 
+        min-height: 60vh;
+        padding: 120px 20px 80px; 
+      }
+      .hero h1 { 
+        font-size: 2.5rem; 
+        letter-spacing: -1px;
+      }
+      .hero p { 
+        font-size: 1rem; 
+        margin-top: 20px;
+      }
+      .hero-cta .btn {
+        padding: 14px 28px;
+        font-size: 0.95rem;
+      }
+      
       .modal { width: 95%; margin: 10px; }
       .categories-section { padding: 40px 0 30px; }
       .section-title { font-size: 1.8rem; margin-bottom: 30px; }
@@ -968,6 +1041,26 @@
       }
       .header-btn i { font-size: 0.9rem; }
       
+      .hero { 
+        min-height: 55vh;
+        padding: 100px 16px 70px;
+      }
+      .hero h1 { 
+        font-size: 2rem;
+        letter-spacing: -0.5px;
+      }
+      .hero p { 
+        font-size: 0.95rem;
+      }
+      .hero-cta {
+        margin-top: 30px;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .hero-cta .btn {
+        width: 100%;
+      }
+      
       .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 10px; }
       .product-info { padding: 15px; }
       .product-name { font-size: 0.9rem; min-height: 2.6rem; }
@@ -991,6 +1084,8 @@
       .header-btn { padding: 7px 8px; font-size: 0.7rem; }
       .logo img { height: 38px; }
       .brand-name { font-size: 1.1rem; }
+      .hero h1 { font-size: 1.7rem; }
+      .hero p { font-size: 0.85rem; }
     }
 
     /* ========== ANIMATIONS ========== */
@@ -1000,7 +1095,7 @@
     }
 
     @keyframes slideUp {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(40px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -1048,8 +1143,23 @@
 
   <!-- Hero -->
   <section class="hero">
-    <h1>REVEILLEZ LA <span class="gold-text">BÊTE</span> EN VOUS.</h1>
-    <p>Nutrition sportive haut de gamme. Dépassez vos limites avec les suppléments les plus puissants du marché Algérien.</p>
+    <!-- فيديو الخلفية -->
+    <video class="hero-video" autoplay muted loop playsinline preload="auto">
+      <source src="https://minio-prod.ekiclik.dz/chat-boot-images/goldnbody.mp4" type="video/mp4">
+    </video>
+    
+    <!-- طبقة التعتيم -->
+    <div class="hero-overlay"></div>
+    
+    <!-- المحتوى -->
+    <div class="hero-content">
+      <h1>REVEILLEZ LA <span class="gold-text">BÊTE</span> EN VOUS.</h1>
+      <p>Nutrition sportive haut de gamme. Dépassez vos limites avec les suppléments les plus puissants du marché Algérien.</p>
+      <div class="hero-cta">
+        <a href="#productsGrid" class="btn btn-primary">DÉCOUVRIR <i class="fa-solid fa-bolt"></i></a>
+        <a href="couverture.html" class="btn btn-outline">LIVRAISON <i class="fa-solid fa-truck-fast"></i></a>
+      </div>
+    </div>
   </section>
 
   <!-- Categories Slider -->
