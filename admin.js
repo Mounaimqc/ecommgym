@@ -72,7 +72,16 @@ function displayCommandes(commandes) {
 
 function showDetail(orderNumber) {
   const cmd = allCommandes.find(c => c.orderNumber === orderNumber);
-  if (!cmd) return;
+  if (!cmd) {
+    showNotification('❌ Commande introuvable', 'error');
+    return;
+  }
+
+  // 🔍 DEBUG: عرض هيكل البيانات في الكونسول
+  console.log('📋 Commande complète:', cmd);
+  console.log('📦 cartItems:', cmd.cartItems);
+  console.log('📦 items:', cmd.items);
+  console.log('📦 products:', cmd.products);
 
   document.getElementById('detailModal').dataset.firebaseId = cmd.id;
   document.getElementById('detailModal').dataset.currentOrderNumber = orderNumber;
@@ -80,6 +89,7 @@ function showDetail(orderNumber) {
   document.getElementById('detailDate').textContent = formatDateTime(cmd.date);
   document.getElementById('detailName').textContent = `${cmd.firstName || ''} ${cmd.lastName || ''}`;
   document.getElementById('detailPhone1').textContent = cmd.phone1 || '—';
+  document.getElementById('detailPhone1').href = cmd.phone1 ? `tel:${cmd.phone1}` : '#';
   document.getElementById('detailPhone2').textContent = cmd.phone2 || '—';
   document.getElementById('detailWilaya').textContent = cmd.wilaya || '—';
   document.getElementById('detailCommune').textContent = cmd.commune || '—';
@@ -90,15 +100,63 @@ function showDetail(orderNumber) {
   badge.className = 'status-badge ' + getStatusClass(status);
   document.getElementById('statusSelect').value = status;
 
+  // 🆕 عرض المنتجات مع الصور والتفاصيل
   const itemsContainer = document.getElementById('detailItems');
-  if (cmd.cartItems?.length > 0) {
-    itemsContainer.innerHTML = cmd.cartItems.map(item => `
-      <div class="detail-row">
-        <span class="detail-label">${item.name} ${item.flavor ? `<span style="color:var(--primary); font-size:0.8rem;">(${item.flavor})</span>` : ''} ×${item.quantity}</span>
-        <span class="detail-value">${(item.price * item.quantity).toFixed(2)} DA</span>
-      </div>`).join('');
+  
+  // البحث عن المنتجات في عدة حقول محتملة
+  const cartItems = cmd.cartItems || cmd.items || cmd.products || [];
+  
+  if (cartItems.length > 0) {
+    itemsContainer.innerHTML = cartItems.map((item, index) => {
+      const itemImage = item.image || item.imageUrl || item.img || '';
+      const itemName = item.name || item.productName || `Produit ${index + 1}`;
+      const itemPrice = item.price || 0;
+      const itemQuantity = item.quantity || item.qty || 1;
+      const itemFlavor = item.flavor || item.variant || '';
+      const itemTotal = itemPrice * itemQuantity;
+      
+      return `
+        <div class="detail-item" style="display:flex; gap:12px; padding:12px; background:var(--bg); border-radius:var(--radius); margin-bottom:10px; border:1px solid var(--border);">
+          ${itemImage ? `
+            <div style="flex-shrink:0; width:80px; height:80px; background:var(--surface); border-radius:var(--radius); overflow:hidden; display:flex; align-items:center; justify-content:center;">
+              <img src="${itemImage}" alt="${itemName}" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.style.display='none'">
+            </div>
+          ` : ''}
+          
+          <div style="flex:1; min-width:0;">
+            <div style="font-weight:600; font-size:0.95rem; margin-bottom:6px; color:var(--text);">
+              ${itemName}
+              ${itemFlavor ? `<span style="color:var(--primary); font-size:0.8rem; margin-left:8px;">(${itemFlavor})</span>` : ''}
+            </div>
+            
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <div style="color:var(--text-light); font-size:0.85rem;">
+                <span style="font-weight:600; color:var(--primary);">${itemQuantity}×</span> 
+                <span>${itemPrice.toFixed(2)} DA</span>
+              </div>
+              
+              <div style="font-weight:700; color:var(--primary); font-family:'Montserrat',sans-serif;">
+                ${itemTotal.toFixed(2)} DA
+              </div>
+            </div>
+            
+            ${item.description ? `
+              <div style="font-size:0.75rem; color:var(--text-light); margin-top:6px; line-height:1.4;">
+                ${item.description.substring(0, 80)}${item.description.length > 80 ? '...' : ''}
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
   } else {
-    itemsContainer.innerHTML = '<p style="text-align:center;color:var(--text-light)">Aucun produit</p>';
+    itemsContainer.innerHTML = `
+      <div style="text-align:center; padding:30px; color:var(--text-light);">
+        <i class="fa-solid fa-box-open" style="font-size:2rem; margin-bottom:10px; opacity:0.5;"></i>
+        <p>Aucun produit trouvé dans cette commande</p>
+        <p style="font-size:0.75rem; margin-top:8px;">Vérifiez les données Firebase</p>
+      </div>
+    `;
   }
 
   document.getElementById('detailCartTotal').textContent = (cmd.cartTotal || 0).toFixed(2);
