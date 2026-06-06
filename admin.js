@@ -1,4 +1,4 @@
-// admin.js - Firebase v10+ Compatible + Cloudinary Integration
+// admin.js - Firebase v10+ Compatible + Cloudinary Integration + Ingredients Support
 import { collection, getDocs, orderBy, query, doc, updateDoc, deleteDoc, addDoc, onSnapshot }
   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { db } from './firebase-config.js';
@@ -408,6 +408,10 @@ function resetProductForm() {
   
   document.getElementById('flavorsList')?.replaceChildren();
   
+  // 🆕 Reset ingredients list
+  const ingredientsList = document.getElementById('ingredientsList');
+  if (ingredientsList) ingredientsList.innerHTML = '';
+  
   const previewContainer = document.getElementById('imagePreview');
   if (previewContainer) previewContainer.style.display = 'none';
   const previewImg = document.getElementById('previewImg');
@@ -478,18 +482,46 @@ document.getElementById('addProductForm')?.addEventListener('submit', async (e) 
             fImg = await uploadImage(fFile, 'wahbi-zoghbi/flavors');
           } catch (err) {
             console.error(err);
-            fImg = imageUrl; // Fallback to main image
+            fImg = imageUrl;
           }
         } else {
-          fImg = imageUrl; // Fallback
+          fImg = imageUrl;
         }
       }
       
       if (fImg) flavors.push({ name: fName, image: fImg });
     }
+
+    // 🆕 Collect Ingredients / Nutrition Facts
+    const ingredients = [];
+    const ingredientItems = document.querySelectorAll('#ingredientsList .ingredient-item');
+    
+    for (const item of ingredientItems) {
+      const ingName = item.querySelector('.ingredient-name')?.value.trim();
+      const ingValue = item.querySelector('.ingredient-value')?.value;
+      const ingUnit = item.querySelector('.ingredient-unit')?.value || 'g';
+      
+      if (ingName && ingValue !== '' && !isNaN(parseFloat(ingValue))) {
+        ingredients.push({
+          name: ingName,
+          value: parseFloat(ingValue),
+          unit: ingUnit
+        });
+      }
+    }
     
     const { addProduct } = await import('./db-service.js');
-    await addProduct({ name, image: imageUrl, category, description: description || '', price, quantity, flavors, dateAdded: new Date().toISOString() });
+    await addProduct({ 
+      name, 
+      image: imageUrl, 
+      category, 
+      description: description || '', 
+      price, 
+      quantity, 
+      flavors, 
+      ingredients, // 🆕 Save ingredients to Firebase
+      dateAdded: new Date().toISOString() 
+    });
     
     showNotification('✅ Produit ajouté avec succès!', 'success');
     closeAddProductModal();
@@ -513,7 +545,7 @@ function showNotification(msg, type = 'success') {
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
   toast.innerHTML = `
-    <i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation'}"></i>
+    <i class="fa-solid ${type === 'success' ? 'fa-circle-check' : type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-info'}"></i>
     <span>${msg}</span>
   `;
   document.body.appendChild(toast);
