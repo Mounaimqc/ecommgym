@@ -184,40 +184,80 @@
       box-shadow: var(--shadow-energy);
     }
 
-    /* ========== HERO ========== */
-    .hero {
-      background: 
-        linear-gradient(135deg, rgba(10, 10, 15, 0.85) 0%, rgba(26, 29, 41, 0.75) 100%),
-        url('https://minio-prod.ekiclik.dz/chat-boot-images/goldnbody.mp4') center/cover no-repeat;
-      padding: 140px 24px 100px; text-align: center; 
-      position: relative;
-      margin-bottom: 0;
-    }
-    .hero::after {
-      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-      height: 6px; background: var(--gradient-gold);
-      box-shadow: 0 0 30px var(--pz-gold-glow);
-    }
-    .hero h1 { 
-      font-size: 3.8rem; margin-bottom: 16px; 
-      color: var(--pz-white); 
-      letter-spacing: -1px;
-      font-weight: 900;
-      text-shadow: 0 4px 30px rgba(0,0,0,0.5);
-    }
-    .hero h1 span { 
-      background: var(--gradient-gold);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 0 20px var(--pz-gold-glow));
-    }
-    .hero p { 
-      font-size: 1.15rem; color: rgba(255,255,255,0.85); 
-      max-width: 600px; margin: 20px auto 0;
-      font-weight: 400;
-    }
+  /* ========== HERO ========== */
+.hero {
+  position: relative;
+  padding: 140px 24px 100px; 
+  text-align: center; 
+  overflow: hidden;
+  margin-bottom: 0;
+  background: var(--pz-onyx); /* لون احتياطي */
+}
 
+/* خلفية الفيديو */
+.hero-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* طبقة التعتيم فوق الفيديو */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(10, 10, 15, 0.85) 0%, rgba(26, 29, 41, 0.75) 100%);
+  z-index: 1;
+}
+
+/* المحتوى فوق الفيديو */
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero::after {
+  content: ''; 
+  position: absolute; 
+  bottom: 0; 
+  left: 0; 
+  right: 0;
+  height: 6px; 
+  background: var(--gradient-gold);
+  box-shadow: 0 0 30px var(--pz-gold-glow);
+  z-index: 3;
+}
+
+.hero h1 { 
+  font-size: 3.8rem; 
+  margin-bottom: 16px; 
+  color: var(--pz-white); 
+  letter-spacing: -1px;
+  font-weight: 900;
+  text-shadow: 0 4px 30px rgba(0,0,0,0.5);
+}
+
+.hero h1 span { 
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px var(--pz-gold-glow));
+}
+
+.hero p { 
+  font-size: 1.15rem; 
+  color: rgba(255,255,255,0.85); 
+  max-width: 600px; 
+  margin: 20px auto 0;
+  font-weight: 400;
+}
     /* ========== CATEGORIES SLIDER ========== */
     .categories-section {
       padding: 80px 0 60px;
