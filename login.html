@@ -3,7 +3,6 @@
 
 <head>
   <link rel="icon" href="logo.jpeg" type="image/x-icon">
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Connexion Admin - Wahbi Zoghbi</title>
@@ -168,6 +167,10 @@
       animation: slideIn .3s ease
     }
 
+    .toast.success {
+      background: #10b981
+    }
+
     .toast.show {
       display: flex
     }
@@ -206,18 +209,44 @@
     </div>
   </div>
   <div class="toast" id="toast"><i class="fa-solid fa-circle-exclamation"></i><span id="toastMsg"></span></div>
+  
   <script>
+    // التحقق من وجود جلسة سابقة
+    (function checkExistingSession() {
+      const isLoggedIn = localStorage.getItem('isLoggedIn');
+      if (isLoggedIn === 'true') {
+        // المستخدم مسجل دخول بالفعل
+        window.location.href = 'admin.html';
+      }
+    })();
+
     document.getElementById('loginForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const pass = document.getElementById('password').value;
+      
       // ⚠️ Change this password in production!
-      if (pass === "admin123") { window.location.href = "admin.html"; }
-      else { showToast("Mot de passe incorrect"); }
+      if (pass === "admin123") {
+        // حفظ حالة تسجيل الدخول
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userRole', 'admin');
+        localStorage.setItem('userName', 'Wahbi');
+        localStorage.setItem('loginTime', Date.now().toString());
+        
+        showToast("Connexion réussie! Redirection...", 'success');
+        
+        // التوجيه لصفحة الأدمن بعد ثانية
+        setTimeout(() => {
+          window.location.href = "admin.html";
+        }, 1000);
+      } else {
+        showToast("Mot de passe incorrect");
+      }
     });
-    function showToast(msg) {
+
+    function showToast(msg, type = 'error') {
       const toast = document.getElementById('toast');
       document.getElementById('toastMsg').textContent = msg;
-      toast.classList.add('show');
+      toast.className = `toast ${type} show`;
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
   </script>
