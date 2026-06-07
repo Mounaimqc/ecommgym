@@ -1,6 +1,8 @@
 // ========== IMPORT FIREBASE ==========
-import { collection, getDocs, addDoc, query, doc, updateDoc, getDoc, orderBy }
-  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { 
+  collection, getDocs, addDoc, query, doc, updateDoc, getDoc, 
+  orderBy, writeBatch 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { db } from './firebase-config.js';
 
 // ========== VARIABLES GLOBALES ==========
@@ -10,6 +12,7 @@ let displayedCount = 10;
 const itemsPerPage = 10;
 let cart = [];
 let currentProductId = null;
+let isSubmitting = false; // 🛡️ منع الضغط المزدوج
 
 // Utility: Shuffle Array
 function shuffleArray(array) {
@@ -75,7 +78,9 @@ async function loadProductsFromFirebase() {
         description: data.description || '',
         image: data.image || '',
         quantity: parseInt(data.quantity) || 0,
-        dateAdded: data.dateAdded
+        dateAdded: data.dateAdded,
+        flavors: data.flavors || [],
+        ingredients: data.ingredients || []
       });
     });
 
@@ -100,6 +105,9 @@ async function loadProductsFromFirebase() {
       // ✅ Initialiser le slider des catégories
       initCategoriesSlider();
       
+      // 🛡️ Valider le panier après chargement
+      validateCart();
+      
       loadProducts();
     }
   } catch (error) {
@@ -122,40 +130,40 @@ function initCategoriesSlider() {
   
   if (!slider || !prevBtn || !nextBtn) return;
   
-  // Scroll buttons
-  prevBtn.addEventListener('click', () => {
+  // Éviter les doublons d'écouteurs
+  prevBtn.replaceWith(prevBtn.cloneNode(true));
+  nextBtn.replaceWith(nextBtn.cloneNode(true));
+  const newPrevBtn = document.getElementById('categoryPrev');
+  const newNextBtn = document.getElementById('categoryNext');
+  
+  newPrevBtn.addEventListener('click', () => {
     slider.scrollBy({ left: -300, behavior: 'smooth' });
   });
   
-  nextBtn.addEventListener('click', () => {
+  newNextBtn.addEventListener('click', () => {
     slider.scrollBy({ left: 300, behavior: 'smooth' });
   });
   
   // Category selection
   cards.forEach(card => {
     card.addEventListener('click', () => {
-      // Remove active from all
       cards.forEach(c => c.classList.remove('active'));
-      // Add active to clicked
       card.classList.add('active');
       
-      // Filter products
       const category = card.getAttribute('data-category');
       filterProductsByCategory(category);
     });
   });
   
-  // Update buttons state based on scroll
   slider.addEventListener('scroll', () => {
-    prevBtn.disabled = slider.scrollLeft <= 0;
-    nextBtn.disabled = slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth - 10);
+    newPrevBtn.disabled = slider.scrollLeft <= 0;
+    newNextBtn.disabled = slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth - 10);
   });
   
-  // Initial state
-  prevBtn.disabled = true;
+  newPrevBtn.disabled = true;
 }
 
-// Filter products by category (called from slider)
+// Filter products by category
 function filterProductsByCategory(category) {
   allFilteredProducts = products.filter(product => {
     const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
@@ -171,11 +179,12 @@ function filterProductsByCategory(category) {
   loadProducts();
 }
 
-// Update category counts
+// ✅ CORRECTION: Ajout de 'Creatine' dans les compteurs
 function updateCategoryCounts(productList = products) {
   const counts = {
     'all': productList.length,
     'Protéines whey': 0,
+    'Creatine': 0,          // ✅ AJOUTÉ
     'Masse / Gainer': 0,
     'Acide aminé': 0,
     'Force / Energie': 0,
@@ -188,13 +197,22 @@ function updateCategoryCounts(productList = products) {
     }
   });
   
-  // Update counters in slider
-  document.getElementById('count-all').textContent = counts['all'];
-  document.getElementById('count-whey').textContent = counts['Protéines whey'];
-  document.getElementById('count-mass').textContent = counts['Masse / Gainer'];
-  document.getElementById('count-amino').textContent = counts['Acide aminé'];
-  document.getElementById('count-energy').textContent = counts['Force / Energie'];
-  document.getElementById('count-burner').textContent = counts['Brûleur de graisse'];
+  // Mise à jour des compteurs dans le slider
+  const countAll = document.getElementById('count-all');
+  const countWhey = document.getElementById('count-whey');
+  const countCreatine = document.getElementById('count-creatine'); // ✅ AJOUTÉ
+  const countMass = document.getElementById('count-mass');
+  const countAmino = document.getElementById('count-amino');
+  const countEnergy = document.getElementById('count-energy');
+  const countBurner = document.getElementById('count-burner');
+  
+  if (countAll) countAll.textContent = counts['all'];
+  if (countWhey) countWhey.textContent = counts['Protéines whey'];
+  if (countCreatine) countCreatine.textContent = counts['Creatine']; // ✅ AJOUTÉ
+  if (countMass) countMass.textContent = counts['Masse / Gainer'];
+  if (countAmino) countAmino.textContent = counts['Acide aminé'];
+  if (countEnergy) countEnergy.textContent = counts['Force / Energie'];
+  if (countBurner) countBurner.textContent = counts['Brûleur de graisse'];
 }
 
 // ========== AFFICHAGE DES PRODUITS ==========
@@ -247,20 +265,27 @@ function loadProducts() {
 
     const shortDesc = truncateDescription(product.description || '', 50);
     const quantity = product.quantity || 0;
+    
+    // 🛡️ Vérifier la quantité dans le panier
+    const inCartQty = getCartQuantityForProduct(product.id);
+    const availableQty = quantity - inCartQty;
+    
     const quantityHTML = quantity > 0
       ? `<span class="product-quantity">${quantity} en stock</span>`
       : `<span class="product-quantity out-of-stock">Rupture de stock</span>`;
 
     info.innerHTML = `
       <h3 class="product-name" style="font-size:1.1rem; font-family:'Montserrat', sans-serif; font-weight:700; margin-bottom:8px; text-transform:uppercase;">${product.name}</h3>
-      <p class="product-category" style="font-size:0.75rem; color:var(--gb-gold); text-transform:uppercase; font-weight:700; margin-bottom:8px; letter-spacing:1px;">${product.category}</p>
-      <p class="product-description" style="font-size:0.875rem; color:var(--gb-light-grey); margin-bottom:16px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${shortDesc}</p>
+      <p class="product-category" style="font-size:0.75rem; color:var(--pz-gold); text-transform:uppercase; font-weight:700; margin-bottom:8px; letter-spacing:1px;">${product.category}</p>
+      <p class="product-description" style="font-size:0.875rem; color:var(--pz-grey); margin-bottom:16px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${shortDesc}</p>
       ${quantityHTML}
       <div class="product-footer">
         <span class="product-price">${product.price.toFixed(2)} DA</span>
         <button class="add-to-cart-btn" data-product-id="${product.id}" 
-          ${quantity <= 0 ? 'disabled' : ''}>
-          ${quantity > 0 ? `<i class="fa-solid fa-cart-plus"></i> Ajouter` : 'Indisponible'}
+          ${availableQty <= 0 ? 'disabled' : ''}>
+          ${quantity <= 0 ? 'Indisponible' : 
+            (availableQty <= 0 ? `<i class="fa-solid fa-check"></i> Dans panier` : 
+            `<i class="fa-solid fa-cart-plus"></i> Ajouter`)}
         </button>
       </div>
     `;
@@ -278,14 +303,53 @@ function loadProducts() {
     });
   });
 
-  console.log(`✅ ${productsToDisplay.length} produits affichés`);
-
   if (paginationContainer) {
-    if (displayedCount < allFilteredProducts.length) {
-      paginationContainer.style.display = 'block';
-    } else {
-      paginationContainer.style.display = 'none';
+    paginationContainer.style.display = displayedCount < allFilteredProducts.length ? 'block' : 'none';
+  }
+}
+
+// 🛡️ Obtenir la quantité d'un produit dans le panier
+function getCartQuantityForProduct(productId) {
+  return cart
+    .filter(item => item.id === productId)
+    .reduce((sum, item) => sum + item.quantity, 0);
+}
+
+// 🛡️ Valider le panier après chargement des produits
+function validateCart() {
+  let modified = false;
+  
+  cart = cart.filter(item => {
+    const product = products.find(p => p.id === item.id);
+    
+    // Produit supprimé
+    if (!product) {
+      showNotification(`${item.name} a été supprimé du panier (produit indisponible)`, 'error');
+      modified = true;
+      return false;
     }
+    
+    // Quantité ajustée si insuffisante
+    if (item.quantity > product.quantity) {
+      const oldQty = item.quantity;
+      item.quantity = product.quantity;
+      
+      if (item.quantity <= 0) {
+        showNotification(`${item.name} est en rupture de stock, retiré du panier`, 'error');
+        modified = true;
+        return false;
+      } else {
+        showNotification(`${item.name}: quantité ajustée de ${oldQty} à ${item.quantity}`, 'info');
+        modified = true;
+      }
+    }
+    
+    return true;
+  });
+  
+  if (modified) {
+    saveCartToStorage();
+    updateCartCount();
   }
 }
 
@@ -313,57 +377,85 @@ function addToCart(productId, flavorName = null) {
   const product = products.find(p => p.id === productId);
   if (!product) {
     console.error("❌ Produit non trouvé:", productId);
+    showNotification('Produit introuvable!', 'error');
     return;
   }
 
-  const quantity = product.quantity || 0;
-  if (quantity <= 0) {
-    showNotification('Produit indisponible - rupture de stock!', 'error');
+  const stock = product.quantity || 0;
+  if (stock <= 0) {
+    showNotification('❌ Produit indisponible - rupture de stock!', 'error');
     return;
   }
 
   const cartItemId = flavorName ? `${productId}_${flavorName}` : productId;
-
   const existingItem = cart.find(item => item.cartItemId === cartItemId);
+  
+  // 🛡️ Calculer la quantité totale déjà dans le panier pour ce produit
+  const totalInCart = getCartQuantityForProduct(productId);
+  const availableToAdd = stock - totalInCart;
+
+  if (availableToAdd <= 0) {
+    showNotification(`⚠️ Stock maximum atteint pour ${product.name}!`, 'error');
+    return;
+  }
+
   if (existingItem) {
-    if (existingItem.quantity >= quantity) {
+    if (existingItem.quantity >= stock) {
       showNotification('Quantité maximale atteinte!', 'error');
       return;
     }
     existingItem.quantity += 1;
   } else {
-    cart.push({ ...product, quantity: 1, flavor: flavorName, cartItemId: cartItemId });
+    cart.push({ 
+      ...product, 
+      quantity: 1, 
+      flavor: flavorName, 
+      cartItemId: cartItemId 
+    });
   }
 
   saveCartToStorage();
   updateCartCount();
-  showNotification(`${product.name} ${flavorName ? `(${flavorName}) ` : ''}ajouté au panier!`, 'success');
+  loadProducts(); // 🔄 Mettre à jour les boutons "Ajouter"
+  showNotification(`✅ ${product.name} ${flavorName ? `(${flavorName}) ` : ''}ajouté au panier!`, 'success');
 }
 
 function updateCartQuantity(cartItemId, change) {
   const item = cart.find(i => (i.cartItemId || i.id) === cartItemId);
   if (!item) return;
 
-  item.quantity += change;
-  if (item.quantity <= 0) {
+  const product = products.find(p => p.id === item.id);
+  const stock = product?.quantity || 0;
+  
+  const newQuantity = item.quantity + change;
+  
+  if (newQuantity <= 0) {
     removeCartItem(cartItemId);
-  } else {
-    const product = products.find(p => p.id === item.id);
-    const maxQuantity = product?.quantity || 0;
-    if (item.quantity > maxQuantity) {
-      item.quantity = maxQuantity;
-      showNotification('Quantité maximale atteinte!', 'error');
-    }
-    saveCartToStorage();
-    displayCart();
+    return;
   }
+  
+  if (newQuantity > stock) {
+    showNotification(`⚠️ Seulement ${stock} en stock!`, 'error');
+    return;
+  }
+
+  item.quantity = newQuantity;
+  saveCartToStorage();
+  displayCart();
+  loadProducts(); // 🔄 Mettre à jour les cartes
 }
 
 function removeCartItem(cartItemId) {
+  const item = cart.find(i => (i.cartItemId || i.id) === cartItemId);
   cart = cart.filter(item => (item.cartItemId || item.id) !== cartItemId);
   saveCartToStorage();
   updateCartCount();
   displayCart();
+  loadProducts();
+  
+  if (item) {
+    showNotification(`${item.name} retiré du panier`, 'info');
+  }
 }
 
 function displayCart() {
@@ -389,12 +481,12 @@ function displayCart() {
 
     const cartItem = document.createElement('div');
     cartItem.className = 'cart-item';
-    cartItem.style.cssText = 'display:flex; gap:16px; padding:16px 0; border-bottom:1px solid #e5e7eb;';
+    cartItem.style.cssText = 'display:flex; gap:16px; padding:16px 0; border-bottom:1px solid #e5e7eb; align-items:center;';
     cartItem.innerHTML = `
       <div class="cart-item-info" style="flex:1;">
         <div class="cart-item-name" style="font-weight:500; margin-bottom:4px;">
           ${item.name} 
-          ${item.flavor ? `<span style="font-size:0.75rem;color:var(--gb-gold);padding:2px 6px;background:rgba(212,175,55,0.1);border-radius:4px;margin-left:6px;">${item.flavor}</span>` : ''}
+          ${item.flavor ? `<span style="font-size:0.75rem;color:var(--pz-gold);padding:2px 6px;background:rgba(255,184,0,0.1);border-radius:4px;margin-left:6px;">${item.flavor}</span>` : ''}
         </div>
         <div class="cart-item-price" style="color:#6b7280; font-size:0.875rem;">${item.price.toFixed(2)} DA × ${item.quantity} = ${itemTotal.toFixed(2)} DA</div>
       </div>
@@ -430,6 +522,7 @@ function loadCartFromStorage() {
     try {
       cart = JSON.parse(saved);
       updateCartCount();
+      // 🛡️ La validation se fera après loadProductsFromFirebase
     } catch (e) {
       console.error("Erreur chargement panier:", e);
       cart = [];
@@ -454,20 +547,23 @@ function setupEventListeners() {
 
   closeButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      const modalOverlay = btn.closest('.modal-overlay');
+      const modalOverlay = btn.closest('.modal-overlay'); // ✅ CORRECTION
       if (modalOverlay) modalOverlay.classList.remove('active');
     });
   });
 
+  // ✅ CORRECTION: Vérifier modal-overlay au lieu de modal
   window.addEventListener('click', (e) => {
-    document.querySelectorAll('.modal').forEach(modal => {
-      if (e.target === modal) modal.classList.remove('active');
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      if (e.target === overlay) overlay.classList.remove('active');
     });
   });
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      document.querySelectorAll('.modal').forEach(modal => modal.classList.remove('active'));
+      document.querySelectorAll('.modal-overlay.active').forEach(overlay => {
+        overlay.classList.remove('active');
+      });
     }
   });
 
@@ -521,10 +617,10 @@ function populateShippingTable() {
   sortedWilayas.forEach(wilaya => {
     const row = document.createElement('tr');
     row.innerHTML = `
-            <td>${wilaya}</td>
-            <td class="price-tag">${shippingPrices[wilaya]} DA</td>
-            <td class="price-tag">${stopDeskPrices[wilaya]} DA</td>
-        `;
+      <td>${wilaya}</td>
+      <td class="price-tag">${shippingPrices[wilaya]} DA</td>
+      <td class="price-tag">${stopDeskPrices[wilaya]} DA</td>
+    `;
     tableBody.appendChild(row);
   });
 }
@@ -538,11 +634,7 @@ function filterShippingTable() {
 
   for (let row of rows) {
     const wilayaName = row.cells[0].textContent.toLowerCase();
-    if (wilayaName.includes(searchTerm)) {
-      row.style.display = '';
-    } else {
-      row.style.display = 'none';
-    }
+    row.style.display = wilayaName.includes(searchTerm) ? '' : 'none';
   }
 }
 
@@ -553,7 +645,7 @@ function generateOrderNumber() {
   let count = localStorage.getItem('orderCount') || '0';
   count = String(parseInt(count) + 1).padStart(3, '0');
   localStorage.setItem('orderCount', count);
-  return `AM${datePart}${count}`;
+  return `PZ${datePart}${count}`;
 }
 
 function openOrderForm() {
@@ -571,7 +663,7 @@ function closeOrderForm() {
 
 function initializeWilayaSelect() {
   const select = document.getElementById('wilaya');
-  if (!select) return;
+  if (!select || select.children.length > 1) return; // ✅ Éviter les doublons
 
   select.innerHTML = '<option value="">Sélectionner une wilaya</option>';
   Object.keys(wilayasData).forEach(wilaya => {
@@ -680,7 +772,8 @@ const shippingPrices = {
   "45 - Naâma": 1200, "46 - Aïn Témouchent": 800, "47 - Ghardaïa": 1100, "48 - Relizane": 800,
   "49 - Timimoun": 1500, "50 - Bordj Badji Mokhtar": 1500, "51 - Ouled Djellal": 1000,
   "52 - Béni Abbès": 1200, "53 - In Salah": 1800, "54 - In Guezzam": 3500,
-  "55 - Touggourt": 1000, "56 - Djanet": 2200, "57 - El M'Ghair": 1800, "58 - El Meniaa": 1100};
+  "55 - Touggourt": 1000, "56 - Djanet": 2200, "57 - El M'Ghair": 1800, "58 - El Meniaa": 1100
+};
 
 const stopDeskPrices = {
   "01 - Adrar": 1000, "02 - Chlef": 500, "03 - Laghouat": 600, "04 - Oum El Bouaghi": 500,
@@ -700,9 +793,14 @@ const stopDeskPrices = {
   "55 - Touggourt": 600, "56 - Djanet": 1600, "57 - El M'Ghair": 1800, "58 - El Meniaa": 800
 };
 
-
 // ========== SOUMISSION COMMANDE ==========
 async function submitOrderForm() {
+  // 🛡️ Protection contre double-clic
+  if (isSubmitting) {
+    showNotification('⏳ Commande en cours de traitement...', 'info');
+    return;
+  }
+
   const form = document.getElementById('orderForm');
   if (!form) return;
 
@@ -711,8 +809,29 @@ async function submitOrderForm() {
   const commune = form.commune?.value;
 
   if (!orderType || !wilaya || !commune) {
-    showNotification("Veuillez remplir tous les champs obligatoires.", 'error');
+    showNotification("❌ Veuillez remplir tous les champs obligatoires.", 'error');
     return;
+  }
+
+  // 🛡️ Vérification finale du stock avant envoi
+  for (const item of cart) {
+    const product = products.find(p => p.id === item.id);
+    if (!product) {
+      showNotification(`❌ ${item.name} n'est plus disponible!`, 'error');
+      return;
+    }
+    if (item.quantity > product.quantity) {
+      showNotification(`❌ Stock insuffisant pour ${item.name}. Max: ${product.quantity}`, 'error');
+      return;
+    }
+  }
+
+  isSubmitting = true;
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const originalBtnText = submitBtn?.innerHTML;
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Traitement...';
   }
 
   let shippingPrice = 0;
@@ -752,8 +871,14 @@ async function submitOrderForm() {
     const orderRef = await addDoc(collection(db, "commandes"), commande);
     console.log("✅ Commande sauvegardée avec ID:", orderRef.id);
 
-    await updateProductsQuantities(cart);
-    await loadProductsFromFirebase();
+    // ⚡ Mise à jour atomique des quantités
+    const stockResults = await updateProductsQuantities(cart);
+    
+    // Vérifier si toutes les mises à jour ont réussi
+    const failedUpdates = stockResults.filter(r => !r.success);
+    if (failedUpdates.length > 0) {
+      console.warn("⚠️ Quelques produits n'ont pas été mis à jour:", failedUpdates);
+    }
 
     closeOrderForm();
     const confirmModal = document.getElementById('confirmModal');
@@ -770,54 +895,111 @@ async function submitOrderForm() {
       document.getElementById('shippingPrice').textContent = '0 DA';
     }
 
-    showNotification(`Commande envoyée avec succès!`, 'success');
+    showNotification(`✅ Commande envoyée avec succès!`, 'success');
+    
+    // Recharger les produits pour afficher les nouvelles quantités
+    await loadProductsFromFirebase();
+
   } catch (error) {
     console.error("❌ Erreur Firebase:", error);
-    showNotification("Erreur lors de l'envoi. Vérifiez votre connexion.", 'error');
+    showNotification("❌ Erreur lors de l'envoi. Vérifiez votre connexion.", 'error');
+    
+    // Restaurer le bouton
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnText;
+    }
+  } finally {
+    isSubmitting = false;
   }
 }
 
-// ========== METTRE À JOUR QUANTITÉS ==========
+// ========== ⚡ METTRE À JOUR QUANTITÉS AVEC BATCH ==========
 async function updateProductsQuantities(cartItems) {
   const results = [];
-  for (const item of cartItems) {
-    try {
-      console.log(`📦 Mise à jour: ${item.name} (ID: ${item.id})`);
+  const batch = writeBatch(db);
+  const productRefs = [];
+  
+  try {
+    // Préparer toutes les mises à jour
+    for (const item of cartItems) {
       const productRef = doc(db, "produits", item.id);
       const productDoc = await getDoc(productRef);
 
       if (productDoc.exists()) {
         const currentQuantity = productDoc.data().quantity || 0;
-        const newQuantity = currentQuantity - item.quantity;
-
-        if (newQuantity >= 0) {
-          await updateDoc(productRef, { quantity: newQuantity });
-          console.log(`✅ ${item.name}: ${currentQuantity} → ${newQuantity}`);
-          results.push({ success: true, productId: item.id, newQuantity });
-        } else {
-          console.warn(`⚠️ Quantité insuffisante: ${item.name}`);
-          results.push({ success: false, productId: item.id, reason: 'Insufficient quantity' });
-        }
+        const newQuantity = Math.max(0, currentQuantity - item.quantity);
+        
+        batch.update(productRef, { 
+          quantity: newQuantity,
+          updatedAt: new Date().toISOString()
+        });
+        
+        productRefs.push({
+          id: item.id,
+          name: item.name,
+          oldQty: currentQuantity,
+          newQty: newQuantity,
+          success: true
+        });
+        
+        console.log(`✅ ${item.name}: ${currentQuantity} → ${newQuantity}`);
       } else {
         console.warn(`⚠️ Produit non trouvé: ${item.id}`);
         results.push({ success: false, productId: item.id, reason: 'Product not found' });
       }
-    } catch (error) {
-      console.error(`❌ Erreur pour ${item.name}:`, error);
-      results.push({ success: false, productId: item.id, reason: error.message });
     }
+
+    // Commit atomique
+    await batch.commit();
+    console.log("✅ Batch commit successful");
+    
+    return [...results, ...productRefs];
+
+  } catch (error) {
+    console.error("❌ Batch error:", error);
+    // En cas d'erreur, faire les mises à jour individuellement
+    for (const item of cartItems) {
+      try {
+        const productRef = doc(db, "produits", item.id);
+        const productDoc = await getDoc(productRef);
+        if (productDoc.exists()) {
+          const currentQuantity = productDoc.data().quantity || 0;
+          const newQuantity = Math.max(0, currentQuantity - item.quantity);
+          await updateDoc(productRef, { 
+            quantity: newQuantity,
+            updatedAt: new Date().toISOString()
+          });
+          results.push({ success: true, productId: item.id, newQuantity });
+        }
+      } catch (e) {
+        results.push({ success: false, productId: item.id, reason: e.message });
+      }
+    }
+    return results;
   }
-  return results;
 }
 
-// ========== NOTIFICATIONS ==========
+// ========== NOTIFICATIONS AMÉLIORÉES ==========
 function showNotification(message, type = 'success') {
-  const existing = document.querySelector('.notification-toast');
-  if (existing) existing.remove();
+  const existing = document.querySelectorAll('.notification-toast');
+  existing.forEach(n => n.remove());
 
   const notif = document.createElement('div');
   notif.className = 'notification-toast';
-  const bgColor = type === 'success' ? '#10b981' : '#f59e0b';
+  
+  const bgColor = {
+    'success': '#10b981',
+    'error': '#ef4444',
+    'info': '#3b82f6'
+  }[type] || '#10b981';
+  
+  const icon = {
+    'success': 'fa-circle-check',
+    'error': 'fa-circle-exclamation',
+    'info': 'fa-circle-info'
+  }[type] || 'fa-circle-info';
+  
   notif.style.cssText = `
     position: fixed;
     top: 20px;
@@ -831,8 +1013,12 @@ function showNotification(message, type = 'success') {
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     font-size: 14px;
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 350px;
   `;
-  notif.textContent = message;
+  notif.innerHTML = `<i class="fa-solid ${icon}"></i><span>${message}</span>`;
   document.body.appendChild(notif);
 
   setTimeout(() => {
