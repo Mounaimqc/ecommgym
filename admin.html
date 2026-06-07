@@ -11,6 +11,30 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
+  <!-- 🔐 حماية الصفحة - التحقق من المصادقة -->
+  <script>
+    (function checkAuth() {
+      const isLoggedIn = localStorage.getItem('isLoggedIn');
+      const userRole = localStorage.getItem('userRole');
+      const loginTime = localStorage.getItem('loginTime');
+      
+      // التحقق من انتهاء صلاحية الجلسة (24 ساعة)
+      const SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 ساعة
+      if (loginTime && (Date.now() - parseInt(loginTime)) > SESSION_DURATION) {
+        localStorage.clear();
+        alert('Session expirée. Veuillez vous reconnecter.');
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      // إذا مش مسجل دخول أو مش admin
+      if (!isLoggedIn || isLoggedIn !== 'true' || userRole !== 'admin') {
+        window.location.href = 'login.html';
+        return;
+      }
+    })();
+  </script>
+  
   <style>
     :root {
       --primary: #FFB800;
@@ -157,7 +181,6 @@
     .image-preview-container p { font-size: 0.75rem; color: var(--text-light); margin-bottom: 6px; }
     .upload-hint { font-size: 0.7rem; color: var(--text-light); margin-top: 6px; }
 
-    /* 🆕 Ingredients Section Styles */
     .ingredients-section {
       border: 1px solid var(--border);
       padding: 15px;
@@ -234,7 +257,7 @@
       <li class="nav-item"><a href="admin.html" class="nav-link active"><i class="fa-solid fa-chart-line"></i> Tableau de bord</a></li>
       <li class="nav-item"><a href="gerer-produits.html" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Produits</a></li>
       <li class="nav-item"><a href="index.html" class="nav-link" target="_blank"><i class="fa-solid fa-store"></i> Voir le site</a></li>
-      <li class="nav-item" style="margin-top: auto;"><a href="login.html" class="nav-link" style="color: var(--danger);"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a></li>
+      <li class="nav-item" style="margin-top: auto;"><a href="#" onclick="logout(); return false;" class="nav-link" style="color: var(--danger);"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a></li>
     </ul>
     <div class="sidebar-footer">
       <p>v2.0 • © 2026</p>
@@ -254,9 +277,9 @@
         </div>
       </div>
       <div class="user-profile">
-        <div class="user-avatar">W</div>
+        <div class="user-avatar" id="userAvatar">W</div>
         <div class="user-info">
-          <div class="user-name">Wahbi</div>
+          <div class="user-name" id="userName">Wahbi</div>
           <div class="user-role">Super Admin</div>
         </div>
       </div>
@@ -506,7 +529,7 @@
             </p>
           </div>
 
-          <!-- 🆕 Ingredients / Nutrition Facts Section -->
+          <!-- Ingredients / Nutrition Facts Section -->
           <div class="ingredients-section">
             <div class="section-header">
               <label class="form-label">
@@ -535,6 +558,31 @@
   <div id="toastContainer"></div>
 
   <script>
+    // 🔐 عرض اسم المستخدم من localStorage
+    (function loadUserInfo() {
+      const userName = localStorage.getItem('userName');
+      if (userName) {
+        const userNameEl = document.getElementById('userName');
+        const userAvatarEl = document.getElementById('userAvatar');
+        if (userNameEl) userNameEl.textContent = userName;
+        if (userAvatarEl) userAvatarEl.textContent = userName.charAt(0).toUpperCase();
+      }
+    })();
+
+    // 🔐 دالة تسجيل الخروج
+    function logout() {
+      if (confirm('Êtes-vous sûr de vouloir vous déconnecter?')) {
+        // مسح جميع بيانات الجلسة
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('loginTime');
+        
+        // العودة لصفحة الدخول
+        window.location.href = 'login.html';
+      }
+    }
+
     const menuToggle = document.getElementById('menuToggle');
     const sidebar = document.getElementById('sidebar');
     
@@ -617,7 +665,6 @@
       container.appendChild(field);
     }
     
-    // 🆕 Add Ingredient Field Function
     function addIngredientField() {
       const container = document.getElementById('ingredientsList');
       const index = container.children.length;
@@ -673,7 +720,6 @@
       const flavorsList = document.getElementById('flavorsList');
       if (flavorsList) flavorsList.innerHTML = '';
       
-      // 🆕 Reset ingredients list
       const ingredientsList = document.getElementById('ingredientsList');
       if (ingredientsList) ingredientsList.innerHTML = '';
       
@@ -698,7 +744,7 @@
       if (finalImageInput) finalImageInput.value = '';
     }
 
-    // 🆕 Expose functions globally for admin.js
+    // Expose functions globally for admin.js
     window.addIngredientField = addIngredientField;
     window.addFlavorField = addFlavorField;
     window.clearFilters = clearFilters;
@@ -706,6 +752,7 @@
     window.closeDetail = closeDetail;
     window.closeAddProductModal = closeAddProductModal;
     window.openAddProductModal = openAddProductModal;
+    window.logout = logout;
   </script>
   
   <script type="module" src="firebase-config.js"></script>
@@ -713,4 +760,5 @@
   <script type="module" src="admin.js"></script>
   
 </body>
+
 </html>
